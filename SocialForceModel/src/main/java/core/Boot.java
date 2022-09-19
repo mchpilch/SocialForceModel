@@ -25,7 +25,9 @@ public class Boot extends Game {
 
     @Override
     public void create () {
-        world = new World(new Vector2(1, 1), true);//x y w tym wektorze dedykują działanie sił w świecie
+        world = new World(new Vector2(100f, 0), true);//x y w tym wektorze dedykują działanie sił w świecie
+        // 1 problem F = ma -> stała siła = przy m const -> stałe przyśpieszenie obiekty przyśpieszją cały czas
+        // 2 problem Siła działa na "świecie" nie na obiekt
         camera = new OrthographicCamera(50, 25);
         debugRenderer = new Box2DDebugRenderer();
 
