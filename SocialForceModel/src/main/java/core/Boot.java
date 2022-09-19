@@ -42,11 +42,11 @@ public class Boot extends Game {
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
-            public boolean touchDown (int x, int y, int pointer, int button) {
+            public boolean touchDown (int x, int y, int pointer, int button) { //klikanie myszką
 
                 Vector3 touchedPoint = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(touchedPoint);
-                createCircle(BodyDef.BodyType.DynamicBody, touchedPoint.x, touchedPoint.y, 1, 10);
+                createCircle(BodyDef.BodyType.DynamicBody, touchedPoint.x, touchedPoint.y, 0.2f, 10);
                 return true;
             }
         });
