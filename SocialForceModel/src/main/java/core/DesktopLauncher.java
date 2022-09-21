@@ -12,6 +12,6 @@ public class DesktopLauncher {
         config.setTitle("SFM - Michał Pilch");
 
         config.setWindowedMode(1280,720);
-        new Lwjgl3Application(new Boot(), config);
+        new Lwjgl3Application(new Lab(), config);
     }
 }
