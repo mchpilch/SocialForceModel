@@ -1,4 +1,4 @@
-package core;
+package core.Labs;
 
 import com.badlogic.gdx.ScreenAdapter;
 
