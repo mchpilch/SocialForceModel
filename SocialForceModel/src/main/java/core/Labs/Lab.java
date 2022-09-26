@@ -1,12 +1,10 @@
 package core.Labs;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
@@ -17,6 +15,8 @@ public class Lab extends Game {
     World world;
     OrthographicCamera camera;
     Box2DDebugRenderer debugRenderer;
+    BodyDef bodyDef;
+    Body bodyA;
 
     @Override
     public void create () {
@@ -35,14 +35,14 @@ public class Lab extends Game {
 
         //LABORATORIOUM
         // First we create a body definition
-        BodyDef bodyDef = new BodyDef();
+        bodyDef = new BodyDef();
         // We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         // Set our body's starting position in the world
         bodyDef.position.set(0, 0);
 
         // Create our body in the world using our body definition
-        Body body = world.createBody(bodyDef);
+        bodyA = world.createBody(bodyDef);
 
         // Create a circle shape and set its radius to 6
         CircleShape circle = new CircleShape();
@@ -56,19 +56,19 @@ public class Lab extends Game {
         fixtureDef.restitution = 0f; // Make it bounce a little bit
 
         // Create our fixture and attach it to the body
-        Fixture fixture = body.createFixture(fixtureDef);
+        Fixture fixture = bodyA.createFixture(fixtureDef);
 
         // Remember to dispose of any shapes after you're done with them!
         // BodyDef and FixtureDef don't need disposing, but shapes do.
         int x = -50;
         int y = 100;
         float angle = (float) Math.atan2(y,x) ;
-        body.setTransform(0,0, angle);
+        bodyA.setTransform(0,0, angle);
         circle.dispose();
 
 //        body.applyForce(-100.0f, 50.0f, 0.5f, 0f, true);
      //   body.applyForce(100.0f, 0.0f, 0.5f, 0f, true);
-        body.applyForceToCenter(x, y, true);
+        bodyA.applyForceToCenter(x, y, true);
 //        body.applyLinearImpulse(10.0f, 0, 0, 0, true);
 //        body.applyLinearImpulse(0, 10.0f, 0, 0, true);
 //        body.applyForce(100.0f, 0.0f, 1f, 1f, true);
@@ -94,6 +94,10 @@ public class Lab extends Game {
 
         debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
         world.step(1 / 60f, 6, 2);
+
+        Vector2 vec= new Vector2(1,1);
+//        bodyA.applyForceToCenter(vec, true);
+        bodyA.setLinearVelocity(vec);
     }
 
     @Override

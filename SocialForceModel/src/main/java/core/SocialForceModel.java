@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -27,9 +28,12 @@ public class SocialForceModel extends Game {
     private float timer = 0f;
     boolean envObjAdded = false;
 
-    Array<Body> all = new Array<Body>();
-    Array<Human> people = new Array<Human>();
-    Array<Body> environment = new Array<Body>();
+    Array<Body> allStorage = new Array<Body>();
+    Array<Human> peopleStorage = new Array<Human>();
+    Array<Body> environmentStorage = new Array<Body>();
+
+    float exitCoordinatesX = 16;
+    float exitCoordinatesY = 6;
 
     @Override
     public void create() {
@@ -46,8 +50,10 @@ public class SocialForceModel extends Game {
         // right wall
         Element.createEdge(20, -10, 20, 10, 0, world);
 
+        Element.createRectangle(BodyDef.BodyType.StaticBody,exitCoordinatesX,exitCoordinatesY,1,1,0, world);
+
         System.out.println("MESSAGE");
-        System.out.println( environment.size);
+        System.out.println( environmentStorage.size);
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -56,8 +62,8 @@ public class SocialForceModel extends Game {
                 Vector3 touchedPoint = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(touchedPoint);
                 Human man = new Human();
-                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 10, world);
-                people.add(man);
+                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 100, world);
+                peopleStorage.add(man);
                 //Human.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 10, world);
                 return true;
             }
@@ -72,12 +78,7 @@ public class SocialForceModel extends Game {
         debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
         world.step(1 / 60f, 6, 2);
 
-        world.getBodies(all);
-
-//        if(!envObjAdded){
-//            all.forEach(elem->environment.add(elem));
-//            envObjAdded = true;
-//        }
+        world.getBodies(allStorage);
 
 
 //        if(all.size > environment.size + people.size){
@@ -90,42 +91,53 @@ public class SocialForceModel extends Game {
 //                people.add(elem);
 //            }
 //        });
+        float coefficient = 0.25f;
+        if (peopleStorage.notEmpty()) {
+            peopleStorage.forEach(pedestrian -> {
+                float valuePseudoExitForceX = exitCoordinatesX - pedestrian.body.getPosition().x;
+                float valuePseudoExitForceY = exitCoordinatesY - pedestrian.body.getPosition().y;
+                Vector2 pseudoExitForce = new Vector2(valuePseudoExitForceX,valuePseudoExitForceY).scl(coefficient);
+                pedestrian.body.setLinearVelocity(pseudoExitForce);
+                System.out.println();
 
-//        people.forEach(p -> {
-////            float currBodyAngle = p.getAngle();
-////            Vector2 currBodyPosition = p.getPosition();
-////            p.setTransform(currBodyPosition,currBodyAngle  + 0.2f);
-//            System.out.println(p.getType());
-//        });
+                        timeSeconds += Gdx.graphics.getDeltaTime();
+                        if(timeSeconds > period){
+                            timeSeconds-=period;
+                            timer += period;
+                            System.out.println(pedestrian.body.getLinearVelocity());
+                        }
 
+
+            });
+        }
 
         //clock for world
-        timeSeconds += Gdx.graphics.getDeltaTime();
+  /*      timeSeconds += Gdx.graphics.getDeltaTime();
         if(timeSeconds > period){
             timeSeconds-=period;
             timer += period;
             System.out.println(timer);
 
-            System.out.println("all " + all.size);
-            System.out.println("environment " + environment.size);
-            System.out.println("people " + people.size);
+            System.out.println("all " + allStorage.size);
+            System.out.println("environment " + environmentStorage.size);
+            System.out.println("people " + peopleStorage.size);
 
-            if(people.size >= 1){
-                int min = 0;
-                int max = people.size - 1;
-                Random rand = new Random();
-                int nr = rand.nextInt((max - min) + 1) + min;
-
-                Human p = people.get(nr);
-                p.body.setTransform(p.body.getPosition(),p.body.getAngle() + 0.5f);
-                System.out.println("zmieniam kąt");
-            }
+//            if(peopleStorage.size >= 1){
+//                int min = 0;
+//                int max = peopleStorage.size - 1;
+//                Random rand = new Random();
+//                int nr = rand.nextInt((max - min) + 1) + min;
+//
+//                Human p = peopleStorage.get(nr);
+//                p.body.setTransform(p.body.getPosition(),p.body.getAngle() + 0.5f);
+//                System.out.println("zmieniam kąt");
+//            }
 
 //            for(int i = 0; i < all.size; i++){
 ////                all.sort();
 //                System.out.println( i+1 + " " + all.get(i).getType() );
 //            }
-        }
+        }*/
     }
 
     @Override
