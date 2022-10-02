@@ -35,6 +35,7 @@ public class SocialForceModel extends Game {
     float exitCoordinatesX = 16;
     float exitCoordinatesY = 6;
 
+
     @Override
     public void create() {
         world = new World(new Vector2(0, 0), true);
@@ -91,20 +92,28 @@ public class SocialForceModel extends Game {
 //                people.add(elem);
 //            }
 //        });
-        float coefficient = 0.25f;
+        float coefficient = 5f;
         if (peopleStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
-                float valuePseudoExitForceX = exitCoordinatesX - pedestrian.body.getPosition().x;
-                float valuePseudoExitForceY = exitCoordinatesY - pedestrian.body.getPosition().y;
-                Vector2 pseudoExitForce = new Vector2(valuePseudoExitForceX,valuePseudoExitForceY).scl(coefficient);
-                pedestrian.body.setLinearVelocity(pseudoExitForce);
-                System.out.println();
+                boolean wasFirstPosCalculated = false;;
+                    float valuePseudoExitForceX = exitCoordinatesX - pedestrian.body.getPosition().x;
+                    float valuePseudoExitForceY = exitCoordinatesY - pedestrian.body.getPosition().y;
+                    float coefficientUnitVec = (float) (1/Math.sqrt(valuePseudoExitForceY*valuePseudoExitForceY + valuePseudoExitForceX*valuePseudoExitForceX));
+                    Vector2 pseudoExitForce = new Vector2(valuePseudoExitForceX,valuePseudoExitForceY).scl(coefficientUnitVec*coefficient);
+                    pedestrian.body.setLinearVelocity(pseudoExitForce);
+                    wasFirstPosCalculated = true;
+
+                //boolean w zależności czy wszyscy dostali
 
                         timeSeconds += Gdx.graphics.getDeltaTime();
                         if(timeSeconds > period){
                             timeSeconds-=period;
                             timer += period;
-                            System.out.println(pedestrian.body.getLinearVelocity());
+                            float x = pedestrian.body.getLinearVelocity().x;
+                            float y = pedestrian.body.getLinearVelocity().y;
+
+                            float wynik = (float) Math.sqrt(x*x + y*y);
+                            System.out.println("szybkość: " + wynik);
                         }
 
 
