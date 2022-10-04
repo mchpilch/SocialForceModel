@@ -32,8 +32,8 @@ public class SocialForceModel extends Game {
     Array<Human> peopleStorage = new Array<Human>();
     Array<Body> environmentStorage = new Array<Body>();
 
-    float exitCoordinatesX = 16;
-    float exitCoordinatesY = 6;
+    float exitCoordinatesX = 20;
+    float exitCoordinatesY = 5;
 
 
     @Override
@@ -81,72 +81,33 @@ public class SocialForceModel extends Game {
 
         world.getBodies(allStorage);
 
-
-//        if(all.size > environment.size + people.size){
-//            Arrays.sort(all,myComparator); //https://stackoverflow.com/questions/12449766/java-sorting-sort-an-array-of-objects-by-property-object-not-allowed-to-use-co
-//            people.add(all.get(all.size - 1));
-//        }
-
-//        all.forEach(elem -> {
-//            if(elem.getType() == BodyDef.BodyType.DynamicBody){
-//                people.add(elem);
-//            }
-//        });
         float coefficient = 5f;
         if (peopleStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
-                boolean wasFirstPosCalculated = false;;
-                    float valuePseudoExitForceX = exitCoordinatesX - pedestrian.body.getPosition().x;
-                    float valuePseudoExitForceY = exitCoordinatesY - pedestrian.body.getPosition().y;
+                    float currPosX = pedestrian.body.getPosition().x;
+                    float currPosY = pedestrian.body.getPosition().y;
+
+                    float valuePseudoExitForceX = exitCoordinatesX - currPosX;
+                    float valuePseudoExitForceY = exitCoordinatesY - currPosY;
                     float coefficientUnitVec = (float) (1/Math.sqrt(valuePseudoExitForceY*valuePseudoExitForceY + valuePseudoExitForceX*valuePseudoExitForceX));
                     Vector2 pseudoExitForce = new Vector2(valuePseudoExitForceX,valuePseudoExitForceY).scl(coefficientUnitVec*coefficient);
                     pedestrian.body.setLinearVelocity(pseudoExitForce);
-                    wasFirstPosCalculated = true;
 
-                //boolean w zależności czy wszyscy dostali
+                    float angle = (float) Math.atan2(valuePseudoExitForceY,valuePseudoExitForceX) ;
+                    pedestrian.body.setTransform(currPosX, currPosY, angle);
 
-                        timeSeconds += Gdx.graphics.getDeltaTime();
-                        if(timeSeconds > period){
-                            timeSeconds-=period;
-                            timer += period;
-                            float x = pedestrian.body.getLinearVelocity().x;
-                            float y = pedestrian.body.getLinearVelocity().y;
+                    timeSeconds += Gdx.graphics.getDeltaTime();
+                    if(timeSeconds > period){
+                        timeSeconds-=period;
+                        timer += period;
+                        float x = pedestrian.body.getLinearVelocity().x;
+                        float y = pedestrian.body.getLinearVelocity().y;
 
-                            float wynik = (float) Math.sqrt(x*x + y*y);
-                            System.out.println("szybkość: " + wynik);
-                        }
-
-
+                        float wynik = (float) Math.sqrt(x*x + y*y);
+                        System.out.println("szybkość: " + wynik);
+                    }
             });
         }
-
-        //clock for world
-  /*      timeSeconds += Gdx.graphics.getDeltaTime();
-        if(timeSeconds > period){
-            timeSeconds-=period;
-            timer += period;
-            System.out.println(timer);
-
-            System.out.println("all " + allStorage.size);
-            System.out.println("environment " + environmentStorage.size);
-            System.out.println("people " + peopleStorage.size);
-
-//            if(peopleStorage.size >= 1){
-//                int min = 0;
-//                int max = peopleStorage.size - 1;
-//                Random rand = new Random();
-//                int nr = rand.nextInt((max - min) + 1) + min;
-//
-//                Human p = peopleStorage.get(nr);
-//                p.body.setTransform(p.body.getPosition(),p.body.getAngle() + 0.5f);
-//                System.out.println("zmieniam kąt");
-//            }
-
-//            for(int i = 0; i < all.size; i++){
-////                all.sort();
-//                System.out.println( i+1 + " " + all.get(i).getType() );
-//            }
-        }*/
     }
 
     @Override
