@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import core.Elements.Element;
 import core.Elements.Human;
 import core.Elements.Wall;
+import core.LinearEquations;
 
 public class SocialForceModel extends Game {
 
@@ -39,31 +40,40 @@ public class SocialForceModel extends Game {
         world = new World(new Vector2(0, 0), true);
         camera = new OrthographicCamera(50, 25);
         debugRenderer = new Box2DDebugRenderer();
-        Wall wall1 = new Wall();
-        Wall wall2 = new Wall();
-        Wall wall3 = new Wall();
-        Wall wall4 = new Wall();
-        Wall wall5 = new Wall();
+//        Wall wall1 = new Wall();
+//        Wall wall2 = new Wall();
+//        Wall wall3 = new Wall();
+//        Wall wall4 = new Wall();
+//        Wall wall5 = new Wall();
+        Wall wall6 = new Wall();
+
+        Wall wall7 = new Wall();//x= 0
+        Wall wall8 = new Wall();//y = 0
         //bottom wall
-        wall1.createWall(-20, -10f, 20, -10f, 0, world);
-        // top wall
-        wall2.createWall(-20, 10f, 20, 10f, 0, world);
-//        Element.createEdge(-10, 5f, 0, 5f, 0, world);
-//        // left wall
-         wall3.createWall(-20, -10, -20, 10, 0, world);
-//        // right wall
-         wall4.createWall(20, -10, 20, 10, 0, world);
-//        Element.createEdge(1, 1, 0, 0, 0, world);
-        wall5.createWall(-10, -3, 10, -3, 0, world);
+//        wall1.createWall(-20, -10f, 20, -10f, 0, world);
+//        // top wall
+//        wall2.createWall(-20, 10f, 20, 10f, 0, world);
+////        Element.createEdge(-10, 5f, 0, 5f, 0, world);
+////        // left wall
+//         wall3.createWall(-20, -10, -20, 10, 0, world);
+////        // right wall
+//         wall4.createWall(20, -10, 20, 10, 0, world);
+////        Element.createEdge(1, 1, 0, 0, 0, world);
+//        wall5.createWall(-10, -3, 10, -3, 0, world);
+        wall6.createWall(-20, -6, 20, 8, 0, world);
+//        wall6.createWall(0, -100, 0, 100, 0, world);
+//        wall6.createWall(-100, 0, 100, 0, 0, world);
 
         //wall.createWall(-4f, -2f, 6f, 1f, 0, world);
-        wallStorage.add(wall1);
-        wallStorage.add(wall2);
-        wallStorage.add(wall3);
-        wallStorage.add(wall4);
-        wallStorage.add(wall5);
-        allStorage.add(wall1.body);
-        allStorage.add(wall2.body);
+//        wallStorage.add(wall1);
+//        wallStorage.add(wall2);
+//        wallStorage.add(wall3);
+//        wallStorage.add(wall4);
+//        wallStorage.add(wall5);
+        wallStorage.add(wall6);
+
+//        allStorage.add(wall1.body);
+//        allStorage.add(wall2.body);
 
 
 
@@ -158,6 +168,9 @@ public class SocialForceModel extends Game {
                         float wallY1 = wallStorage.get(i).getY1();
                         float wallY2 = wallStorage.get(i).getY2();
 
+                        float a = (wallY2 - wallY1)/(wallX2 - wallX1);
+                        float bWall = wallY1 - a*wallX1;
+
                         if(wallY1 == wallY2){
                             szX = pedastrianX;
                             szY = wallY1;
@@ -165,13 +178,28 @@ public class SocialForceModel extends Game {
                             szX = wallX1;
                             szY = pedastrianY;
                         }else{
-//                            System.out.println("ddd");
-//                            System.out.println(wallY1);
-//                            System.out.println(wallY2);
+
+
+
+                            float bPerpendicular = (1/a) * pedastrianX + pedastrianY;
+
+                            float a11 = -a;
+                            float a12 = 1;
+                            float k1 = bWall;
+                            float a21 = (1/a);
+                            float a22 = 1;
+                            float k2 = bPerpendicular;
+
+                            float[] answer = LinearEquations.solve2x2LinearEquation(a11,a12,a21,a22,k1,k2);
+                            szX = answer[0];
+                            szY = answer[1];
+
+                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.2f,  0.2f,  1,  world);
                         }
 
                         float wallPedestianX = pedastrianX - szX;
                         float wallPedestianY = pedastrianY - szY;
+
                         Vector2 wallPedastrian = new Vector2(wallPedestianX, wallPedestianY);
                         float r = wallPedastrian.len(); //do wyliczenia 1/r^2
                         wallPedastrian = wallPedastrian.nor(); //kierunek i zwrot działania siły
@@ -186,10 +214,12 @@ public class SocialForceModel extends Game {
                         timer += period;
                         float x = pedestrian.body.getLinearVelocity().x;
                         float y = pedestrian.body.getLinearVelocity().y;
+                        //Element.createRectangle(BodyDef.BodyType.DynamicBody, pedastrianX,  pedastrianY,  0.1f,  0.1f,  1,  world);
 
                         float wynik = (float) Math.sqrt(x*x + y*y);
-                        System.out.println("wall: " + i);
-                        System.out.println("szybkość: " + wynik);
+                        //System.out.println("wall: " + i);
+                        //System.out.println("szybkość: " + wynik);
+                        System.out.println(pedestrian);
                         System.out.println("szX " + szX);
                         System.out.println("szY " + szY);
                     }
