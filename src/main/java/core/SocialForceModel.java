@@ -40,37 +40,39 @@ public class SocialForceModel extends Game {
         world = new World(new Vector2(0, 0), true);
         camera = new OrthographicCamera(50, 25);
         debugRenderer = new Box2DDebugRenderer();
-//        Wall wall1 = new Wall();
-//        Wall wall2 = new Wall();
-//        Wall wall3 = new Wall();
-//        Wall wall4 = new Wall();
-//        Wall wall5 = new Wall();
+        Wall wall1 = new Wall();
+        Wall wall2 = new Wall();
+        Wall wall3 = new Wall();
+        Wall wall4 = new Wall();
+
+        Wall wall5 = new Wall();
         Wall wall6 = new Wall();
 
-        Wall wall7 = new Wall();//x= 0
-        Wall wall8 = new Wall();//y = 0
-        //bottom wall
-//        wall1.createWall(-20, -10f, 20, -10f, 0, world);
-//        // top wall
-//        wall2.createWall(-20, 10f, 20, 10f, 0, world);
-////        Element.createEdge(-10, 5f, 0, 5f, 0, world);
-////        // left wall
-//         wall3.createWall(-20, -10, -20, 10, 0, world);
-////        // right wall
-//         wall4.createWall(20, -10, 20, 10, 0, world);
-////        Element.createEdge(1, 1, 0, 0, 0, world);
-//        wall5.createWall(-10, -3, 10, -3, 0, world);
-        wall6.createWall(-20, -6, 20, 8, 0, world);
-//        wall6.createWall(0, -100, 0, 100, 0, world);
-//        wall6.createWall(-100, 0, 100, 0, 0, world);
+        Wall wall7 = new Wall();
+        Wall wall8 = new Wall();
 
-        //wall.createWall(-4f, -2f, 6f, 1f, 0, world);
-//        wallStorage.add(wall1);
-//        wallStorage.add(wall2);
-//        wallStorage.add(wall3);
-//        wallStorage.add(wall4);
-//        wallStorage.add(wall5);
+
+        wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
+        wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
+        wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
+        wall4.createWall(20, -10, 20, 10, 0, world); // right wall
+
+        wall5.createWall(-10, -3, 10, -3, 0, world);
+        wall6.createWall(-20, -6, 20, 8, 0, world);
+
+        wall7.createWall(0, -100, 0, 100, 0, world); //x= 0
+        wall8.createWall(-100, 0, 100, 0, 0, world); //y = 0
+
+        wallStorage.add(wall1);
+        wallStorage.add(wall2);
+        wallStorage.add(wall3);
+        wallStorage.add(wall4);
+
+        wallStorage.add(wall5);
         wallStorage.add(wall6);
+
+        wallStorage.add(wall7);
+        wallStorage.add(wall8);
 
 //        allStorage.add(wall1.body);
 //        allStorage.add(wall2.body);
@@ -149,7 +151,7 @@ public class SocialForceModel extends Game {
 ////                        System.out.println("environmentStorage " + environmentStorage.size  + environmentStorage);
 //                    }
 
-        float coeff = 100;
+        float coeff = 10;
         if (peopleStorage.notEmpty() && wallStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
                 float pedastrianX = pedestrian.body.getPosition().x;
@@ -179,8 +181,6 @@ public class SocialForceModel extends Game {
                             szY = pedastrianY;
                         }else{
 
-
-
                             float bPerpendicular = (1/a) * pedastrianX + pedastrianY;
 
                             float a11 = -a;
@@ -193,6 +193,9 @@ public class SocialForceModel extends Game {
                             float[] answer = LinearEquations.solve2x2LinearEquation(a11,a12,a21,a22,k1,k2);
                             szX = answer[0];
                             szY = answer[1];
+                            if( answer == null ){
+                                System.out.println( "No unique solution exists" );
+                            }
 
                             Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.2f,  0.2f,  1,  world);
                         }
@@ -203,7 +206,7 @@ public class SocialForceModel extends Game {
                         Vector2 wallPedastrian = new Vector2(wallPedestianX, wallPedestianY);
                         float r = wallPedastrian.len(); //do wyliczenia 1/r^2
                         wallPedastrian = wallPedastrian.nor(); //kierunek i zwrot działania siły
-                        float inverselyCoeff = 1/(r*r);
+                        float inverselyCoeff = 1/(r*r);// r? r^2
                         Vector2 pseudoForceWall = wallPedastrian.scl(coeff*inverselyCoeff);
                         wallNetForce.add(pseudoForceWall);
 
@@ -219,6 +222,7 @@ public class SocialForceModel extends Game {
                         float wynik = (float) Math.sqrt(x*x + y*y);
                         //System.out.println("wall: " + i);
                         //System.out.println("szybkość: " + wynik);
+
                         System.out.println(pedestrian);
                         System.out.println("szX " + szX);
                         System.out.println("szY " + szY);
