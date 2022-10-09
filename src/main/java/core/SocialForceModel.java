@@ -40,21 +40,28 @@ public class SocialForceModel extends Game {
         camera = new OrthographicCamera(50, 25);
         debugRenderer = new Box2DDebugRenderer();
         Wall wall1 = new Wall();
-        //bottom wall
-        wall1.createWall(-20, 0f, 20, 0f, 0, world);
-        // top wall
         Wall wall2 = new Wall();
-        wall2.createWall(-20, 6f, 20, 6f, 0, world);
+        Wall wall3 = new Wall();
+        Wall wall4 = new Wall();
+        Wall wall5 = new Wall();
+        //bottom wall
+        wall1.createWall(-20, -10f, 20, -10f, 0, world);
+        // top wall
+        wall2.createWall(-20, 10f, 20, 10f, 0, world);
 //        Element.createEdge(-10, 5f, 0, 5f, 0, world);
 //        // left wall
-//        Element.createEdge(-20, -10, -20, 10, 0, world);
+         wall3.createWall(-20, -10, -20, 10, 0, world);
 //        // right wall
-//        Element.createEdge(20, -10, 20, 10, 0, world);
+         wall4.createWall(20, -10, 20, 10, 0, world);
 //        Element.createEdge(1, 1, 0, 0, 0, world);
+        wall5.createWall(-10, -3, 10, -3, 0, world);
 
         //wall.createWall(-4f, -2f, 6f, 1f, 0, world);
         wallStorage.add(wall1);
         wallStorage.add(wall2);
+        wallStorage.add(wall3);
+        wallStorage.add(wall4);
+        wallStorage.add(wall5);
         allStorage.add(wall1.body);
         allStorage.add(wall2.body);
 
@@ -132,7 +139,7 @@ public class SocialForceModel extends Game {
 ////                        System.out.println("environmentStorage " + environmentStorage.size  + environmentStorage);
 //                    }
 
-        float coeff = 10;
+        float coeff = 100;
         if (peopleStorage.notEmpty() && wallStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
                 float pedastrianX = pedestrian.body.getPosition().x;
@@ -154,11 +161,9 @@ public class SocialForceModel extends Game {
                         if(wallY1 == wallY2){
                             szX = pedastrianX;
                             szY = wallY1;
-                           // System.out.println("wallY1 == wallY2");
                         }else if(wallX1 == wallX2){
                             szX = wallX1;
                             szY = pedastrianY;
-                            //System.out.println("wallX1 == wallX2");
                         }else{
 //                            System.out.println("ddd");
 //                            System.out.println(wallY1);
@@ -190,6 +195,8 @@ public class SocialForceModel extends Game {
                     }
                 }
                 pedestrian.body.setLinearVelocity(wallNetForce);
+                float angle = (float) Math.atan2( wallNetForce.y,wallNetForce.x) ;
+                pedestrian.body.setTransform(pedastrianX, pedastrianY, angle);
             });
         }
     }
