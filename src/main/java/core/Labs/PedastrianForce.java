@@ -23,6 +23,7 @@ public class PedastrianForce extends Game {
     private float timeSeconds = 0f;
     private float period = 1f;
     private float timer = 0f;
+//    int pedIdCounter = 0;
     Array<Human> peopleStorage = new Array<Human>();
     Array<Wall> wallStorage = new Array<Wall>();
     Array<Body> allStorage = new Array<Body>();
@@ -57,6 +58,8 @@ public class PedastrianForce extends Game {
                 Human man = new Human();
                 man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, world);
                 peopleStorage.add(man);
+//                man.setId(pedIdCounter);
+//                pedIdCounter++;
                 allStorage.add(man.body);
                 //Human.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 10, world);
                 return true;
@@ -68,6 +71,48 @@ public class PedastrianForce extends Game {
     public void render() {
         Gdx.gl.glClearColor(.125f, .125f, .125f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        float coeffGPlus = 10f;
+        float coeffGMinus = -3f;
+        float personalborder = 3f;
+        peopleStorage.forEach(pedestrian -> {
+            float pedX = pedestrian.body.getPosition().x;
+            float pedY = pedestrian.body.getPosition().y;
+            Vector2 netGravForce = new Vector2(0,0);
+            for(int i = 0; i < peopleStorage.size; i++){
+                if(peopleStorage.get(i).getId() == i){ // ten warunek zawsze powinien być spełniony ale tak na wszelki wypadek
+                    if(pedestrian.getId() != peopleStorage.get(i).getId()){//nie ma sensu liczyć wektora dla samego siebie i tak da zero
+                        float storagePedX = peopleStorage.get(i).body.getPosition().x;
+                        float storagePedY = peopleStorage.get(i).body.getPosition().y;
+                        float valueVecX = storagePedX - pedX;
+                        float valueVecY = storagePedY - pedY;
+                        float gravityR = new Vector2(valueVecX,valueVecY).len();
+                        Vector2 gravityForce = new Vector2(0,0);
+                        if(gravityR > personalborder){
+                            gravityForce = new Vector2(valueVecX,valueVecY).nor().scl(coeffGPlus/(gravityR*gravityR));
+                        }else{
+                            gravityForce = new Vector2(valueVecX,valueVecY).nor().scl(coeffGMinus/(gravityR*gravityR));
+                        }
+
+                        //pedestrian.humanForces.put(peopleStorage.get(i).getId(), gravityForce);
+                        netGravForce.add(gravityForce);
+                    }
+                }
+
+            }
+            pedestrian.body.setLinearVelocity(netGravForce);
+            float angle = (float) Math.atan2( netGravForce.y,netGravForce.x) ;
+            pedestrian.body.setTransform(pedX, pedY, angle);
+
+            timeSeconds += Gdx.graphics.getDeltaTime();
+            if(timeSeconds > period){
+                timeSeconds -= period;
+                timer += period;
+                System.out.println("pedestrian: ID  " +  pedestrian.getId() + " ped.pos:  " + pedestrian.body.getPosition());
+//                if(pedestrian.humanForces != null){
+                   // System.out.println(pedestrian.humanForces);
+//                }
+            }
+        });
 
         debugRenderer.render(world, camera.combined);
         world.step(1 / 60f, 6, 2);

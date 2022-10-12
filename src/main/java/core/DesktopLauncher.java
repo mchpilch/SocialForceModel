@@ -2,6 +2,7 @@ package core;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import core.Labs.PedastrianForce;
 import core.Labs.WallRepultion;
 import core.Models.SocialForceModel;
 
@@ -14,6 +15,6 @@ public class DesktopLauncher {
 
         config.setWindowedMode(1280,720);
         //config.setWindowedMode(1920,1080);
-        new Lwjgl3Application(new SocialForceModel(), config);
+        new Lwjgl3Application(new PedastrianForce(), config);
     }
 }

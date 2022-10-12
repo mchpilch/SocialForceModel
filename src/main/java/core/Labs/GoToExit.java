@@ -79,8 +79,6 @@ public class GoToExit extends Game {
         float coefficient = 3f;
         if (peopleStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
-                    Vector2 netForce = new Vector2(0f,0f);
-
                     float currPosX = pedestrian.body.getPosition().x;
                     float currPosY = pedestrian.body.getPosition().y;
 
@@ -95,7 +93,7 @@ public class GoToExit extends Game {
 
                     timeSeconds += Gdx.graphics.getDeltaTime();
                     if(timeSeconds > period){
-                        timeSeconds-=period;
+                        timeSeconds -= period;
                         timer += period;
                         float x = pedestrian.body.getLinearVelocity().x;
                         float y = pedestrian.body.getLinearVelocity().y;
