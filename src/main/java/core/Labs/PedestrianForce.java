@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import core.Elements.Human;
 import core.Elements.Wall;
 
-public class PedastrianForce extends Game {
+public class PedestrianForce extends Game {
 
     World world;
     OrthographicCamera camera;
