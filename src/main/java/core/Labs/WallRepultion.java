@@ -1,4 +1,4 @@
-package core;
+package core.Labs;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -7,14 +7,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import core.Elements.Element;
 import core.Elements.Human;
 import core.Elements.Wall;
-import core.LinearEquations;
+import core.Mathematics.LinearEquations;
 
-public class SocialForceModel extends Game {
+public class WallRepultion extends Game {
 
     World world;
     OrthographicCamera camera;
@@ -23,7 +26,6 @@ public class SocialForceModel extends Game {
     private float timeSeconds = 0f;
     private float period = 1f;
     private float timer = 0f;
-    boolean envObjAdded = false;
 
 
     Array<Human> peopleStorage = new Array<Human>();
@@ -74,17 +76,6 @@ public class SocialForceModel extends Game {
         wallStorage.add(wall7);
         wallStorage.add(wall8);
 
-//        allStorage.add(wall1.body);
-//        allStorage.add(wall2.body);
-
-
-
-
-       // Element.createRectangle(BodyDef.BodyType.StaticBody,exitCoordinatesX,exitCoordinatesY,1,1,0, world);
-
-//        System.out.println("MESSAGE");
-//        System.out.println( environmentStorage.size);
-
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
@@ -95,7 +86,6 @@ public class SocialForceModel extends Game {
                 man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, world);
                 peopleStorage.add(man);
                 allStorage.add(man.body);
-                //Human.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 10, world);
                 return true;
             }
         });
@@ -109,48 +99,7 @@ public class SocialForceModel extends Game {
         debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
         world.step(1 / 60f, 6, 2);
 
-       // world.getBodies(allStorage);
-
-//        float coefficient = 3f;
-//        if (peopleStorage.notEmpty()) {
-//            peopleStorage.forEach(pedestrian -> {
-//                    Vector2 netForce = new Vector2(0f,0f);
-//
-//                    float currPosX = pedestrian.body.getPosition().x;
-//                    float currPosY = pedestrian.body.getPosition().y;
-//
-//                    float valuePseudoExitForceX = exitCoordinatesX - currPosX;
-//                    float valuePseudoExitForceY = exitCoordinatesY - currPosY;
-//
-//                    Vector2 pseudoExitForce = new Vector2(valuePseudoExitForceX,valuePseudoExitForceY).nor().scl(coefficient);
-//                    pedestrian.body.setLinearVelocity(pseudoExitForce);
-//
-//                    float angle = (float) Math.atan2(valuePseudoExitForceY,valuePseudoExitForceX) ;
-//                    pedestrian.body.setTransform(currPosX, currPosY, angle);
-//
-//                    timeSeconds += Gdx.graphics.getDeltaTime();
-//                    if(timeSeconds > period){
-//                        timeSeconds-=period;
-//                        timer += period;
-//                        float x = pedestrian.body.getLinearVelocity().x;
-//                        float y = pedestrian.body.getLinearVelocity().y;
-//
-//                        float wynik = (float) Math.sqrt(x*x + y*y);
-//                        System.out.println("szybkość: " + wynik);
-//                    }
-//            });
-//        }
-
-
-//        timeSeconds += Gdx.graphics.getDeltaTime();
-//                    if(timeSeconds > period){
-//                        timeSeconds-=period;
-//                        timer += period;
-////                        System.out.println("allStorage " + allStorage.size + allStorage);
-////                        System.out.println("peopleStorage " + peopleStorage.size  + peopleStorage);
-////                        System.out.println("environmentStorage " + environmentStorage.size  + environmentStorage);
-//                    }
-
+// WALLS
         float coeff = 10;
         if (peopleStorage.notEmpty() && wallStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
@@ -176,9 +125,11 @@ public class SocialForceModel extends Game {
                         if(wallY1 == wallY2){
                             szX = pedastrianX;
                             szY = wallY1;
+                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
                         }else if(wallX1 == wallX2){
                             szX = wallX1;
                             szY = pedastrianY;
+                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
                         }else{
 
                             float bPerpendicular = (1/a) * pedastrianX + pedastrianY;
@@ -197,7 +148,7 @@ public class SocialForceModel extends Game {
                                 System.out.println( "No unique solution exists" );
                             }
 
-                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.2f,  0.2f,  1,  world);
+                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
                         }
 
                         float wallPedestianX = pedastrianX - szX;
