@@ -28,8 +28,8 @@ public class GoToExit extends Game {
     Array<Body> allStorage = new Array<Body>();
     Array<Body> environmentStorage = new Array<Body>();
 
-    float exitCoordinatesX = 6;
-    float exitCoordinatesY = -6;
+    float exitCoordinatesX = 10;
+    float exitCoordinatesY = 10;
 
     @Override
     public void create() {
@@ -76,20 +76,19 @@ public class GoToExit extends Game {
         world.step(1 / 60f, 6, 2);
 
 // GO TO EXIT
-        float coefficient = 3f;
+        float exitCoefficient = 3f;
         if (peopleStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
                     float currPosX = pedestrian.body.getPosition().x;
                     float currPosY = pedestrian.body.getPosition().y;
 
-                    float valuePseudoExitForceX = exitCoordinatesX - currPosX;
-                    float valuePseudoExitForceY = exitCoordinatesY - currPosY;
-
-                    Vector2 pseudoExitForce = new Vector2(valuePseudoExitForceX,valuePseudoExitForceY).nor().scl(coefficient);
+                    Vector2 pseudoExitForce = calculateExitForceDirectionAndPhrase(exitCoordinatesX,exitCoordinatesY,currPosX,currPosY,exitCoefficient);
                     pedestrian.body.setLinearVelocity(pseudoExitForce);
 
-                    float angle = (float) Math.atan2(valuePseudoExitForceY,valuePseudoExitForceX) ;
+                    float angle = calculatePedastrianAngle(pseudoExitForce);
                     pedestrian.body.setTransform(currPosX, currPosY, angle);
+
+
 
                     timeSeconds += Gdx.graphics.getDeltaTime();
                     if(timeSeconds > period){
@@ -119,6 +118,19 @@ public class GoToExit extends Game {
     public void dispose () {
         world.dispose();
         debugRenderer.dispose();
+    }
+
+    public Vector2 calculateExitForceDirectionAndPhrase(float exitCoordinatesX, float exitCoordinatesY, float currPosX, float currPosY, float coefficient){
+
+        float valuePseudoExitForceX = exitCoordinatesX - currPosX;
+        float valuePseudoExitForceY = exitCoordinatesY - currPosY;
+
+        Vector2 pseudoExitForce = new Vector2(valuePseudoExitForceX,valuePseudoExitForceY).nor().scl(coefficient);
+        return pseudoExitForce;
+    }
+    public float calculatePedastrianAngle(Vector2 netForce){
+        float angle = (float) Math.atan2( netForce.y,netForce.x) ;
+        return angle;
     }
 }
 

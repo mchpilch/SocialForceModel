@@ -126,7 +126,7 @@ public class WallRepulsion extends Game {
                     }
                 }
                 pedestrian.body.setLinearVelocity(wallNetForce);
-                float angle = (float) Math.atan2( wallNetForce.y,wallNetForce.x) ;
+                float angle = calculatePedastrianAngle(wallNetForce);
                 pedestrian.body.setTransform(pedastrianX, pedastrianY, angle);
             });
         }
@@ -185,5 +185,10 @@ public class WallRepulsion extends Game {
         float wallRepDenomCoeff = (float) (1/(Math.pow(wallR,powerR)));
         Vector2 pseudoForceWall = vector.scl(wallRepNomCoeff * wallRepDenomCoeff); //wallRepulsionNominatorCoefficient depending on R
         return pseudoForceWall;
+    }
+
+    public float calculatePedastrianAngle(Vector2 netForce){
+        float angle = (float) Math.atan2( netForce.y,netForce.x) ;
+        return angle;
     }
 }
