@@ -8,16 +8,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import core.Elements.Element;
 import core.Elements.Human;
 import core.Elements.Wall;
 import core.Mathematics.LinearEquations;
 
-public class WallRepultion extends Game {
+public class WallRepulsion extends Game {
 
     World world;
     OrthographicCamera camera;
@@ -30,12 +28,6 @@ public class WallRepultion extends Game {
 
     Array<Human> peopleStorage = new Array<Human>();
     Array<Wall> wallStorage = new Array<Wall>();
-    Array<Body> allStorage = new Array<Body>();
-    Array<Body> environmentStorage = new Array<Body>();
-
-    float exitCoordinatesX = 20;
-    float exitCoordinatesY = 5;
-
 
     @Override
     public void create() {
@@ -50,8 +42,8 @@ public class WallRepultion extends Game {
         Wall wall5 = new Wall();
         Wall wall6 = new Wall();
 
-        Wall wall7 = new Wall();
-        Wall wall8 = new Wall();
+//        Wall wall7 = new Wall();
+//        Wall wall8 = new Wall();
 
 
         wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
@@ -62,8 +54,8 @@ public class WallRepultion extends Game {
         wall5.createWall(-10, -3, 10, -3, 0, world);
         wall6.createWall(-20, -6, 20, 8, 0, world);
 
-        wall7.createWall(0, -100, 0, 100, 0, world); //x= 0
-        wall8.createWall(-100, 0, 100, 0, 0, world); //y = 0
+//        wall7.createWall(0, -100, 0, 100, 0, world); //x= 0
+//        wall8.createWall(-100, 0, 100, 0, 0, world); //y = 0
 
         wallStorage.add(wall1);
         wallStorage.add(wall2);
@@ -73,8 +65,8 @@ public class WallRepultion extends Game {
         wallStorage.add(wall5);
         wallStorage.add(wall6);
 
-        wallStorage.add(wall7);
-        wallStorage.add(wall8);
+//        wallStorage.add(wall7);
+//        wallStorage.add(wall8);
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -85,7 +77,6 @@ public class WallRepultion extends Game {
                 Human man = new Human();
                 man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, world);
                 peopleStorage.add(man);
-                allStorage.add(man.body);
                 return true;
             }
         });
@@ -100,7 +91,7 @@ public class WallRepultion extends Game {
         world.step(1 / 60f, 6, 2);
 
 // WALLS
-        float coeff = 10;
+        float wallRepNomCoeff = 10; //0-200 deafault:10 wallRepulsionNominatorCoefficient
         if (peopleStorage.notEmpty() && wallStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
                 float pedastrianX = pedestrian.body.getPosition().x;
@@ -110,55 +101,13 @@ public class WallRepultion extends Game {
 
                 for(int i = 0; i < wallStorage.size; i++){
 
-
-                        float szX = 0f;
-                        float szY = 0f;
-
                         float wallX1 = wallStorage.get(i).getX1();
                         float wallX2 = wallStorage.get(i).getX2();
                         float wallY1 = wallStorage.get(i).getY1();
                         float wallY2 = wallStorage.get(i).getY2();
 
-                        float a = (wallY2 - wallY1)/(wallX2 - wallX1);
-                        float bWall = wallY1 - a*wallX1;
-
-                        if(wallY1 == wallY2){
-                            szX = pedastrianX;
-                            szY = wallY1;
-                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
-                        }else if(wallX1 == wallX2){
-                            szX = wallX1;
-                            szY = pedastrianY;
-                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
-                        }else{
-
-                            float bPerpendicular = (1/a) * pedastrianX + pedastrianY;
-
-                            float a11 = -a;
-                            float a12 = 1;
-                            float k1 = bWall;
-                            float a21 = (1/a);
-                            float a22 = 1;
-                            float k2 = bPerpendicular;
-
-                            float[] answer = LinearEquations.solve2x2LinearEquation(a11,a12,a21,a22,k1,k2);
-                            szX = answer[0];
-                            szY = answer[1];
-                            if( answer == null ){
-                                System.out.println( "No unique solution exists" );
-                            }
-
-                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
-                        }
-
-                        float wallPedestianX = pedastrianX - szX;
-                        float wallPedestianY = pedastrianY - szY;
-
-                        Vector2 wallPedastrian = new Vector2(wallPedestianX, wallPedestianY);
-                        float r = wallPedastrian.len(); //do wyliczenia 1/r^2
-                        wallPedastrian = wallPedastrian.nor(); //kierunek i zwrot działania siły
-                        float inverselyCoeff = 1/(r*r);// r? r^2
-                        Vector2 pseudoForceWall = wallPedastrian.scl(coeff*inverselyCoeff);
+                        Vector2 wallPedestrian = calculateWallRepulsionDirectionAndPhrase(wallX1,wallX2,wallY1,wallY2,pedastrianX,pedastrianY);
+                        Vector2 pseudoForceWall = calculateWallRepulsionForce(wallPedestrian, wallRepNomCoeff,2);
                         wallNetForce.add(pseudoForceWall);
 
 
@@ -170,13 +119,10 @@ public class WallRepultion extends Game {
                         float y = pedestrian.body.getLinearVelocity().y;
                         //Element.createRectangle(BodyDef.BodyType.DynamicBody, pedastrianX,  pedastrianY,  0.1f,  0.1f,  1,  world);
 
-                        float wynik = (float) Math.sqrt(x*x + y*y);
-                        //System.out.println("wall: " + i);
-                        //System.out.println("szybkość: " + wynik);
-
-                        System.out.println(pedestrian);
-                        System.out.println("szX " + szX);
-                        System.out.println("szY " + szY);
+//                        float wynik = (float) Math.sqrt(x*x + y*y);
+//                        System.out.println("wall: " + i);
+//                        System.out.println("szybkość: " + wynik);
+//                        System.out.println(pedestrian);
                     }
                 }
                 pedestrian.body.setLinearVelocity(wallNetForce);
@@ -192,5 +138,52 @@ public class WallRepultion extends Game {
     public void dispose () {
         world.dispose();
         debugRenderer.dispose();
+    }
+
+    public Vector2 calculateWallRepulsionDirectionAndPhrase(float wallX1, float wallX2, float wallY1, float wallY2, float pedastrianX, float pedastrianY){
+
+        float intersectX = 0f;
+        float intersectY = 0f;
+
+        float a = (wallY2 - wallY1)/(wallX2 - wallX1);//
+        float bWall = wallY1 - a*wallX1;//
+
+        if(wallY1 == wallY2){
+            intersectX = pedastrianX;
+            intersectY = wallY1;
+        }else if(wallX1 == wallX2){
+            intersectX = wallX1;
+            intersectY = pedastrianY;
+        }else{
+
+            float bPerpendicular = (1/a) * pedastrianX + pedastrianY;
+
+            float a11 = -a;
+            float a12 = 1;
+            float k1 = bWall;
+            float a21 = (1/a);
+            float a22 = 1;
+            float k2 = bPerpendicular;
+
+            float[] answer = LinearEquations.solve2x2LinearEquation(a11,a12,a21,a22,k1,k2);
+            intersectX = answer[0];
+            intersectY = answer[1];
+            if( answer == null ){
+                System.out.println( "No unique solution exists" );
+            }
+        }
+
+        float wallPedestianX = pedastrianX - intersectX;
+        float wallPedestianY = pedastrianY - intersectY;
+        Vector2 wallPedastrian = new Vector2(wallPedestianX, wallPedestianY);
+        return wallPedastrian;
+    }
+    public Vector2 calculateWallRepulsionForce(Vector2 vector, float wallRepNomCoeff, int powerR){
+
+        float wallR = vector.len(); //do wyliczenia 1/r^2
+        vector = vector.nor(); //kierunek i zwrot działania siły
+        float wallRepDenomCoeff = (float) (1/(Math.pow(wallR,powerR)));
+        Vector2 pseudoForceWall = vector.scl(wallRepNomCoeff * wallRepDenomCoeff); //wallRepulsionNominatorCoefficient depending on R
+        return pseudoForceWall;
     }
 }
