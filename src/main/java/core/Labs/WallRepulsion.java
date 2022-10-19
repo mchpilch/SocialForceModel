@@ -92,26 +92,16 @@ public class WallRepulsion extends Game {
 
 // WALLS
         float wallRepNomCoeff = 10; //0-200 deafault:10 wallRepulsionNominatorCoefficient
+
         if (peopleStorage.notEmpty() && wallStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
                 float pedestrianX = pedestrian.body.getPosition().x;
                 float pedestrianY = pedestrian.body.getPosition().y;
 
-                Vector2 wallNetForce = new Vector2();
+                //Vector2 netWallForce = new Vector2();
+                Vector2 netWallForce = calculateNetWallForce(pedestrian,wallRepNomCoeff);
 
-                for(int i = 0; i < wallStorage.size; i++){
-
-                        float wallX1 = wallStorage.get(i).getX1();
-                        float wallX2 = wallStorage.get(i).getX2();
-                        float wallY1 = wallStorage.get(i).getY1();
-                        float wallY2 = wallStorage.get(i).getY2();
-
-                        Vector2 wallPedestrian = calculateWallRepulsionDirectionAndPhrase(wallX1,wallX2,wallY1,wallY2,pedestrianX,pedestrianY);
-                        Vector2 pseudoForceWall = calculateWallRepulsionForce(wallPedestrian, wallRepNomCoeff,2);
-                        wallNetForce.add(pseudoForceWall);
-
-
-                    timeSeconds += Gdx.graphics.getDeltaTime();
+                  timeSeconds += Gdx.graphics.getDeltaTime();
                     if(timeSeconds > period){
                         timeSeconds-=period;
                         timer += period;
@@ -124,12 +114,14 @@ public class WallRepulsion extends Game {
 //                        System.out.println("szybkość: " + wynik);
 //                        System.out.println(pedestrian);
                     }
-                }
-                pedestrian.body.setLinearVelocity(wallNetForce);
-                float angle = calculatePedestrianAngle(wallNetForce);
+
+                pedestrian.body.setLinearVelocity(netWallForce);
+                float angle = calculatePedestrianAngle(netWallForce);
                 pedestrian.body.setTransform(pedestrianX, pedestrianY, angle);
             });
         }
+
+
     }
 
 
@@ -191,4 +183,25 @@ public class WallRepulsion extends Game {
         float angle = (float) Math.atan2( netForce.y,netForce.x) ;
         return angle;
     }
+
+    public Vector2 calculateNetWallForce(Human pedestrian, float wallRepNomCoeff){
+        Vector2 netWallForce = new Vector2();
+
+        float pedestrianX = pedestrian.body.getPosition().x;
+        float pedestrianY = pedestrian.body.getPosition().y;
+
+        for(int i = 0; i < wallStorage.size; i++){
+
+            float wallX1 = wallStorage.get(i).getX1();
+            float wallX2 = wallStorage.get(i).getX2();
+            float wallY1 = wallStorage.get(i).getY1();
+            float wallY2 = wallStorage.get(i).getY2();
+
+            Vector2 wallPedestrian = calculateWallRepulsionDirectionAndPhrase(wallX1,wallX2,wallY1,wallY2,pedestrianX,pedestrianY);
+            Vector2 pseudoForceWall = calculateWallRepulsionForce(wallPedestrian, wallRepNomCoeff,2);
+            netWallForce.add(pseudoForceWall);
+        }
+        return  netWallForce;
+    }
 }
+

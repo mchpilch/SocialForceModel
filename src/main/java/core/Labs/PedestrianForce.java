@@ -83,6 +83,9 @@ public class PedestrianForce extends Game {
             float angle = calculatePedestrianAngle(netGravForce) ;
             pedestrian.body.setTransform(pedX, pedY, angle);
 
+
+
+
             timeSeconds += Gdx.graphics.getDeltaTime();
             if(timeSeconds > period){
                 timeSeconds -= period;
