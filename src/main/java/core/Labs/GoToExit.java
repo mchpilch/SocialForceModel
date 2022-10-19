@@ -85,7 +85,7 @@ public class GoToExit extends Game {
                     Vector2 pseudoExitForce = calculateExitForceDirectionAndPhrase(exitCoordinatesX,exitCoordinatesY,currPosX,currPosY,exitCoefficient);
                     pedestrian.body.setLinearVelocity(pseudoExitForce);
 
-                    float angle = calculatePedastrianAngle(pseudoExitForce);
+                    float angle = calculatePedestrianAngle(pseudoExitForce);
                     pedestrian.body.setTransform(currPosX, currPosY, angle);
 
 
@@ -128,7 +128,7 @@ public class GoToExit extends Game {
         Vector2 pseudoExitForce = new Vector2(valuePseudoExitForceX,valuePseudoExitForceY).nor().scl(coefficient);
         return pseudoExitForce;
     }
-    public float calculatePedastrianAngle(Vector2 netForce){
+    public float calculatePedestrianAngle(Vector2 netForce){
         float angle = (float) Math.atan2( netForce.y,netForce.x) ;
         return angle;
     }

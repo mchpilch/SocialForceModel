@@ -72,35 +72,15 @@ public class PedestrianForce extends Game {
         Gdx.gl.glClearColor(.125f, .125f, .125f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         float coeffGPlus = 10f;
-        float coeffGMinus = -3f;
-        float personalborder = 3f;
+        float coeffGMinus = -4.5f;
+        float personalborder = 4.5f;
         peopleStorage.forEach(pedestrian -> {
             float pedX = pedestrian.body.getPosition().x;
             float pedY = pedestrian.body.getPosition().y;
-            Vector2 netGravForce = new Vector2(0,0);
-            for(int i = 0; i < peopleStorage.size; i++){
-                if(peopleStorage.get(i).getId() == i){ // ten warunek zawsze powinien być spełniony ale tak na wszelki wypadek
-                    if(pedestrian.getId() != peopleStorage.get(i).getId()){//nie ma sensu liczyć wektora dla samego siebie i tak da zero
-                        float storagePedX = peopleStorage.get(i).body.getPosition().x;
-                        float storagePedY = peopleStorage.get(i).body.getPosition().y;
-                        float valueVecX = storagePedX - pedX;
-                        float valueVecY = storagePedY - pedY;
-                        float gravityR = new Vector2(valueVecX,valueVecY).len();
-                        Vector2 gravityForce = new Vector2(0,0);
-                        if(gravityR > personalborder){
-                            gravityForce = new Vector2(valueVecX,valueVecY).nor().scl(coeffGPlus/(gravityR*gravityR));
-                        }else{
-                            gravityForce = new Vector2(valueVecX,valueVecY).nor().scl(coeffGMinus/(gravityR*gravityR));
-                        }
-
-                        //pedestrian.humanForces.put(peopleStorage.get(i).getId(), gravityForce);
-                        netGravForce.add(gravityForce);
-                    }
-                }
-
-            }
+            
+            Vector2 netGravForce = calculateNetGravityForce(pedestrian,personalborder,coeffGPlus,coeffGMinus);
             pedestrian.body.setLinearVelocity(netGravForce);
-            float angle = (float) Math.atan2( netGravForce.y,netGravForce.x) ;
+            float angle = calculatePedestrianAngle(netGravForce) ;
             pedestrian.body.setTransform(pedX, pedY, angle);
 
             timeSeconds += Gdx.graphics.getDeltaTime();
@@ -127,4 +107,42 @@ public class PedestrianForce extends Game {
         world.dispose();
         debugRenderer.dispose();
     }
+
+    public float calculatePedestrianAngle(Vector2 netForce){
+        float angle = (float) Math.atan2( netForce.y,netForce.x) ;
+        return angle;
+    }
+
+    public Vector2 calculateNetGravityForce(Human pedestrian, float personalborder, float coeffGPlus, float coeffGMinus){
+        Vector2 netGravForce = new Vector2(0f,0f);
+
+        float pedX = pedestrian.body.getPosition().x;
+        float pedY = pedestrian.body.getPosition().y;
+
+        for(int i = 0; i < peopleStorage.size; i++){
+            if(peopleStorage.get(i).getId() == i){ // ten warunek zawsze powinien być spełniony ale tak na wszelki wypadek
+                if(pedestrian.getId() != peopleStorage.get(i).getId()){//nie ma sensu liczyć wektora dla samego siebie i tak da zero
+                    Vector2 gravityForce = new Vector2(0,0);
+
+
+                    float storagePedX = peopleStorage.get(i).body.getPosition().x;
+                    float storagePedY = peopleStorage.get(i).body.getPosition().y;
+                    float valueVecX = storagePedX - pedX;
+                    float valueVecY = storagePedY - pedY;
+                    float gravityR = new Vector2(valueVecX,valueVecY).len();
+
+                    if(gravityR > personalborder){
+                        gravityForce = new Vector2(valueVecX,valueVecY).nor().scl(coeffGPlus/(gravityR*gravityR));
+                    }else{
+                        gravityForce = new Vector2(valueVecX,valueVecY).nor().scl(coeffGMinus/(gravityR*gravityR));
+                    }
+
+                    //pedestrian.humanForces.put(peopleStorage.get(i).getId(), gravityForce);
+                    netGravForce.add(gravityForce);
+                }
+            }
+        }
+        return netGravForce;
+    }
 }
+

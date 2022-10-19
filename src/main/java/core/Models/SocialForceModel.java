@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import core.Elements.Human;
 import core.Elements.Wall;
+import core.Mathematics.LinearEquations;
 
 public class SocialForceModel extends Game {
 
@@ -90,7 +91,6 @@ public class SocialForceModel extends Game {
                 man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, world);
                 peopleStorage.add(man);
                 allStorage.add(man.body);
-                //Human.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 10, world);
                 return true;
             }
         });
@@ -104,111 +104,67 @@ public class SocialForceModel extends Game {
         debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
         world.step(1 / 60f, 6, 2);
 
-/* GO TO EXIT
-        float coefficient = 3f;
-        if (peopleStorage.notEmpty()) {
-            peopleStorage.forEach(pedestrian -> {
-                    Vector2 netForce = new Vector2(0f,0f);
-
-                    float currPosX = pedestrian.body.getPosition().x;
-                    float currPosY = pedestrian.body.getPosition().y;
-
-                    float valuePseudoExitForceX = exitCoordinatesX - currPosX;
-                    float valuePseudoExitForceY = exitCoordinatesY - currPosY;
-
-                    Vector2 pseudoExitForce = new Vector2(valuePseudoExitForceX,valuePseudoExitForceY).nor().scl(coefficient);
-                    pedestrian.body.setLinearVelocity(pseudoExitForce);
-
-                    float angle = (float) Math.atan2(valuePseudoExitForceY,valuePseudoExitForceX) ;
-                    pedestrian.body.setTransform(currPosX, currPosY, angle);
-
-                    timeSeconds += Gdx.graphics.getDeltaTime();
-                    if(timeSeconds > period){
-                        timeSeconds-=period;
-                        timer += period;
-                        float x = pedestrian.body.getLinearVelocity().x;
-                        float y = pedestrian.body.getLinearVelocity().y;
-
-                        float wynik = (float) Math.sqrt(x*x + y*y);
-                        System.out.println("szybkość: " + wynik);
-                    }
-            });
-        }
-
-        //        timeSeconds += Gdx.graphics.getDeltaTime();
-//                    if(timeSeconds > period){
-//                        timeSeconds-=period;
-//                        timer += period;
-////                        System.out.println("allStorage " + allStorage.size + allStorage);
-////                        System.out.println("peopleStorage " + peopleStorage.size  + peopleStorage);
-////                        System.out.println("environmentStorage " + environmentStorage.size  + environmentStorage);
-//                    }
-*/
-
-
-
-
-/* WALLS
-        float coeff = 10;
+        // WALLS
+        float wallRepNomCoeff = 10; //0-200 deafault:10 wallRepulsionNominatorCoefficient
         if (peopleStorage.notEmpty() && wallStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
-                float pedastrianX = pedestrian.body.getPosition().x;
-                float pedastrianY = pedestrian.body.getPosition().y;
+                float pedestrianX = pedestrian.body.getPosition().x;
+                float pedestrianY = pedestrian.body.getPosition().y;
 
                 Vector2 wallNetForce = new Vector2();
 
                 for(int i = 0; i < wallStorage.size; i++){
 
 
-                        float szX = 0f;
-                        float szY = 0f;
+                    float szX = 0f;
+                    float szY = 0f;
 
-                        float wallX1 = wallStorage.get(i).getX1();
-                        float wallX2 = wallStorage.get(i).getX2();
-                        float wallY1 = wallStorage.get(i).getY1();
-                        float wallY2 = wallStorage.get(i).getY2();
+                    float wallX1 = wallStorage.get(i).getX1();
+                    float wallX2 = wallStorage.get(i).getX2();
+                    float wallY1 = wallStorage.get(i).getY1();
+                    float wallY2 = wallStorage.get(i).getY2();
 
-                        float a = (wallY2 - wallY1)/(wallX2 - wallX1);
-                        float bWall = wallY1 - a*wallX1;
+                    float a = (wallY2 - wallY1)/(wallX2 - wallX1);
+                    float bWall = wallY1 - a*wallX1;
 
-                        if(wallY1 == wallY2){
-                            szX = pedastrianX;
-                            szY = wallY1;
-                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
-                        }else if(wallX1 == wallX2){
-                            szX = wallX1;
-                            szY = pedastrianY;
-                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
-                        }else{
+                    if(wallY1 == wallY2){
+                        szX = pedestrianX;
+                        szY = wallY1;
+                        //Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
+                    }else if(wallX1 == wallX2){
+                        szX = wallX1;
+                        szY = pedestrianY;
+                        //Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
+                    }else{
 
-                            float bPerpendicular = (1/a) * pedastrianX + pedastrianY;
+                        float bPerpendicular = (1/a) * pedestrianX + pedestrianY;
 
-                            float a11 = -a;
-                            float a12 = 1;
-                            float k1 = bWall;
-                            float a21 = (1/a);
-                            float a22 = 1;
-                            float k2 = bPerpendicular;
+                        float a11 = -a;
+                        float a12 = 1;
+                        float k1 = bWall;
+                        float a21 = (1/a);
+                        float a22 = 1;
+                        float k2 = bPerpendicular;
 
-                            float[] answer = LinearEquations.solve2x2LinearEquation(a11,a12,a21,a22,k1,k2);
-                            szX = answer[0];
-                            szY = answer[1];
-                            if( answer == null ){
-                                System.out.println( "No unique solution exists" );
-                            }
-
-                            Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
+                        float[] answer = LinearEquations.solve2x2LinearEquation(a11,a12,a21,a22,k1,k2);
+                        szX = answer[0];
+                        szY = answer[1];
+                        if( answer == null ){
+                            System.out.println( "No unique solution exists" );
                         }
 
-                        float wallPedestianX = pedastrianX - szX;
-                        float wallPedestianY = pedastrianY - szY;
+                        //Element.createRectangle(BodyDef.BodyType.StaticBody, szX,  szY,  0.1f,  0.1f,  1,  world);
+                    }
 
-                        Vector2 wallPedastrian = new Vector2(wallPedestianX, wallPedestianY);
-                        float r = wallPedastrian.len(); //do wyliczenia 1/r^2
-                        wallPedastrian = wallPedastrian.nor(); //kierunek i zwrot działania siły
-                        float inverselyCoeff = 1/(r*r);// r? r^2
-                        Vector2 pseudoForceWall = wallPedastrian.scl(coeff*inverselyCoeff);
-                        wallNetForce.add(pseudoForceWall);
+                    float wallPedestianX = pedestrianX - szX;
+                    float wallPedestianY = pedestrianY - szY;
+
+                    Vector2 wallPedestrian = new Vector2(wallPedestianX, wallPedestianY);
+                    float wallR = wallPedestrian.len(); //do wyliczenia 1/r^2
+                    wallPedestrian = wallPedestrian.nor(); //kierunek i zwrot działania siły
+                    float wallRepDenomCoeff = 1/(wallR*wallR);// r? r^2
+                    Vector2 pseudoForceWall = wallPedestrian.scl(wallRepNomCoeff * wallRepDenomCoeff); //wallRepulsionNominatorCoefficient depending on R
+                    wallNetForce.add(pseudoForceWall);
 
 
                     timeSeconds += Gdx.graphics.getDeltaTime();
@@ -217,7 +173,7 @@ public class SocialForceModel extends Game {
                         timer += period;
                         float x = pedestrian.body.getLinearVelocity().x;
                         float y = pedestrian.body.getLinearVelocity().y;
-                        //Element.createRectangle(BodyDef.BodyType.DynamicBody, pedastrianX,  pedastrianY,  0.1f,  0.1f,  1,  world);
+                        //Element.createRectangle(BodyDef.BodyType.DynamicBody, pedestrianX,  pedestrianY,  0.1f,  0.1f,  1,  world);
 
                         float wynik = (float) Math.sqrt(x*x + y*y);
                         //System.out.println("wall: " + i);
@@ -230,11 +186,10 @@ public class SocialForceModel extends Game {
                 }
                 pedestrian.body.setLinearVelocity(wallNetForce);
                 float angle = (float) Math.atan2( wallNetForce.y,wallNetForce.x) ;
-                pedestrian.body.setTransform(pedastrianX, pedastrianY, angle);
+                pedestrian.body.setTransform(pedestrianX, pedestrianY, angle);
             });
         }
 
- */
     }
 
 

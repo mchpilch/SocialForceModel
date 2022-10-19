@@ -94,8 +94,8 @@ public class WallRepulsion extends Game {
         float wallRepNomCoeff = 10; //0-200 deafault:10 wallRepulsionNominatorCoefficient
         if (peopleStorage.notEmpty() && wallStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
-                float pedastrianX = pedestrian.body.getPosition().x;
-                float pedastrianY = pedestrian.body.getPosition().y;
+                float pedestrianX = pedestrian.body.getPosition().x;
+                float pedestrianY = pedestrian.body.getPosition().y;
 
                 Vector2 wallNetForce = new Vector2();
 
@@ -106,7 +106,7 @@ public class WallRepulsion extends Game {
                         float wallY1 = wallStorage.get(i).getY1();
                         float wallY2 = wallStorage.get(i).getY2();
 
-                        Vector2 wallPedestrian = calculateWallRepulsionDirectionAndPhrase(wallX1,wallX2,wallY1,wallY2,pedastrianX,pedastrianY);
+                        Vector2 wallPedestrian = calculateWallRepulsionDirectionAndPhrase(wallX1,wallX2,wallY1,wallY2,pedestrianX,pedestrianY);
                         Vector2 pseudoForceWall = calculateWallRepulsionForce(wallPedestrian, wallRepNomCoeff,2);
                         wallNetForce.add(pseudoForceWall);
 
@@ -117,7 +117,7 @@ public class WallRepulsion extends Game {
                         timer += period;
                         float x = pedestrian.body.getLinearVelocity().x;
                         float y = pedestrian.body.getLinearVelocity().y;
-                        //Element.createRectangle(BodyDef.BodyType.DynamicBody, pedastrianX,  pedastrianY,  0.1f,  0.1f,  1,  world);
+                        //Element.createRectangle(BodyDef.BodyType.DynamicBody, pedestrianX,  pedestrianY,  0.1f,  0.1f,  1,  world);
 
 //                        float wynik = (float) Math.sqrt(x*x + y*y);
 //                        System.out.println("wall: " + i);
@@ -126,8 +126,8 @@ public class WallRepulsion extends Game {
                     }
                 }
                 pedestrian.body.setLinearVelocity(wallNetForce);
-                float angle = calculatePedastrianAngle(wallNetForce);
-                pedestrian.body.setTransform(pedastrianX, pedastrianY, angle);
+                float angle = calculatePedestrianAngle(wallNetForce);
+                pedestrian.body.setTransform(pedestrianX, pedestrianY, angle);
             });
         }
     }
@@ -140,7 +140,7 @@ public class WallRepulsion extends Game {
         debugRenderer.dispose();
     }
 
-    public Vector2 calculateWallRepulsionDirectionAndPhrase(float wallX1, float wallX2, float wallY1, float wallY2, float pedastrianX, float pedastrianY){
+    public Vector2 calculateWallRepulsionDirectionAndPhrase(float wallX1, float wallX2, float wallY1, float wallY2, float pedestrianX, float pedestrianY){
 
         float intersectX = 0f;
         float intersectY = 0f;
@@ -149,14 +149,14 @@ public class WallRepulsion extends Game {
         float bWall = wallY1 - a*wallX1;//
 
         if(wallY1 == wallY2){
-            intersectX = pedastrianX;
+            intersectX = pedestrianX;
             intersectY = wallY1;
         }else if(wallX1 == wallX2){
             intersectX = wallX1;
-            intersectY = pedastrianY;
+            intersectY = pedestrianY;
         }else{
 
-            float bPerpendicular = (1/a) * pedastrianX + pedastrianY;
+            float bPerpendicular = (1/a) * pedestrianX + pedestrianY;
 
             float a11 = -a;
             float a12 = 1;
@@ -173,10 +173,10 @@ public class WallRepulsion extends Game {
             }
         }
 
-        float wallPedestianX = pedastrianX - intersectX;
-        float wallPedestianY = pedastrianY - intersectY;
-        Vector2 wallPedastrian = new Vector2(wallPedestianX, wallPedestianY);
-        return wallPedastrian;
+        float wallPedestianX = pedestrianX - intersectX;
+        float wallPedestianY = pedestrianY - intersectY;
+        Vector2 wallPedestrian = new Vector2(wallPedestianX, wallPedestianY);
+        return wallPedestrian;
     }
     public Vector2 calculateWallRepulsionForce(Vector2 vector, float wallRepNomCoeff, int powerR){
 
@@ -187,7 +187,7 @@ public class WallRepulsion extends Game {
         return pseudoForceWall;
     }
 
-    public float calculatePedastrianAngle(Vector2 netForce){
+    public float calculatePedestrianAngle(Vector2 netForce){
         float angle = (float) Math.atan2( netForce.y,netForce.x) ;
         return angle;
     }
