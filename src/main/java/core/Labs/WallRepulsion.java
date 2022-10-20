@@ -49,7 +49,8 @@ public class WallRepulsion extends Game {
 
 
         wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
-        wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
+        //wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
+        wall2.createWall(-20, 10f, -6, 5f, 0, world); // top wall
         wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
         wall4.createWall(20, -10, 20, 10, 0, world); // right wall
 
@@ -165,8 +166,9 @@ public class WallRepulsion extends Game {
             if( answer == null ){
                 System.out.println( "No unique solution exists" );
             }
-            Element.createRectangle(BodyDef.BodyType.StaticBody, intersectX,  intersectY,  0.2f,  0.2f,  1,  world);
         }
+
+        Element.createRectangle(BodyDef.BodyType.StaticBody, intersectX,  intersectY,  0.2f,  0.2f,  1,  world);
 
         float wallPedestianX = pedestrianX - intersectX;
         float wallPedestianY = pedestrianY - intersectY;
