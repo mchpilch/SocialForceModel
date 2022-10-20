@@ -36,20 +36,30 @@ public class GoToExit extends Game {
         world = new World(new Vector2(0, 0), true);
         camera = new OrthographicCamera(50, 25);
         debugRenderer = new Box2DDebugRenderer();
-        Wall wall1 = new Wall();
+
+        Wall wall0bottomLeft = new Wall();
+        Wall wall0bottomRight = new Wall();
+
+        //Wall wall1 = new Wall();
         Wall wall2 = new Wall();
         Wall wall3 = new Wall();
         Wall wall4 = new Wall();
 
-        wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
+        //wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
+        wall0bottomLeft.createWall(-20, -10f, -1, -10f, 0, world); //bottom wall
+        wall0bottomRight.createWall(1, -10f, 20, -10f, 0, world); //bottom wall
+
         wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
         wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
         wall4.createWall(20, -10, 20, 10, 0, world); // right wall
 
-        wallStorage.add(wall1);
+        //wallStorage.add(wall1);
+        wallStorage.add(wall0bottomLeft);
+        wallStorage.add(wall0bottomRight);
         wallStorage.add(wall2);
         wallStorage.add(wall3);
         wallStorage.add(wall4);
+
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override

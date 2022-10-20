@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import core.Elements.Element;
 import core.Elements.Human;
 import core.Elements.Wall;
 import core.Mathematics.LinearEquations;
@@ -31,7 +32,7 @@ public class SocialForceModel extends Game {
     Array<Body> environmentStorage = new Array<Body>();
 
     float exitCoordinatesX = 0;
-    float exitCoordinatesY = -20;
+    float exitCoordinatesY = -12;
 
 
     @Override
@@ -39,42 +40,31 @@ public class SocialForceModel extends Game {
         world = new World(new Vector2(0, 0), true);
         camera = new OrthographicCamera(50, 25);
         debugRenderer = new Box2DDebugRenderer();
-        Wall wall1 = new Wall();
+        Wall wall0bottomLeft = new Wall();
+        Wall wall0bottomRight = new Wall();
+
+        //Wall wall1 = new Wall();
         Wall wall2 = new Wall();
         Wall wall3 = new Wall();
         Wall wall4 = new Wall();
 
-        Wall wall5 = new Wall();
-       // Wall wall6 = new Wall();
-//
-//        Wall wall7 = new Wall();
-//        Wall wall8 = new Wall();
+        Element.createCircle(0,-12.73f,0.5f,1,world);
 
 
-        wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
+        //wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
+        wall0bottomLeft.createWall(-20, -10f, -8, -10f, 0, world); //bottom wall
+        wall0bottomRight.createWall(8, -10f, 20, -10f, 0, world); //bottom wall
+
         wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
         wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
         wall4.createWall(20, -10, 20, 10, 0, world); // right wall
 
-          wall5.createWall(-10, -3, 10, -3, 0, world);
-//        wall6.createWall(-20, -6, 20, 8, 0, world);
-//
-//        wall7.createWall(0, -100, 0, 100, 0, world); //x= 0
-//        wall8.createWall(-100, 0, 100, 0, 0, world); //y = 0
-
-        wallStorage.add(wall1);
+        //wallStorage.add(wall1);
+//        wallStorage.add(wall0bottomLeft);
+//        wallStorage.add(wall0bottomRight);
         wallStorage.add(wall2);
         wallStorage.add(wall3);
         wallStorage.add(wall4);
-
-        wallStorage.add(wall5);
-//        wallStorage.add(wall6);
-//
-//        wallStorage.add(wall7);
-//        wallStorage.add(wall8);
-
-//        allStorage.add(wall1.body);
-//        allStorage.add(wall2.body);
 
 
 
@@ -110,11 +100,12 @@ public class SocialForceModel extends Game {
 
         float wallRepNomCoeff = 1; //0-200 deafault:10 wallRepulsionNominatorCoefficient
 
-        float exitCoefficient = 1f;
+        float exitCoefficient = 20f;
 
 
 
         peopleStorage.forEach(pedestrian -> {
+
             float pedX = pedestrian.body.getPosition().x;
             float pedY = pedestrian.body.getPosition().y;
 
@@ -139,18 +130,19 @@ public class SocialForceModel extends Game {
             pedestrian.body.setLinearVelocity(netTotalForce);
 
             timeSecondsAngleAdjustment += Gdx.graphics.getDeltaTime();
+
             if(timeSecondsAngleAdjustment > periodAngleAdjustment){
                 timeSecondsAngleAdjustment -= periodAngleAdjustment;
                 timerAngleAdjustment += periodAngleAdjustment;
 
+
                 float angle = calculatePedestrianAngle(netTotalForce);
                 pedestrian.body.setTransform(pedX, pedY, angle);
-                System.out.println();
-                System.out.println("pedestrian nr    " + pedestrian.getId());
-                System.out.println("netTotalForce    " + netTotalForce  + "  value: " + netTotalForce.len() );
-                System.out.println("netWallForce     " + netWallForce   + "  value: " +  netWallForce.len() );
-                System.out.println("netGravForce     " + netGravForce   + "  value: " + netGravForce.len() );
-                System.out.println("netExitForce     " + netExitForce   + "  value: " + netExitForce.len() );
+
+
+                    showInfo(pedestrian,netTotalForce,netWallForce,netGravForce,netExitForce);
+
+
             }
         });
 
@@ -286,5 +278,58 @@ public class SocialForceModel extends Game {
 
         Vector2 pseudoExitForce = new Vector2(valuePseudoExitForceX,valuePseudoExitForceY).nor().scl(exitCoefficient);
         return pseudoExitForce;
+    }
+
+    public void showInfo(Human pedestrian, Vector2 netTotalForce, Vector2 netWallForce, Vector2 netGravForce, Vector2 netExitForce){//spoko by bylo jkakby w klasie human to bylo trzymane o kadej sile
+        System.out.println();
+        System.out.println("pedestrian nr    " + pedestrian.getId());
+        System.out.println("NET TOTAL:    " + infoArrow(netTotalForce)  + netTotalForce  + "  value: " + netTotalForce.len() );
+        System.out.println("netWallForce     " + infoArrow(netWallForce) + infoStrength(netTotalForce,netWallForce) + netWallForce   + "  value: " +  netWallForce.len() );
+        System.out.println("netGravForce     " + infoArrow(netGravForce) + infoStrength(netTotalForce,netGravForce) + netGravForce   + "  value: " + netGravForce.len() );
+        System.out.println("netExitForce     " + infoArrow(netExitForce) + infoStrength(netTotalForce,netExitForce) + netExitForce   + "  value: " + netExitForce.len() );
+        System.out.println();
+    }
+
+    public String infoArrow(Vector2 vec){
+        String arrow = "\uD83D\uDCA2";
+        float margin = 1;
+
+        if(vec.x > 0 && vec.y > 0){
+            arrow = " ↗️";                   //↗️ UP-RIGHT
+        }else if(vec.x < 0 && vec.y > 0){
+            arrow = " ↖️";                   //↖️ UP-LEFT
+        }else if(vec.x > 0 && vec.y < 0){
+            arrow = " ↘️";                   //↘️ DOWN-RIGHT
+        }else if(vec.x < 0 && vec.y < 0){
+            arrow = " ↙️";                   //↙️ DOWN-LEFT
+        }
+
+        if(Math.abs(vec.x) < margin && vec.y > 0){
+            arrow = " ⬆ ";                      //⬆  UP
+        }else if(Math.abs(vec.x) < margin && vec.y < 0){
+            arrow = " ⬇ ";                      //⬇  DOWN
+        }else if(Math.abs(vec.y) < margin && vec.x > 0){
+            arrow = " ➡ ";                      //➡️ RIGHT
+        }else if(Math.abs(vec.y) < margin && vec.x < 0){
+            arrow = " ⬅  ";                     //⬅️ LEFT
+        }
+
+        return arrow;
+    }
+    public String infoStrength(Vector2 vecNet, Vector2 vec){
+        String arrow = " ⬜⬜⬜⬜ ";
+        vecNet.len();
+        if(vec.len() < vecNet.len()/4){
+            return arrow;
+        }else if(vec.len() < vecNet.len()/4){
+            arrow = " \uD83D\uDFE8⬜⬜⬜ ";
+        } else if (vec.len() < vecNet.len()/2) {
+            arrow = " \uD83D\uDFE8\uD83D\uDFE8⬜⬜ ";
+        } else if (vec.len() < (vecNet.len()/4)*3) {
+            arrow = " \uD83D\uDFE7\uD83D\uDFE7\uD83D\uDFE7⬜ ";
+        } else {
+            arrow = " \uD83D\uDFE5\uD83D\uDFE5\uD83D\uDFE5\uD83D\uDFE5 ";
+        }
+        return arrow;
     }
 }
