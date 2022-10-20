@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import core.Elements.Element;
 import core.Elements.Human;
 import core.Elements.Wall;
 import core.Mathematics.LinearEquations;
@@ -163,6 +165,7 @@ public class WallRepulsion extends Game {
             if( answer == null ){
                 System.out.println( "No unique solution exists" );
             }
+            Element.createRectangle(BodyDef.BodyType.StaticBody, intersectX,  intersectY,  0.2f,  0.2f,  1,  world);
         }
 
         float wallPedestianX = pedestrianX - intersectX;

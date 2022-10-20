@@ -58,7 +58,7 @@ public class SocialForceModel extends Game {
 
 
         //wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
-//        wall0bottomLeft.createWall(-20, -10f, -8, -10f, 0, world); //bottom wall
+        wall0bottomLeft.createWall(-20, -6f, -8, -6f, 0, world); //bottom wall
 //        wall0bottomRight.createWall(8, -10f, 20, -10f, 0, world); //bottom wall
 
         wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
@@ -66,7 +66,7 @@ public class SocialForceModel extends Game {
         wall4.createWall(20, -10, 20, 10, 0, world); // right wall
 
         //wallStorage.add(wall1);
-//        wallStorage.add(wall0bottomLeft);
+        wallStorage.add(wall0bottomLeft);
 //        wallStorage.add(wall0bottomRight);
         wallStorage.add(wall2);
         wallStorage.add(wall3);
@@ -106,7 +106,7 @@ public class SocialForceModel extends Game {
 
         float wallRepNomCoeff = 1; //0-200 deafault:10 wallRepulsionNominatorCoefficient
 
-        float exitCoefficient = 3f;
+        float exitCoefficient = 0f;
 
 
 
@@ -243,6 +243,8 @@ public class SocialForceModel extends Game {
             if( answer == null ){
                 System.out.println( "No unique solution exists" );
             }
+            Element.createRectangle(BodyDef.BodyType.StaticBody, 0,  0,  1f,  1f,  1,  world);
+
         }
 
         float wallPedestianX = pedestrianX - intersectX;
