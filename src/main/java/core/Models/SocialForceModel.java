@@ -23,9 +23,15 @@ public class SocialForceModel extends Game {
     private float period = 1f;
     private float timer = 0f;
 
+    private float timeSecondsInfo = 0f;
+    private float periodInfo = 1f;
+    private float timerInfo = 0f;
+
     private float timeSecondsAngleAdjustment = 0f;
     private float periodAngleAdjustment = 0.2f;
     private float timerAngleAdjustment = 0f;
+
+
     Array<Human> peopleStorage = new Array<Human>();
     Array<Wall> wallStorage = new Array<Wall>();
     Array<Body> allStorage = new Array<Body>();
@@ -52,8 +58,8 @@ public class SocialForceModel extends Game {
 
 
         //wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
-        wall0bottomLeft.createWall(-20, -10f, -8, -10f, 0, world); //bottom wall
-        wall0bottomRight.createWall(8, -10f, 20, -10f, 0, world); //bottom wall
+//        wall0bottomLeft.createWall(-20, -10f, -8, -10f, 0, world); //bottom wall
+//        wall0bottomRight.createWall(8, -10f, 20, -10f, 0, world); //bottom wall
 
         wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
         wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
@@ -100,7 +106,7 @@ public class SocialForceModel extends Game {
 
         float wallRepNomCoeff = 1; //0-200 deafault:10 wallRepulsionNominatorCoefficient
 
-        float exitCoefficient = 20f;
+        float exitCoefficient = 3f;
 
 
 
@@ -135,14 +141,16 @@ public class SocialForceModel extends Game {
                 timeSecondsAngleAdjustment -= periodAngleAdjustment;
                 timerAngleAdjustment += periodAngleAdjustment;
 
-
                 float angle = calculatePedestrianAngle(netTotalForce);
                 pedestrian.body.setTransform(pedX, pedY, angle);
+            }
 
-
-                    showInfo(pedestrian,netTotalForce,netWallForce,netGravForce,netExitForce);
-
-
+            timeSecondsInfo += Gdx.graphics.getDeltaTime();
+            if(timeSecondsInfo > periodInfo){
+                timeSecondsInfo -= periodInfo;
+                timerInfo += periodInfo;
+//                System.out.println(timerInfo);
+                showInfo(pedestrian,netTotalForce,netWallForce,netGravForce,netExitForce);
             }
         });
 
@@ -150,7 +158,7 @@ public class SocialForceModel extends Game {
         if(timeSeconds > period){
             timeSeconds -= period;
             timer += period;
-            System.out.println(timer);
+//            System.out.println(timer);
         }
 
 
@@ -283,10 +291,12 @@ public class SocialForceModel extends Game {
     public void showInfo(Human pedestrian, Vector2 netTotalForce, Vector2 netWallForce, Vector2 netGravForce, Vector2 netExitForce){//spoko by bylo jkakby w klasie human to bylo trzymane o kadej sile
         System.out.println();
         System.out.println("pedestrian nr    " + pedestrian.getId());
-        System.out.println("NET TOTAL:    " + infoArrow(netTotalForce)  + netTotalForce  + "  value: " + netTotalForce.len() );
-        System.out.println("netWallForce     " + infoArrow(netWallForce) + infoStrength(netTotalForce,netWallForce) + netWallForce   + "  value: " +  netWallForce.len() );
-        System.out.println("netGravForce     " + infoArrow(netGravForce) + infoStrength(netTotalForce,netGravForce) + netGravForce   + "  value: " + netGravForce.len() );
-        System.out.println("netExitForce     " + infoArrow(netExitForce) + infoStrength(netTotalForce,netExitForce) + netExitForce   + "  value: " + netExitForce.len() );
+        System.out.println("NET TOTAL:  ❇   " + infoArrow(netTotalForce)  + netTotalForce  + "  value: " + netTotalForce.len() );
+        System.out.println("---------------------------------------------------------------------------------------------------------");
+        System.out.println("netWallForce  \uD83E\uDDF1   " + infoStrength(netTotalForce,netWallForce)  + infoArrow(netWallForce)  + "  value: " +  netWallForce.len()  + "  forcesVec: " + netWallForce     );
+        System.out.println("netGravForce  \uD83C\uDF0D   " + infoStrength(netTotalForce,netGravForce)  + infoArrow(netGravForce)  + "  value: " + netGravForce.len()   + "  forcesVec: " + netGravForce     );
+        System.out.println("netExitForce  \uD83D\uDEAA   " +  infoStrength(netTotalForce,netExitForce) + infoArrow(netExitForce)  + "  value: " + netExitForce.len()   + "  forcesVec: " + netExitForce    );
+        System.out.println("---------------------------------------------------------------------------------------------------------");
         System.out.println();
     }
 
