@@ -290,7 +290,7 @@ public class SocialForceModel extends Game {
         return pseudoExitForce;
     }
 
-    public void showInfo(Human pedestrian, Vector2 netTotalForce, Vector2 netWallForce, Vector2 netGravForce, Vector2 netExitForce){//spoko by bylo jkakby w klasie human to bylo trzymane o kadej sile
+    public static void showInfo(Human pedestrian, Vector2 netTotalForce, Vector2 netWallForce, Vector2 netGravForce, Vector2 netExitForce){//spoko by bylo jkakby w klasie human to bylo trzymane o kadej sile
         System.out.println();
         System.out.println("pedestrian nr    " + pedestrian.getId());
         System.out.println("NET TOTAL:  ❇   " + infoArrow(netTotalForce)  + netTotalForce  + "  value: " + netTotalForce.len() );
@@ -302,7 +302,7 @@ public class SocialForceModel extends Game {
         System.out.println();
     }
 
-    public String infoArrow(Vector2 vec){
+    public static String infoArrow(Vector2 vec){
         String arrow = "\uD83D\uDCA2";
         float margin = 1;
 
@@ -328,7 +328,7 @@ public class SocialForceModel extends Game {
 
         return arrow;
     }
-    public String infoStrength(Vector2 vecNet, Vector2 vec){
+    public static String infoStrength(Vector2 vecNet, Vector2 vec){
         String arrow = " ⬜⬜⬜⬜ ";
         vecNet.len();
         if(vec.len() < vecNet.len()/4){

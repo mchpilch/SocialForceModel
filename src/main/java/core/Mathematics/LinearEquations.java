@@ -14,8 +14,9 @@ public class LinearEquations
         }
         else
         {
-            System.out.println( "x1 = "  + answer[0] );	//x1 = -2
-            System.out.println( "x2 = "  + answer[1] );	//x2 = -4
+            System.out.println("Punkt przecięcia dwóch prostych ");
+            System.out.println( "x1 = Xsz "  + answer[0] );	//x1 = -2
+            System.out.println( "x2 = Ysz "  + answer[1] );	//x2 = -4
         }
     }
 
