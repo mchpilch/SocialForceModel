@@ -92,7 +92,7 @@ public class WallRepulsion extends Game {
         Gdx.gl.glClearColor(.125f, .125f, .125f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        float wallRepNomCoeff = 1; //0-200 deafault:10 wallRepulsionNominatorCoefficient
+        float wallRepNomCoeff = 10; //0-200 deafault:10 wallRepulsionNominatorCoefficient
 
         peopleStorage.forEach(pedestrian -> {
 
@@ -123,9 +123,6 @@ public class WallRepulsion extends Game {
             }
         });
 
-
-
-
         debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
         world.step(1 / 60f, 6, 2);
     }
@@ -138,7 +135,20 @@ public class WallRepulsion extends Game {
         debugRenderer.dispose();
     }
 
-    public Vector2 calculateWallRepulsionDirectionAndPhrase(float wallX1, float wallX2, float wallY1, float wallY2, float pedestrianX, float pedestrianY){
+    public Vector2 calculateWallRepulsionDirectionAndPhrase(Wall wall, Human pedestrian){
+        Vector2 wallPedestrian = new Vector2(0f,0f);
+        boolean isPedestrianInArea =  checkWallRepulsionArea(pedestrian,wall);
+        if(!isPedestrianInArea){
+            return wallPedestrian;
+        }
+
+        float pedestrianX = pedestrian.body.getPosition().x;
+        float pedestrianY = pedestrian.body.getPosition().y;
+
+        float wallX1 = wall.getX1();
+        float wallX2 = wall.getX2();
+        float wallY1 = wall.getY1();
+        float wallY2 = wall.getY2();
 
         float intersectX = 0f;
         float intersectY = 0f;
@@ -175,11 +185,12 @@ public class WallRepulsion extends Game {
 
         float wallPedestianX = pedestrianX - intersectX;
         float wallPedestianY = pedestrianY - intersectY;
-        Vector2 wallPedestrian = new Vector2(wallPedestianX, wallPedestianY);
+        wallPedestrian = new Vector2(wallPedestianX, wallPedestianY);
         return wallPedestrian;
     }
 
     public Vector2 calculateWallRepulsionForce(Vector2 vector, float wallRepNomCoeff, int powerR){
+        if(vector.len() == 0) return vector;
 
         float wallR = vector.len(); //do wyliczenia 1/r^2
         vector = vector.nor(); //kierunek i zwrot działania siły
@@ -196,18 +207,12 @@ public class WallRepulsion extends Game {
     public Vector2 calculateNetWallForce(Human pedestrian, float wallRepNomCoeff){
         Vector2 netWallForce = new Vector2();
 
-        float pedestrianX = pedestrian.body.getPosition().x;
-        float pedestrianY = pedestrian.body.getPosition().y;
-
         for(int i = 0; i < wallStorage.size; i++){
 
-            float wallX1 = wallStorage.get(i).getX1();
-            float wallX2 = wallStorage.get(i).getX2();
-            float wallY1 = wallStorage.get(i).getY1();
-            float wallY2 = wallStorage.get(i).getY2();
+            Wall wall = wallStorage.get(i);
             System.out.println(checkWallRepulsionArea(pedestrian,wallStorage.get(i)));
 
-            Vector2 wallPedestrian = calculateWallRepulsionDirectionAndPhrase(wallX1,wallX2,wallY1,wallY2,pedestrianX,pedestrianY);
+            Vector2 wallPedestrian = calculateWallRepulsionDirectionAndPhrase(wall,pedestrian);
             Vector2 pseudoForceWall = calculateWallRepulsionForce(wallPedestrian, wallRepNomCoeff,2);
             netWallForce.add(pseudoForceWall);
 
