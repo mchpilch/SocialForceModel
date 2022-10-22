@@ -50,25 +50,25 @@ public class WallRepulsion extends Game {
         Wall wall8 = new Wall();
 
 
-//        wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
+        wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
         //wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
 //        wall2.createWall(-20, 10f, -6, 5f, 0, world); // top wall
 //        wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
-//        wall4.createWall(20, -10, 20, 10, 0, world); // right wall
+ //   wall4.createWall(20, -10, 20, 10, 0, world); // right wall
 //
 //        wall5.createWall(-10, -3, 10, -3, 0, world);
-        wall6.createWall(-20, -6, 20, 8, 0, world);
+//        wall6.createWall(-20, -6, 20, 8, 0, world);
 
 //        wall7.createWall(0, -100, 0, 100, 0, world); //x= 0
 //        wall8.createWall(-100, 0, 100, 0, 0, world); //y = 0
 
-//        wallStorage.add(wall1);
+       wallStorage.add(wall1);
 //        wallStorage.add(wall2);
 //        wallStorage.add(wall3);
 //        wallStorage.add(wall4);
 //
 //        wallStorage.add(wall5);
-        wallStorage.add(wall6);
+//        wallStorage.add(wall6);
 
 //        wallStorage.add(wall7);
 //        wallStorage.add(wall8);
@@ -227,6 +227,15 @@ public class WallRepulsion extends Game {
         float wallX2 = wall.getX2();
         float wallY1 = wall.getY1();
         float wallY2 = wall.getY2();
+
+        if(wallY1 == wallY2){
+            float borderXMax = Math.max(wallX1,wallX2);
+            float borderXMin = Math.min(wallX1,wallX2);
+            if(pedX >= borderXMin && pedX <= borderXMax){
+                return true;
+            }
+            return false;
+        }
 
         float asz = -(wallX2-wallX1)/(wallY2-wallY1);
 
