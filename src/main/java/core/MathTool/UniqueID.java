@@ -1,4 +1,4 @@
-package core.Mathematics;
+package core.MathTool;
 
 import java.util.UUID;
 

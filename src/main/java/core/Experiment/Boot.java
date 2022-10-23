@@ -1,4 +1,4 @@
-package core.Experiments;
+package core.Experiment;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -8,73 +8,75 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
-
+import com.badlogic.gdx.utils.Array;
 
 //https://happycoding.io/tutorials/libgdx/libraries
-public class Lab extends Game {
+public class Boot extends Game {
     World world;
+
+    private float timeSeconds = 0f;
+    private float period = 1f;
+    private int counter = 0;
+
     OrthographicCamera camera;
     Box2DDebugRenderer debugRenderer;
-    BodyDef bodyDef;
-    Body bodyA;
-
+    Array<Body> bodies = new Array<Body>();
     @Override
     public void create () {
-        world = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(0, -10), true);
+        //x y w tym wektorze dedykują działanie sił w świecie
+        // 1 problem F = ma -> stała siła = przy m const -> stałe przyśpieszenie obiekty przyśpieszją cały czas
+        // 2 problem Siła działa na "świecie" nie na obiekt
         camera = new OrthographicCamera(50, 25);
         debugRenderer = new Box2DDebugRenderer();
 
-        //bottom wall
+         //ground
         createEdge(BodyDef.BodyType.StaticBody, -20, -10f, 20, -10f, 0);
-        // top wall
+        // celling
         createEdge(BodyDef.BodyType.StaticBody, -20, 10f, 20, 10f, 0);
         // left wall
         createEdge(BodyDef.BodyType.StaticBody, -20, -10, -20, 10, 0);
         // right wall
         createEdge(BodyDef.BodyType.StaticBody, 20, -10, 20, 10, 0);
+        // przekątna
 
-        //LABORATORIOUM
-        // First we create a body definition
-        bodyDef = new BodyDef();
-        // We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
+//        createEdge(BodyDef.BodyType.StaticBody, -20, -10, 20, 10, 0);
+//        createRectangle(BodyDef.BodyType.StaticBody, 0,0,5,5,10);
+//        createRectangle(BodyDef.BodyType.DynamicBody, 2,2,2,1,10);
+//        createCircle(BodyDef.BodyType.DynamicBody, 0, 0, 1, 3);//initial circle
+
+
+/*
+// First we create a body definition
+        BodyDef bodyDef = new BodyDef();
+// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        // Set our body's starting position in the world
+// Set our body's starting position in the world
         bodyDef.position.set(0, 0);
 
-        // Create our body in the world using our body definition
-        bodyA = world.createBody(bodyDef);
+// Create our body in the world using our body definition
+        Body body = world.createBody(bodyDef);
 
-        // Create a circle shape and set its radius to 6
+// Create a circle shape and set its radius to 6
         CircleShape circle = new CircleShape();
-        circle.setRadius(1f);
+        circle.setRadius(4f);
 
-        // Create a fixture definition to apply our shape to
+// Create a fixture definition to apply our shape to
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
-        fixtureDef.density = 0.1f;
-        fixtureDef.friction = 0f;
-        fixtureDef.restitution = 0f; // Make it bounce a little bit
+        fixtureDef.density = 55f;
+        fixtureDef.friction = 0.4f;
+        fixtureDef.restitution = 0.1f; // Make it bounce a little bit
 
-        // Create our fixture and attach it to the body
-        Fixture fixture = bodyA.createFixture(fixtureDef);
+// Create our fixture and attach it to the body
+        Fixture fixture = body.createFixture(fixtureDef);
 
-        // Remember to dispose of any shapes after you're done with them!
-        // BodyDef and FixtureDef don't need disposing, but shapes do.
-        int x = -50;
-        int y = 100;
-        float angle = (float) Math.atan2(y,x) ;
-        bodyA.setTransform(0,0, angle);
+// Remember to dispose of any shapes after you're done with them!
+// BodyDef and FixtureDef don't need disposing, but shapes do.
         circle.dispose();
+*/
 
-//        body.applyForce(-100.0f, 50.0f, 0.5f, 0f, true);
-     //   body.applyForce(100.0f, 0.0f, 0.5f, 0f, true);
-        bodyA.applyForceToCenter(x, y, true);
-//        body.applyLinearImpulse(10.0f, 0, 0, 0, true);
-//        body.applyLinearImpulse(0, 10.0f, 0, 0, true);
-//        body.applyForce(100.0f, 0.0f, 1f, 1f, true);
-//        body.applyForce(100.0f, 0.0f, 1f, 1f, true);
-        //body.applyForce(0, 50.0f, 0, 0, true);
-
+//klikanie myszką
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
@@ -95,9 +97,25 @@ public class Lab extends Game {
         debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
         world.step(1 / 60f, 6, 2);
 
-        Vector2 vec= new Vector2(1,1);
-//        bodyA.applyForceToCenter(vec, true);
-        bodyA.setLinearVelocity(vec);
+
+        timeSeconds +=Gdx.graphics.getDeltaTime();
+        if(timeSeconds > period){
+            timeSeconds-=period;
+            System.out.println("asdasd");
+            world.getBodies(bodies);
+            world.getBodies(bodies);
+            System.out.println( timeSeconds%100);
+            System.out.println(bodies.size);
+
+            float  anglee = bodies.get(0).getAngle();
+            Vector2  asdf = bodies.get(0).getPosition();
+
+
+                bodies.get(0).setTransform(asdf,anglee + 1f);
+
+
+            System.out.println(bodies.get(0));
+        }
     }
 
     @Override
@@ -144,6 +162,7 @@ public class Lab extends Game {
         body.createFixture(poly, density);
         body.setTransform(x, y, 0);
         poly.dispose();
+        body.setFixedRotation(true);
 
         return body;
     }

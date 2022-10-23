@@ -1,4 +1,4 @@
-package core.Labs;
+package core.Lab;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -11,8 +11,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import core.Elements.Human;
-import core.Elements.Wall;
+import core.Element.Human;
+import core.Element.Wall;
 
 public class GoToExit extends Game {
     World world;

@@ -1,4 +1,4 @@
-package core.Mathematics;
+package core.MathTool;
 
 public class LinearEquations
 {

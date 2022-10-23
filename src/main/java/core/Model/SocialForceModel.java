@@ -1,4 +1,4 @@
-package core.Models;
+package core.Model;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -9,10 +9,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import core.Elements.Element;
-import core.Elements.Human;
-import core.Elements.Wall;
-import core.Mathematics.LinearEquations;
+import core.Element.Element;
+import core.Element.Human;
+import core.Element.Wall;
+import core.MathTool.LinearEquations;
 
 public class SocialForceModel extends Game {
 
@@ -167,6 +167,7 @@ public class SocialForceModel extends Game {
                 timerInfo += periodInfo;
 //                System.out.println(timerInfo);
                 showInfo(pedestrian,netTotalForce,netWallForce,netGravForce,netExitForce);
+
             }
         });
 
@@ -409,7 +410,7 @@ public class SocialForceModel extends Game {
     public static String infoStrength(Vector2 vec, Vector2 vecOtherForce1,  Vector2 vecOtherForce2){//w stosunku do innych sił
         String arrow = " ⬜⬜⬜⬜ ";
         float vecsLenTotal =  vec.len() + vecOtherForce1.len() + vecOtherForce2.len();
-        if(vec.len() < vecsLenTotal/4){
+        if(vec.len() < vecsLenTotal/10){
             return arrow;
         }else if(vec.len() < vecsLenTotal/4){
             arrow = " \uD83D\uDFE8⬜⬜⬜ ";

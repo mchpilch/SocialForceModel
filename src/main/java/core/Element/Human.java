@@ -1,4 +1,4 @@
-package core.Elements;
+package core.Element;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -41,7 +41,9 @@ public class Human{//extends Body
         body = world.createBody(def);
         body.createFixture(poly, density);
         body.setTransform(x, y, 0);
+        body.setFixedRotation(true); //dzięki temu ja odpowiadam za obrót a nie silnik, no. przy zderzeniach
         poly.dispose();
+
         return body;
     }
 

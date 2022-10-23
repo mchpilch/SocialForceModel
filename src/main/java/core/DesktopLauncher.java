@@ -2,10 +2,8 @@ package core;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import core.Labs.GoToExit;
-import core.Labs.PedestrianForce;
-import core.Labs.WallRepulsion;
-import core.Models.SocialForceModel;
+import core.Experiment.Boot;
+import core.Model.SocialForceModel;
 
 public class DesktopLauncher {
     public static void main(String[] args) {
@@ -14,7 +12,7 @@ public class DesktopLauncher {
         config.useVsync(true);
         config.setTitle("SFM - Michał Pilch");
 
-        config.setWindowedMode(1280,720);
+        config.setWindowedMode(1600,900);
         //config.setWindowedMode(1920,1080);
         new Lwjgl3Application(new SocialForceModel(), config);
     }

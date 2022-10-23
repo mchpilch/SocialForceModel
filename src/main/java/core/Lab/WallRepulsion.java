@@ -1,4 +1,4 @@
-package core.Labs;
+package core.Lab;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -7,17 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import core.Elements.Element;
-import core.Elements.Human;
-import core.Elements.Wall;
-import core.Mathematics.LinearEquations;
-
-import static core.Models.SocialForceModel.showInfo;
+import core.Element.Human;
+import core.Element.Wall;
+import core.MathTool.LinearEquations;
 
 public class WallRepulsion extends Game {
 
