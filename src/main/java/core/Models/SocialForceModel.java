@@ -49,6 +49,12 @@ public class SocialForceModel extends Game {
         Wall wall0bottomLeft = new Wall();
         Wall wall0bottomRight = new Wall();
 
+        Wall wall1bottomLeft = new Wall();
+        Wall wall1bottomRight = new Wall();
+
+        Wall wall2bottomLeft = new Wall();
+        Wall wall2bottomRight = new Wall();
+
         //Wall wall1 = new Wall();
         Wall wall2 = new Wall();
         Wall wall3 = new Wall();
@@ -58,8 +64,14 @@ public class SocialForceModel extends Game {
 
 
         //wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
-        wall0bottomLeft.createWall(-20, -6f, -8, -6f, 0, world); //bottom wall
-//        wall0bottomRight.createWall(8, -10f, 20, -10f, 0, world); //bottom wall
+        wall0bottomLeft.createWall(-20, -10f, -2, -10f, 0, world); //bottom wall
+        wall0bottomRight.createWall(2, -10f, 20, -10f, 0, world); //bottom wall
+
+        wall1bottomLeft.createWall(-20, -5f, -2, -5f, 0, world); //bottom wall
+        wall1bottomRight.createWall(2, -5f, 20, -5f, 0, world); //bottom wall
+
+        wall2bottomLeft.createWall(-20, 5f, -2, 5f, 0, world); //bottom wall
+        wall2bottomRight.createWall(2, 5f, 20, 5f, 0, world); //bottom wall
 
         wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
         wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
@@ -67,7 +79,11 @@ public class SocialForceModel extends Game {
 
         //wallStorage.add(wall1);
         wallStorage.add(wall0bottomLeft);
-//        wallStorage.add(wall0bottomRight);
+        wallStorage.add(wall0bottomRight);
+        wallStorage.add(wall1bottomLeft);
+        wallStorage.add(wall1bottomRight);
+        wallStorage.add(wall2bottomLeft);
+        wallStorage.add(wall2bottomRight);
         wallStorage.add(wall2);
         wallStorage.add(wall3);
         wallStorage.add(wall4);
@@ -104,9 +120,9 @@ public class SocialForceModel extends Game {
         float coeffGMinus = -1f;
         float personalborder = 5f;
 
-        float wallRepNomCoeff = 1; //0-200 deafault:10 wallRepulsionNominatorCoefficient
+        float wallRepNomCoeff = 8f; //0-200 deafault:10 wallRepulsionNominatorCoefficient
 
-        float exitCoefficient = 0f;
+        float exitCoefficient = 3f;
 
 
 
@@ -212,7 +228,35 @@ public class SocialForceModel extends Game {
         return netGravForce;
     }
 
-    public Vector2 calculateWallRepulsionDirectionAndPhrase(float wallX1, float wallX2, float wallY1, float wallY2, float pedestrianX, float pedestrianY){
+    public Vector2 calculateWallRepulsionDirectionAndPhrase(Wall wall, Human pedestrian){
+        Vector2 wallPedestrian = new Vector2(0f,0f);
+
+        float wallX1 = wall.getX1();
+        float wallX2 = wall.getX2();
+        float wallY1 = wall.getY1();
+        float wallY2 = wall.getY2();
+
+        float pedestrianX = pedestrian.body.getPosition().x;
+        float pedestrianY = pedestrian.body.getPosition().y;
+
+        boolean isPedestrianInArea = checkWallRepulsionArea(pedestrian,wall);
+
+        if(!isPedestrianInArea){
+            float vec1X = pedestrianX - wallX1;
+            float vec1Y = pedestrianY - wallY1;
+
+            float vec2X = pedestrianX - wallX2;
+            float vec2Y = pedestrianY - wallY2;
+
+            Vector2 vector1 = new Vector2(vec1X,vec1Y);
+            Vector2 vector2 = new Vector2(vec2X,vec2Y);
+            if(vector1.len() < vector2.len()){ //odpycha ten kraniec wall który jest bliżej ped
+                wallPedestrian = vector1;
+            }else{
+                wallPedestrian = vector2;
+            }
+            return wallPedestrian;
+        }
 
         float intersectX = 0f;
         float intersectY = 0f;
@@ -243,16 +287,18 @@ public class SocialForceModel extends Game {
             if( answer == null ){
                 System.out.println( "No unique solution exists" );
             }
-            Element.createRectangle(BodyDef.BodyType.StaticBody, 0,  0,  1f,  1f,  1,  world);
-
         }
+
+        //Element.createRectangle(BodyDef.BodyType.StaticBody, intersectX,  intersectY,  0.2f,  0.2f,  1,  world);
 
         float wallPedestianX = pedestrianX - intersectX;
         float wallPedestianY = pedestrianY - intersectY;
-        Vector2 wallPedestrian = new Vector2(wallPedestianX, wallPedestianY);
+        wallPedestrian = new Vector2(wallPedestianX, wallPedestianY);
         return wallPedestrian;
     }
-    public Vector2 calculateWallRepulsionForce(Vector2 vector, float wallRepNomCoeff, int powerR){
+    public Vector2 calculateWallRepulsionForce(Vector2 vector, float wallRepNomCoeff, int powerR, Wall wall){
+        if(vector.len() == 0) return vector;
+        //dodać osobny coeff do tego jak ped nie jest w wall rep area!
 
         float wallR = vector.len(); //do wyliczenia 1/r^2
         vector = vector.nor(); //kierunek i zwrot działania siły
@@ -261,21 +307,53 @@ public class SocialForceModel extends Game {
         return pseudoForceWall;
     }
 
+    public boolean checkWallRepulsionArea(Human pedestrian, Wall wall){
+        //równanie prostej na której leży wall
+        //y = (y2 - y1)/(x2 - x1)*(x - x1) + y1
+        //CEL: znaleźć równania dwóch prostych prostopadłych przechodzących przez (x1,y1) (y2,x2)
+
+        float pedX = pedestrian.body.getPosition().x;
+        float pedY = pedestrian.body.getPosition().y;
+
+        float wallX1 = wall.getX1();
+        float wallX2 = wall.getX2();
+        float wallY1 = wall.getY1();
+        float wallY2 = wall.getY2();
+
+        if(wallY1 == wallY2){
+            float borderXMax = Math.max(wallX1,wallX2);
+            float borderXMin = Math.min(wallX1,wallX2);
+            if(pedX >= borderXMin && pedX <= borderXMax){
+                return true;
+            }
+            return false;
+        }
+
+        float asz = -(wallX2-wallX1)/(wallY2-wallY1);
+
+        float b1sz = wallY1-asz*wallX1;
+        float b2sz = wallY2-asz*wallX2;
+
+        float y1border = asz*pedX + b1sz;
+        float y2border = asz*pedX + b2sz;
+
+        float borderMax = Math.max(y2border,y1border);
+        float borderMin = Math.min(y2border,y1border);
+
+        if(pedY >= borderMin && pedY <= borderMax){
+            return true;
+        }
+        return false;
+    }
+
     public Vector2 calculateNetWallForce(Human pedestrian, float wallRepNomCoeff){
         Vector2 netWallForce = new Vector2();
 
-        float pedestrianX = pedestrian.body.getPosition().x;
-        float pedestrianY = pedestrian.body.getPosition().y;
-
         for(int i = 0; i < wallStorage.size; i++){
+            Wall wall = wallStorage.get(i);
 
-            float wallX1 = wallStorage.get(i).getX1();
-            float wallX2 = wallStorage.get(i).getX2();
-            float wallY1 = wallStorage.get(i).getY1();
-            float wallY2 = wallStorage.get(i).getY2();
-
-            Vector2 wallPedestrian = calculateWallRepulsionDirectionAndPhrase(wallX1,wallX2,wallY1,wallY2,pedestrianX,pedestrianY);
-            Vector2 pseudoForceWall = calculateWallRepulsionForce(wallPedestrian, wallRepNomCoeff,2);
+            Vector2 wallPedestrian = calculateWallRepulsionDirectionAndPhrase(wall,pedestrian);
+            Vector2 pseudoForceWall = calculateWallRepulsionForce(wallPedestrian, wallRepNomCoeff,2, wall);
             netWallForce.add(pseudoForceWall);
         }
         return  netWallForce;
@@ -295,9 +373,9 @@ public class SocialForceModel extends Game {
         System.out.println("pedestrian nr    " + pedestrian.getId());
         System.out.println("NET TOTAL:  ❇   " + infoArrow(netTotalForce)  + netTotalForce  + "  value: " + netTotalForce.len() );
         System.out.println("---------------------------------------------------------------------------------------------------------");
-        System.out.println("netWallForce  \uD83E\uDDF1   " + infoStrength(netTotalForce,netWallForce)  + infoArrow(netWallForce)  + "  value: " +  netWallForce.len()  + "  forcesVec: " + netWallForce     );
-        System.out.println("netGravForce  \uD83C\uDF0D   " + infoStrength(netTotalForce,netGravForce)  + infoArrow(netGravForce)  + "  value: " + netGravForce.len()   + "  forcesVec: " + netGravForce     );
-        System.out.println("netExitForce  \uD83D\uDEAA   " +  infoStrength(netTotalForce,netExitForce) + infoArrow(netExitForce)  + "  value: " + netExitForce.len()   + "  forcesVec: " + netExitForce    );
+        System.out.println("netWallForce  \uD83E\uDDF1   " + infoStrength(netWallForce,netGravForce,netExitForce)  + infoArrow(netWallForce)  + "  value: " +  netWallForce.len()  + "  forcesVec: " + netWallForce     );
+        System.out.println("netGravForce  \uD83C\uDF0D   " + infoStrength(netGravForce,netExitForce,netWallForce)  + infoArrow(netGravForce)  + "  value: " + netGravForce.len()   + "  forcesVec: " + netGravForce     );
+        System.out.println("netExitForce  \uD83D\uDEAA   " +  infoStrength(netExitForce,netWallForce,netGravForce) + infoArrow(netExitForce)  + "  value: " + netExitForce.len()   + "  forcesVec: " + netExitForce    );
         System.out.println("---------------------------------------------------------------------------------------------------------");
         System.out.println();
     }
@@ -328,16 +406,16 @@ public class SocialForceModel extends Game {
 
         return arrow;
     }
-    public static String infoStrength(Vector2 vecNet, Vector2 vec){
+    public static String infoStrength(Vector2 vec, Vector2 vecOtherForce1,  Vector2 vecOtherForce2){//w stosunku do innych sił
         String arrow = " ⬜⬜⬜⬜ ";
-        vecNet.len();
-        if(vec.len() < vecNet.len()/4){
+        float vecsLenTotal =  vec.len() + vecOtherForce1.len() + vecOtherForce2.len();
+        if(vec.len() < vecsLenTotal/4){
             return arrow;
-        }else if(vec.len() < vecNet.len()/4){
+        }else if(vec.len() < vecsLenTotal/4){
             arrow = " \uD83D\uDFE8⬜⬜⬜ ";
-        } else if (vec.len() < vecNet.len()/2) {
+        } else if (vec.len() < vecsLenTotal/2) {
             arrow = " \uD83D\uDFE8\uD83D\uDFE8⬜⬜ ";
-        } else if (vec.len() < (vecNet.len()/4)*3) {
+        } else if (vec.len() < (vecsLenTotal/4)*3) {
             arrow = " \uD83D\uDFE7\uD83D\uDFE7\uD83D\uDFE7⬜ ";
         } else {
             arrow = " \uD83D\uDFE5\uD83D\uDFE5\uD83D\uDFE5\uD83D\uDFE5 ";

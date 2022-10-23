@@ -195,7 +195,7 @@ public class WallRepulsion extends Game {
             }
         }
 
-        Element.createRectangle(BodyDef.BodyType.StaticBody, intersectX,  intersectY,  0.2f,  0.2f,  1,  world);
+        //Element.createRectangle(BodyDef.BodyType.StaticBody, intersectX,  intersectY,  0.2f,  0.2f,  1,  world);
 
         float wallPedestianX = pedestrianX - intersectX;
         float wallPedestianY = pedestrianY - intersectY;
