@@ -14,6 +14,8 @@ import core.Element.Human;
 import core.Element.Wall;
 import core.MathTool.LinearEquations;
 
+import static core.MathTool.NormalDistribution.generateRandomBMI;
+
 public class SocialForceModel extends Game {
 
     World world;
@@ -28,7 +30,7 @@ public class SocialForceModel extends Game {
     private float timerInfo = 0f;
 
     private float timeSecondsAngleAdjustment = 0f;
-    private float periodAngleAdjustment = 0.2f;
+    private float periodAngleAdjustment = 0.1f;
     private float timerAngleAdjustment = 0f;
 
 
@@ -103,7 +105,9 @@ public class SocialForceModel extends Game {
                 Vector3 touchedPoint = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(touchedPoint);
                 Human man = new Human();
-                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, world);
+                float BMI = generateRandomBMI();
+                float shoulderSpan = 2*BMI/100;
+                man.createMan(touchedPoint.x, touchedPoint.y, shoulderSpan, BMI, world);
                 peopleStorage.add(man);
                 allStorage.add(man.body);
                 return true;
@@ -121,6 +125,8 @@ public class SocialForceModel extends Game {
         float personalborder = 5f;
 
         float wallRepNomCoeff = 8f; //0-200 deafault:10 wallRepulsionNominatorCoefficient
+        float wallRepNomCoeff2 = 4f; //0-200 deafault:10 wallRepulsionNominatorCoefficient
+        int powerR = 2;
 
         float exitCoefficient = 3f;
 
@@ -141,7 +147,7 @@ public class SocialForceModel extends Game {
                  netGravForce = calculateNetGravityForce(pedestrian, personalborder, coeffGPlus, coeffGMinus);
                  netExitForce = calculateExitForceDirectionAndPhrase(pedestrian, exitCoordinatesX,exitCoordinatesY, exitCoefficient);
                 if(wallStorage.notEmpty()){
-                     netWallForce = calculateNetWallForce(pedestrian,wallRepNomCoeff);
+                     netWallForce = calculateNetWallForce(pedestrian, wallRepNomCoeff, wallRepNomCoeff2, powerR);
                 }
             }
 
@@ -229,7 +235,38 @@ public class SocialForceModel extends Game {
         return netGravForce;
     }
 
-    public Vector2 calculateWallRepulsionDirectionAndPhrase(Wall wall, Human pedestrian){
+   //WALL START
+   public Vector2 calculateNetWallForce(Human pedestrian, float wallRepNomCoeff, float wallRepNomCoeff2, int powerR){
+       Vector2 netWallForce = new Vector2();
+
+       for(int i = 0; i < wallStorage.size; i++){
+           Wall wall = wallStorage.get(i);
+           Vector2 pseudoForceWall = calculateWallRepulsionForce(pedestrian, wall, wallRepNomCoeff, wallRepNomCoeff2,powerR);
+           netWallForce.add(pseudoForceWall);
+       }
+       return  netWallForce;
+   }
+
+    public Vector2 calculateWallRepulsionForce(Human pedestrian, Wall wall, float wallRepNomCoeff, float wallRepNomCoeff2, int powerR){
+//        if(vector.len() == 0) return vector;
+        boolean isPedestrianInArea =  checkWallRepulsionArea(pedestrian,wall);
+        if(!isPedestrianInArea){
+            Vector2 vector = calculateWallRepulsionDirectionAndPhraseOutArea(pedestrian,wall);
+            float wallEdgeR = vector.len();
+            vector = vector.nor();
+            float outAreaCoeff = (float) (wallRepNomCoeff2/(Math.pow(wallEdgeR,powerR)));
+            vector = vector.scl(outAreaCoeff);
+            return vector;
+        }// else licz to wszystko poniżej
+        Vector2 vector = calculateWallRepulsionDirectionAndPhraseInArea(pedestrian,wall);
+        float wallR = vector.len(); //do wyliczenia 1/r^2
+        vector = vector.nor(); //kierunek i zwrot działania siły
+        float wallRepDenomCoeff = (float) (1/(Math.pow(wallR,powerR)));
+        Vector2 pseudoForceWall = vector.scl(wallRepNomCoeff * wallRepDenomCoeff); //wallRepulsionNominatorCoefficient depending on R
+        return pseudoForceWall;
+    }
+
+    public Vector2 calculateWallRepulsionDirectionAndPhraseInArea(Human pedestrian, Wall wall){
         Vector2 wallPedestrian = new Vector2(0f,0f);
 
         float wallX1 = wall.getX1();
@@ -239,25 +276,6 @@ public class SocialForceModel extends Game {
 
         float pedestrianX = pedestrian.body.getPosition().x;
         float pedestrianY = pedestrian.body.getPosition().y;
-
-        boolean isPedestrianInArea = checkWallRepulsionArea(pedestrian,wall);
-
-        if(!isPedestrianInArea){
-            float vec1X = pedestrianX - wallX1;
-            float vec1Y = pedestrianY - wallY1;
-
-            float vec2X = pedestrianX - wallX2;
-            float vec2Y = pedestrianY - wallY2;
-
-            Vector2 vector1 = new Vector2(vec1X,vec1Y);
-            Vector2 vector2 = new Vector2(vec2X,vec2Y);
-            if(vector1.len() < vector2.len()){ //odpycha ten kraniec wall który jest bliżej ped
-                wallPedestrian = vector1;
-            }else{
-                wallPedestrian = vector2;
-            }
-            return wallPedestrian;
-        }
 
         float intersectX = 0f;
         float intersectY = 0f;
@@ -297,15 +315,31 @@ public class SocialForceModel extends Game {
         wallPedestrian = new Vector2(wallPedestianX, wallPedestianY);
         return wallPedestrian;
     }
-    public Vector2 calculateWallRepulsionForce(Vector2 vector, float wallRepNomCoeff, int powerR, Wall wall){
-        if(vector.len() == 0) return vector;
-        //dodać osobny coeff do tego jak ped nie jest w wall rep area!
+    public Vector2 calculateWallRepulsionDirectionAndPhraseOutArea(Human pedestrian, Wall wall){
+        Vector2 wallPedestrian = new Vector2(0f,0f);
 
-        float wallR = vector.len(); //do wyliczenia 1/r^2
-        vector = vector.nor(); //kierunek i zwrot działania siły
-        float wallRepDenomCoeff = (float) (1/(Math.pow(wallR,powerR)));
-        Vector2 pseudoForceWall = vector.scl(wallRepNomCoeff * wallRepDenomCoeff); //wallRepulsionNominatorCoefficient depending on R
-        return pseudoForceWall;
+        float wallX1 = wall.getX1();
+        float wallX2 = wall.getX2();
+        float wallY1 = wall.getY1();
+        float wallY2 = wall.getY2();
+
+        float pedestrianX = pedestrian.body.getPosition().x;
+        float pedestrianY = pedestrian.body.getPosition().y;
+
+        float vec1X = pedestrianX - wallX1;
+        float vec1Y = pedestrianY - wallY1;
+
+        float vec2X = pedestrianX - wallX2;
+        float vec2Y = pedestrianY - wallY2;
+
+        Vector2 vector1 = new Vector2(vec1X,vec1Y);
+        Vector2 vector2 = new Vector2(vec2X,vec2Y);
+        if(vector1.len() < vector2.len()){ //odpycha ten kraniec wall który jest bliżej ped
+            wallPedestrian = vector1;
+        }else{
+            wallPedestrian = vector2;
+        }
+        return wallPedestrian;
     }
 
     public boolean checkWallRepulsionArea(Human pedestrian, Wall wall){
@@ -346,19 +380,7 @@ public class SocialForceModel extends Game {
         }
         return false;
     }
-
-    public Vector2 calculateNetWallForce(Human pedestrian, float wallRepNomCoeff){
-        Vector2 netWallForce = new Vector2();
-
-        for(int i = 0; i < wallStorage.size; i++){
-            Wall wall = wallStorage.get(i);
-
-            Vector2 wallPedestrian = calculateWallRepulsionDirectionAndPhrase(wall,pedestrian);
-            Vector2 pseudoForceWall = calculateWallRepulsionForce(wallPedestrian, wallRepNomCoeff,2, wall);
-            netWallForce.add(pseudoForceWall);
-        }
-        return  netWallForce;
-    }
+    // END
 
     public Vector2 calculateExitForceDirectionAndPhrase(Human pedestrian, float exitCoordinatesX, float exitCoordinatesY, float exitCoefficient){
 

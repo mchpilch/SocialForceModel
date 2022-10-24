@@ -15,6 +15,6 @@ public class DesktopLauncher {
 
         config.setWindowedMode(1600,900);
         //config.setWindowedMode(1920,1080);
-        new Lwjgl3Application(new WallRepulsion(), config);
+        new Lwjgl3Application(new SocialForceModel(), config);
     }
 }
