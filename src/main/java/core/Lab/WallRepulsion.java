@@ -50,16 +50,16 @@ public class WallRepulsion extends Game {
         Wall wall8 = new Wall();
 
 
-//        wall1.createWall(-20, -10f, 20, -10f, 0, world, scale, moveX,moveY); //bottom wall
-//        wall2.createWall(-20, 10f, 20, 10f, 0, world, scale, moveX,moveY); // top wall
-//        wall3.createWall(-20, -10, -20, 10, 0, world, scale, moveX,moveY); // left wall
-//        wall4.createWall(20, -10, 20, 10, 0, world, scale, moveX,moveY); // right wall
+//        wall1.createWall(-20, -10f, 20, -10f, world, scale, moveX,moveY); //bottom wall
+//        wall2.createWall(-20, 10f, 20, 10f, world, scale, moveX,moveY); // top wall
+//        wall3.createWall(-20, -10, -20, 10, world, scale, moveX,moveY); // left wall
+//        wall4.createWall(20, -10, 20, 10, world, scale, moveX,moveY); // right wall
 //
-        wall5.createWall(-10, -3, 10, -3, 0, world, scale, moveX,moveY);
-//        wall6.createWall(-20, -6, 20, 8, 0, world, scale, moveX,moveY);
+        wall5.createWall(-10, -3, 10, -3, world, scale, moveX,moveY);
+//        wall6.createWall(-20, -6, 20, 8, world, scale, moveX,moveY);
 
-//        wall7.createWall(0, -100, 0, 100, 0, world, scale, moveX,moveY); //x= 0
-//        wall8.createWall(-100, 0, 100, 0, 0, world, scale, moveX,moveY); //y = 0
+//        wall7.createWall(0, -100, 0, 100, world, scale, moveX,moveY); //x= 0
+//        wall8.createWall(-100, 0, 100, 0, world, scale, moveX,moveY); //y = 0
 
 //        wallStorage.add(wall1);
 //        wallStorage.add(wall2);

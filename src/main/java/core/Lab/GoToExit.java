@@ -49,13 +49,13 @@ public class GoToExit extends Game {
         Wall wall3 = new Wall();
         Wall wall4 = new Wall();
 
-        //wall1.createWall(-20, -10f, 20, -10f, 0, world, scale, moveX,moveY); //bottom wall
-        wall0bottomLeft.createWall(-20, -10f, -1, -10f, 0, world, scale, moveX,moveY); //bottom wall
-        wall0bottomRight.createWall(1, -10f, 20, -10f, 0, world, scale, moveX,moveY); //bottom wall
+        //wall1.createWall(-20, -10f, 20, -10f, world, scale, moveX,moveY); //bottom wall
+        wall0bottomLeft.createWall(-20, -10f, -1, -10f, world, scale, moveX,moveY); //bottom wall
+        wall0bottomRight.createWall(1, -10f, 20, -10f, world, scale, moveX,moveY); //bottom wall
 
-        wall2.createWall(-20, 10f, 20, 10f, 0, world, scale, moveX,moveY); // top wall
-        wall3.createWall(-20, -10, -20, 10, 0, world, scale, moveX,moveY); // left wall
-        wall4.createWall(20, -10, 20, 10, 0, world, scale, moveX,moveY); // right wall
+        wall2.createWall(-20, 10f, 20, 10f, world, scale, moveX,moveY); // top wall
+        wall3.createWall(-20, -10, -20, 10, world, scale, moveX,moveY); // left wall
+        wall4.createWall(20, -10, 20, 10, world, scale, moveX,moveY); // right wall
 
         //wallStorage.add(wall1);
         wallStorage.add(wall0bottomLeft);

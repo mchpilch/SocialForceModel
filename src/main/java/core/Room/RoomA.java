@@ -46,23 +46,23 @@ public class RoomA extends Game {
         Wall wallKR = new Wall();
         Wall wallLR = new Wall();
 
-        wallAR.createWall(0f, 20f, 40f, 20f, 0, world, scale, moveX, moveY);
-        //wallCR.createWall(0f, 0f, 40f, 0f, 0, world, scale, moveX, moveY);
-        wallCRseg1.createWall(0f, 0f, 9f, 0f, 0, world, scale, moveX, moveY);
-        wallCRseg2.createWall(11f, 0f, 18f, 0f, 0, world, scale, moveX, moveY);
-        wallCRseg3.createWall(20f, 0f, 40f, 0f, 0, world, scale, moveX, moveY);
-        wallER.createWall(0f, 12f, 3f, 12f, 0, world, scale, moveX, moveY);
-        wallFR.createWall(5f, 12f, 22f, 12f, 0, world, scale, moveX, moveY);
-        wallMR.createWall(16f, 15f, 17f, 15f, 0, world, scale, moveX, moveY);
-        wallNR.createWall(19f, 17f, 27f, 17f, 0, world, scale, moveX, moveY);
-        wallGR.createWall(24f, 12f, 40f, 12f, 0, world, scale, moveX, moveY);
-        wallHR.createWall(0f, 7f, 9f, 7f, 0, world, scale, moveX, moveY);
-        wallOR.createWall(0f, 4f, 9f, 4f, 0, world, scale, moveX, moveY);
-        wallPR.createWall(11f, 4f, 12f, 4f, 0, world, scale, moveX, moveY);
-        wallIR.createWall(11f, 7f, 18f, 7f, 0, world, scale, moveX, moveY);
-        wallJR.createWall(20f, 7f, 21f, 7f, 0, world, scale, moveX, moveY);
-        wallKR.createWall(27f, 7f, 28f, 7f, 0, world, scale, moveX, moveY);
-        wallLR.createWall(30f, 7f, 40f, 7f, 0, world, scale, moveX, moveY);
+        wallAR.createWall(0f, 20f, 40f, 20f, world, scale, moveX, moveY);
+        //wallCR.createWall(0f, 0f, 40f, 0f, world, scale, moveX, moveY);
+        wallCRseg1.createWall(0f, 0f, 9f, 0f, world, scale, moveX, moveY);
+        wallCRseg2.createWall(11f, 0f, 18f, 0f, world, scale, moveX, moveY);
+        wallCRseg3.createWall(20f, 0f, 40f, 0f, world, scale, moveX, moveY);
+        wallER.createWall(0f, 12f, 3f, 12f, world, scale, moveX, moveY);
+        wallFR.createWall(5f, 12f, 22f, 12f, world, scale, moveX, moveY);
+        wallMR.createWall(16f, 15f, 17f, 15f, world, scale, moveX, moveY);
+        wallNR.createWall(19f, 17f, 27f, 17f, world, scale, moveX, moveY);
+        wallGR.createWall(24f, 12f, 40f, 12f, world, scale, moveX, moveY);
+        wallHR.createWall(0f, 7f, 9f, 7f, world, scale, moveX, moveY);
+        wallOR.createWall(0f, 4f, 9f, 4f, world, scale, moveX, moveY);
+        wallPR.createWall(11f, 4f, 12f, 4f, world, scale, moveX, moveY);
+        wallIR.createWall(11f, 7f, 18f, 7f, world, scale, moveX, moveY);
+        wallJR.createWall(20f, 7f, 21f, 7f, world, scale, moveX, moveY);
+        wallKR.createWall(27f, 7f, 28f, 7f, world, scale, moveX, moveY);
+        wallLR.createWall(30f, 7f, 40f, 7f, world, scale, moveX, moveY);
 
         //WALLs perpendicular
         Wall wallBP = new Wall();
@@ -76,26 +76,26 @@ public class RoomA extends Game {
         Wall wallRP = new Wall();
         Wall wallZP = new Wall();
 
-        wallBP.createWall(40f, 0f, 40f, 20f, 0, world, scale, moveX, moveY);
-        wallCP.createWall(0f, 0f, 0f, 20f, 0, world, scale, moveX, moveY);
-        wallQP.createWall(16f, 12f, 16f, 20f, 0, world, scale, moveX, moveY);
-        wallTP.createWall(21f, 19f, 21f, 20f, 0, world, scale, moveX, moveY);
-        wallUP.createWall(27f, 15f, 27f, 20f, 0, world, scale, moveX, moveY);
-        wallVP.createWall(27f, 12f, 27f, 13f, 0, world, scale, moveX, moveY);
-        wallWP.createWall(27f, 0f, 27f, 7f, 0, world, scale, moveX, moveY);
-        wallSP.createWall(21f, 0f, 21f, 7f, 0, world, scale, moveX, moveY);
-        wallRP.createWall(17f, 0f, 17f, 7f, 0, world, scale, moveX, moveY);
-        wallZP.createWall(12f, 0f, 12f, 5f, 0, world, scale, moveX, moveY);
+        wallBP.createWall(40f, 0f, 40f, 20f, world, scale, moveX, moveY);
+        wallCP.createWall(0f, 0f, 0f, 20f, world, scale, moveX, moveY);
+        wallQP.createWall(16f, 12f, 16f, 20f, world, scale, moveX, moveY);
+        wallTP.createWall(21f, 19f, 21f, 20f, world, scale, moveX, moveY);
+        wallUP.createWall(27f, 15f, 27f, 20f, world, scale, moveX, moveY);
+        wallVP.createWall(27f, 12f, 27f, 13f, world, scale, moveX, moveY);
+        wallWP.createWall(27f, 0f, 27f, 7f, world, scale, moveX, moveY);
+        wallSP.createWall(21f, 0f, 21f, 7f, world, scale, moveX, moveY);
+        wallRP.createWall(17f, 0f, 17f, 7f, world, scale, moveX, moveY);
+        wallZP.createWall(12f, 0f, 12f, 5f, world, scale, moveX, moveY);
 
         //WALLs other
         Wall wallCrookedOne = new Wall();
         Wall wallCrookedTwo = new Wall();
 
-        wallCrookedOne.createWall(17f, 15f, 18f, 16f, 0, world, scale, moveX, moveY);
-        wallCrookedTwo.createWall(19f, 17f, 21f, 19f, 0, world, scale, moveX, moveY);
+        wallCrookedOne.createWall(17f, 15f, 18f, 16f, world, scale, moveX, moveY);
+        wallCrookedTwo.createWall(19f, 17f, 21f, 19f, world, scale, moveX, moveY);
 
 
-        wallAR.createWall(0f, 20f, 40f, 20f, 0, world, scale, moveX, moveY);
+        wallAR.createWall(0f, 20f, 40f, 20f, world, scale, moveX, moveY);
     }
 
     @Override

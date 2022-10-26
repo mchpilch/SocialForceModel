@@ -30,7 +30,7 @@ public class Wall {
 
     public Body createWall(
             float x1, float y1, float x2, float y2,
-            float density, World world,
+            World world,
             float scale, float moveX, float moveY
     ) {
         this.x1 = scale*(x1+moveX);
@@ -45,6 +45,7 @@ public class Wall {
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.StaticBody;
         Body body = world.createBody(def);
+        float density = 0f;
         body.createFixture(poly, density);
         body.setTransform(this.x1, this.y1, 0);
         poly.dispose();
