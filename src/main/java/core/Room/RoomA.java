@@ -27,10 +27,37 @@ public class RoomA extends Game {
         float moveX = -20f;
         float moveY = -10f;
 
+        //WALLs parallel
         Wall wallAR = new Wall();
-        Wall wallBP = new Wall();
         Wall wallCR = new Wall();
-        Wall wallDP = new Wall();
+        Wall wallER = new Wall();
+        Wall wallFR = new Wall();
+        Wall wallMR = new Wall();
+        Wall wallNR = new Wall();
+        Wall wallGR = new Wall();
+        Wall wallHR = new Wall();
+        Wall wallOR = new Wall();
+        Wall wallPR = new Wall();
+        Wall wallIR = new Wall();
+        Wall wallJR = new Wall();
+        Wall wallKR = new Wall();
+        Wall wallLR = new Wall();
+
+        //WALLs perpendicular
+        Wall wallBP = new Wall();
+        Wall wallCP = new Wall();
+        Wall wallQP = new Wall();
+        Wall wallTP = new Wall();
+        Wall wallUP = new Wall();
+        Wall wallVP = new Wall();
+        Wall wallWP = new Wall();
+        Wall wallSP = new Wall();
+        Wall wallRP = new Wall();
+        Wall wallZP = new Wall();
+
+        //WALLs other
+        Wall wallCrookedOne = new Wall();
+        Wall wallCrookedTwo = new Wall();
 
         wallAR.createWall(0f, 20f, 40f, 20f, 0, world, scale, moveX, moveY); // top wall
         //wallCR.createWall(0f + scaleX, 0f + scaleY, 40f + scaleX, 0f + scaleY, 0, world); // top wall
