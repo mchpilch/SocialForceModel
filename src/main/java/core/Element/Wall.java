@@ -28,11 +28,15 @@ public class Wall {
 
     public Body body;
 
-    public Body createWall(float x1, float y1, float x2, float y2, float density, World world) {
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
+    public Body createWall(
+            float x1, float y1, float x2, float y2,
+            float density, World world,
+            float scale, float moveX, float moveY
+    ) {
+        this.x1 = scale*(x1+moveX);
+        this.y1 = scale*(y1+moveY);
+        this.x2 = scale*(x2+moveX);
+        this.y2 = scale*(y2+moveY);
 
 
         EdgeShape poly = new EdgeShape();

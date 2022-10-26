@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import core.Experiment.Boot;
 import core.Lab.WallRepulsion;
 import core.Model.SocialForceModel;
+import core.Room.RoomA;
 
 public class DesktopLauncher {
     public static void main(String[] args) {

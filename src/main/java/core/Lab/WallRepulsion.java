@@ -33,6 +33,11 @@ public class WallRepulsion extends Game {
         world = new World(new Vector2(0, 0), true);
         camera = new OrthographicCamera(50, 25);
         debugRenderer = new Box2DDebugRenderer();
+
+        float scale = 1f;
+        float moveX = 0f;
+        float moveY = 0f;
+
         Wall wall1 = new Wall();
         Wall wall2 = new Wall();
         Wall wall3 = new Wall();
@@ -45,16 +50,16 @@ public class WallRepulsion extends Game {
         Wall wall8 = new Wall();
 
 
-//        wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
-//        wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
-//        wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
-//        wall4.createWall(20, -10, 20, 10, 0, world); // right wall
+//        wall1.createWall(-20, -10f, 20, -10f, 0, world, scale, moveX,moveY); //bottom wall
+//        wall2.createWall(-20, 10f, 20, 10f, 0, world, scale, moveX,moveY); // top wall
+//        wall3.createWall(-20, -10, -20, 10, 0, world, scale, moveX,moveY); // left wall
+//        wall4.createWall(20, -10, 20, 10, 0, world, scale, moveX,moveY); // right wall
 //
-        wall5.createWall(-10, -3, 10, -3, 0, world);
-//        wall6.createWall(-20, -6, 20, 8, 0, world);
+        wall5.createWall(-10, -3, 10, -3, 0, world, scale, moveX,moveY);
+//        wall6.createWall(-20, -6, 20, 8, 0, world, scale, moveX,moveY);
 
-//        wall7.createWall(0, -100, 0, 100, 0, world); //x= 0
-//        wall8.createWall(-100, 0, 100, 0, 0, world); //y = 0
+//        wall7.createWall(0, -100, 0, 100, 0, world, scale, moveX,moveY); //x= 0
+//        wall8.createWall(-100, 0, 100, 0, 0, world, scale, moveX,moveY); //y = 0
 
 //        wallStorage.add(wall1);
 //        wallStorage.add(wall2);

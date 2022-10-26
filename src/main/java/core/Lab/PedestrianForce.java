@@ -34,15 +34,20 @@ public class PedestrianForce extends Game {
         world = new World(new Vector2(0, 0), true);
         camera = new OrthographicCamera(50, 25);
         debugRenderer = new Box2DDebugRenderer();
+
+        float scale = 1f;
+        float moveX = 0f;
+        float moveY = 0f;
+
         Wall wall1 = new Wall();
         Wall wall2 = new Wall();
         Wall wall3 = new Wall();
         Wall wall4 = new Wall();
 
-        wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
-        wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
-        wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
-        wall4.createWall(20, -10, 20, 10, 0, world); // right wall
+        wall1.createWall(-20, -10f, 20, -10f, 0, world, scale, moveX,moveY); //bottom wall
+        wall2.createWall(-20, 10f, 20, 10f, 0, world, scale, moveX,moveY); // top wall
+        wall3.createWall(-20, -10, -20, 10, 0, world, scale, moveX,moveY); // left wall
+        wall4.createWall(20, -10, 20, 10, 0, world, scale, moveX,moveY); // right wall
 
         wallStorage.add(wall1);
         wallStorage.add(wall2);

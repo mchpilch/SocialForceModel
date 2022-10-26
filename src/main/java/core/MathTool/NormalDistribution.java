@@ -10,7 +10,7 @@ public class NormalDistribution {
 
     public static void main(String[] args) {
         int count = 20_000; // Generated random numbers
-        double mid = 22;
+        double mid = 23;
         double coeff = 2;
         double lowest = mid;  // For statistics
         double highest = mid;

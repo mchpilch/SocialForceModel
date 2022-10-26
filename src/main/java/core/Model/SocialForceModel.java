@@ -14,6 +14,7 @@ import core.Element.Human;
 import core.Element.Wall;
 import core.MathTool.LinearEquations;
 
+import static core.MathTool.ConvertToShoulderSpan.convertToShoulderSpan;
 import static core.MathTool.NormalDistribution.generateRandomBMI;
 
 public class SocialForceModel extends Game {
@@ -46,8 +47,13 @@ public class SocialForceModel extends Game {
     @Override
     public void create() {
         world = new World(new Vector2(0, 0), true);
-        camera = new OrthographicCamera(50, 25);
+        camera = new OrthographicCamera(100, 50);
         debugRenderer = new Box2DDebugRenderer();
+
+        float scale = 2f;
+        float moveX = 0f;
+        float moveY = 0f;
+
         Wall wall0bottomLeft = new Wall();
         Wall wall0bottomRight = new Wall();
 
@@ -57,27 +63,28 @@ public class SocialForceModel extends Game {
         Wall wall2bottomLeft = new Wall();
         Wall wall2bottomRight = new Wall();
 
-        //Wall wall1 = new Wall();
+//        Wall wall1 = new Wall();
         Wall wall2 = new Wall();
         Wall wall3 = new Wall();
         Wall wall4 = new Wall();
+
 
         Element.createCircle(0,-12.73f,0.5f,1,world);
 
 
         //wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
-        wall0bottomLeft.createWall(-20, -10f, -2, -10f, 0, world); //bottom wall
-        wall0bottomRight.createWall(2, -10f, 20, -10f, 0, world); //bottom wall
+        wall0bottomLeft.createWall(-20, -10f, -1f, -10f, 0, world, scale, moveX, moveY); //bottom wall
+        wall0bottomRight.createWall(1f, -10f, 20, -10f, 0, world, scale, moveX, moveY); //bottom wall
 
-        wall1bottomLeft.createWall(-20, -5f, -2, -5f, 0, world); //bottom wall
-        wall1bottomRight.createWall(2, -5f, 20, -5f, 0, world); //bottom wall
+        wall1bottomLeft.createWall(-20, -5f, -2, -5f, 0, world, scale, moveX, moveY); //bottom wall
+        wall1bottomRight.createWall(2, -5f, 20, -5f, 0, world, scale, moveX, moveY); //bottom wall
 
-        wall2bottomLeft.createWall(-20, 5f, -2, 5f, 0, world); //bottom wall
-        wall2bottomRight.createWall(2, 5f, 20, 5f, 0, world); //bottom wall
+        wall2bottomLeft.createWall(-20, 5f, -2, 5f, 0, world, scale, moveX, moveY); //bottom wall
+        wall2bottomRight.createWall(2, 5f, 20, 5f, 0, world, scale, moveX, moveY); //bottom wall
 
-        wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
-        wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
-        wall4.createWall(20, -10, 20, 10, 0, world); // right wall
+        wall2.createWall(-20, 10f, 20, 10f, 0, world, scale, moveX, moveY); // top wall
+        wall3.createWall(-20, -10, -20, 10, 0, world, scale, moveX, moveY); // left wall
+        wall4.createWall(20, -10, 20, 10, 0, world, scale, moveX, moveY); // right wall
 
         //wallStorage.add(wall1);
         wallStorage.add(wall0bottomLeft);
@@ -89,8 +96,6 @@ public class SocialForceModel extends Game {
         wallStorage.add(wall2);
         wallStorage.add(wall3);
         wallStorage.add(wall4);
-
-
 
 
        // Element.createRectangle(BodyDef.BodyType.StaticBody,exitCoordinatesX,exitCoordinatesY,1,1,0, world);
@@ -106,8 +111,8 @@ public class SocialForceModel extends Game {
                 camera.unproject(touchedPoint);
                 Human man = new Human();
                 float BMI = generateRandomBMI();
-                float shoulderSpan = 2*BMI/100;
-                man.createMan(touchedPoint.x, touchedPoint.y, shoulderSpan, BMI, world);
+                float shoulderSpan = convertToShoulderSpan(BMI);
+                man.createMan(touchedPoint.x, touchedPoint.y, shoulderSpan/2, 1000, world);
                 peopleStorage.add(man);
                 allStorage.add(man.body);
                 return true;
@@ -125,7 +130,7 @@ public class SocialForceModel extends Game {
         float personalborder = 5f;
 
         float wallRepNomCoeff = 8f; //0-200 deafault:10 wallRepulsionNominatorCoefficient
-        float wallRepNomCoeff2 = 4f; //0-200 deafault:10 wallRepulsionNominatorCoefficient
+        float wallRepNomCoeff2 = 0.1f; //0-200 deafault:10 wallRepulsionNominatorCoefficient
         int powerR = 2;
 
         float exitCoefficient = 3f;

@@ -37,6 +37,10 @@ public class GoToExit extends Game {
         camera = new OrthographicCamera(50, 25);
         debugRenderer = new Box2DDebugRenderer();
 
+        float scale = 1f;
+        float moveX = 0f;
+        float moveY = 0f;
+
         Wall wall0bottomLeft = new Wall();
         Wall wall0bottomRight = new Wall();
 
@@ -45,13 +49,13 @@ public class GoToExit extends Game {
         Wall wall3 = new Wall();
         Wall wall4 = new Wall();
 
-        //wall1.createWall(-20, -10f, 20, -10f, 0, world); //bottom wall
-        wall0bottomLeft.createWall(-20, -10f, -1, -10f, 0, world); //bottom wall
-        wall0bottomRight.createWall(1, -10f, 20, -10f, 0, world); //bottom wall
+        //wall1.createWall(-20, -10f, 20, -10f, 0, world, scale, moveX,moveY); //bottom wall
+        wall0bottomLeft.createWall(-20, -10f, -1, -10f, 0, world, scale, moveX,moveY); //bottom wall
+        wall0bottomRight.createWall(1, -10f, 20, -10f, 0, world, scale, moveX,moveY); //bottom wall
 
-        wall2.createWall(-20, 10f, 20, 10f, 0, world); // top wall
-        wall3.createWall(-20, -10, -20, 10, 0, world); // left wall
-        wall4.createWall(20, -10, 20, 10, 0, world); // right wall
+        wall2.createWall(-20, 10f, 20, 10f, 0, world, scale, moveX,moveY); // top wall
+        wall3.createWall(-20, -10, -20, 10, 0, world, scale, moveX,moveY); // left wall
+        wall4.createWall(20, -10, 20, 10, 0, world, scale, moveX,moveY); // right wall
 
         //wallStorage.add(wall1);
         wallStorage.add(wall0bottomLeft);
