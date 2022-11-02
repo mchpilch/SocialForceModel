@@ -69,8 +69,9 @@ public class RoomA extends Game {
         Wall wallCP = new Wall();
         Wall wallQP = new Wall();
         Wall wallTP = new Wall();
-        Wall wallUP = new Wall();
-        Wall wallVP = new Wall();
+        //Wall wallUP = new Wall();
+        Wall wallUP_T = new Wall();
+        Wall wallUP_B = new Wall();
         Wall wallWP = new Wall();
         Wall wallSP = new Wall();
         Wall wallRP = new Wall();
@@ -80,8 +81,8 @@ public class RoomA extends Game {
         wallCP.createWall(0f, 0f, 0f, 20f, world, scale, moveX, moveY);
         wallQP.createWall(16f, 12f, 16f, 20f, world, scale, moveX, moveY);
         wallTP.createWall(21f, 19f, 21f, 20f, world, scale, moveX, moveY);
-        wallUP.createWall(27f, 15f, 27f, 20f, world, scale, moveX, moveY);
-        wallVP.createWall(27f, 12f, 27f, 13f, world, scale, moveX, moveY);
+        wallUP_T.createWall(27f, 15f, 27f, 17f, world, scale, moveX, moveY);
+        wallUP_B.createWall(27f, 12f, 27f, 13f, world, scale, moveX, moveY);
         wallWP.createWall(27f, 0f, 27f, 7f, world, scale, moveX, moveY);
         wallSP.createWall(21f, 0f, 21f, 7f, world, scale, moveX, moveY);
         wallRP.createWall(17f, 0f, 17f, 7f, world, scale, moveX, moveY);
