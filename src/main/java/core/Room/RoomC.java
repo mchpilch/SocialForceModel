@@ -27,6 +27,9 @@ public class RoomC extends Game {
         float moveX = -20f;
         float moveY = -20f;
 
+        float doorWidth = 2f;
+        float halfDoorWidth = doorWidth/2;
+
         Wall wallAR = new Wall();
         Wall wallBR_L = new Wall();
         Wall wallBR_P = new Wall();
@@ -36,10 +39,10 @@ public class RoomC extends Game {
 
 
         wallAR.createWall(0f, 0f, 32f, 0f, world, scale, moveX, moveY);
-        wallBR_L.createWall(0f, 12f, 23f, 12f, world, scale, moveX, moveY);
-        wallBR_P.createWall(25f, 12f, 32f, 12f, world, scale, moveX, moveY);
-        wallCR_L.createWall(0f, 20f, 7f, 20f, world, scale, moveX, moveY);
-        wallCR_P.createWall(9f, 20f, 32f, 20f, world, scale, moveX, moveY);
+        wallBR_L.createWall(0f, 12f, 24f-halfDoorWidth, 12f, world, scale, moveX, moveY);
+        wallBR_P.createWall(24f+halfDoorWidth, 12f, 32f, 12f, world, scale, moveX, moveY);
+        wallCR_L.createWall(0f, 20f, 8f-halfDoorWidth, 20f, world, scale, moveX, moveY);
+        wallCR_P.createWall(8f+halfDoorWidth, 20f, 32f, 20f, world, scale, moveX, moveY);
         wallDR.createWall(0f, 32f, 32f, 32f, world, scale, moveX, moveY);
 
         Wall wallAP_T = new Wall();
@@ -51,14 +54,14 @@ public class RoomC extends Game {
         Wall wallDP_T = new Wall();
         Wall wallDP_B = new Wall();
 
-        wallAP_T.createWall(0f, 17f, 0f, 32f, world, scale, moveX, moveY);
-        wallAP_B.createWall(0f, 0f, 0f, 15f, world, scale, moveX, moveY);
-        wallBP_T.createWall(32f, 17f, 32f, 32f, world, scale, moveX, moveY);
-        wallBP_B.createWall(32f, 0f, 32f, 15f, world, scale, moveX, moveY);
-        wallCP_T.createWall(16f, 27f, 16f, 32f, world, scale, moveX, moveY);
-        wallCP_B.createWall(16f, 20f, 16f, 25f, world, scale, moveX, moveY);
-        wallDP_T.createWall(16f, 7f, 16f, 12f, world, scale, moveX, moveY);
-        wallDP_B.createWall(16f, 0f, 16f, 5f, world, scale, moveX, moveY);
+        wallAP_T.createWall(0f, 16f+halfDoorWidth, 0f, 32f, world, scale, moveX, moveY);
+        wallAP_B.createWall(0f, 0f, 0f, 16f-halfDoorWidth, world, scale, moveX, moveY);
+        wallBP_T.createWall(32f, 16f+halfDoorWidth, 32f, 32f, world, scale, moveX, moveY);
+        wallBP_B.createWall(32f, 0f, 32f, 16f-halfDoorWidth, world, scale, moveX, moveY);
+        wallCP_T.createWall(16f, 26f+halfDoorWidth, 16f, 32f, world, scale, moveX, moveY);
+        wallCP_B.createWall(16f, 20f, 16f, 26f-halfDoorWidth, world, scale, moveX, moveY);
+        wallDP_T.createWall(16f, 6f+halfDoorWidth, 16f, 12f, world, scale, moveX, moveY);
+        wallDP_B.createWall(16f, 0f, 16f, 6f-halfDoorWidth, world, scale, moveX, moveY);
 
     }
 
