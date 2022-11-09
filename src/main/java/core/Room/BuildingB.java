@@ -2,17 +2,14 @@ package core.Room;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import core.Element.Human;
 import core.Element.Wall;
 
-public class RoomB extends Game {
+public class BuildingB extends Game {
     World world;
     OrthographicCamera camera;
     Box2DDebugRenderer debugRenderer;

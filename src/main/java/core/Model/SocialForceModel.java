@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import core.Element.Door;
 import core.Element.Element;
 import core.Element.Human;
 import core.Element.Wall;
@@ -39,6 +40,7 @@ public class SocialForceModel extends Game {
     Array<Wall> wallStorage = new Array<Wall>();
     Array<Body> allStorage = new Array<Body>();
     Array<Body> environmentStorage = new Array<Body>();
+    Array<Door> doorStorage = new Array<Door>();
 
     float exitCoordinatesX = 0;
     float exitCoordinatesY = -12;
@@ -215,7 +217,12 @@ public class SocialForceModel extends Game {
 
 
 
-        wallAR.createWall(0f, 20f, 40f, 20f, world, scale, moveX, moveY);
+
+        //wallAR.createWall(0f, 20f, 40f, 20f, world, scale, moveX, moveY);
+
+        Door door1 = new Door(0,0, "door1");
+
+        doorStorage.add(door1);
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
@@ -225,7 +232,7 @@ public class SocialForceModel extends Game {
                 Human man = new Human();
                 float BMI = generateRandomBMI();
                 float shoulderSpan = convertToShoulderSpan(BMI);
-                man.createMan(touchedPoint.x, touchedPoint.y, shoulderSpan/2, 1000, world);
+                man.createMan(touchedPoint.x, touchedPoint.y, shoulderSpan/2, 1000, door1, world);
                 peopleStorage.add(man);
                 allStorage.add(man.body);
                 return true;
@@ -246,7 +253,7 @@ public class SocialForceModel extends Game {
         float wallRepNomCoeff2 = 0.1f; //0.1f
         int powerR = 2; //2f
 
-        float exitCoefficient = 0f; //3f
+        float exitCoefficient = 5f; //3f
 
 
 

@@ -16,6 +16,18 @@ public class Human{//extends Body
     public int id;
     public Map<Integer,Vector2> humanForces = new HashMap<>();//id, gravity force with this id
 
+    public Door exit;
+
+    public Room room;
+
+    public Door getExit() {
+        return exit;
+    }
+
+    public void setExit(Door exit) {
+        this.exit = exit;
+    }
+
     public int getId() {
         return id;
     }
@@ -24,14 +36,26 @@ public class Human{//extends Body
         this.id =  id;
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     @Override
     public String toString() {
         return "Human{" +
-                "humanForces=" + humanForces +
+                "body=" + body +
+                ", id=" + id +
+                ", humanForces=" + humanForces +
+                ", exit=" + exit +
+                ", room=" + room +
                 '}';
     }
 
-    public Body createMan(float x, float y, float radius, float density, World world) {
+    public Body createMan(float x, float y, float radius, float density, Door firstExit, World world) {
         this.id = createID();
         CircleShape poly = new CircleShape();
         poly.setRadius(radius);
@@ -44,6 +68,9 @@ public class Human{//extends Body
         body.setFixedRotation(true); //dzięki temu ja odpowiadam za obrót a nie silnik, no. przy zderzeniach
         poly.dispose();
 
+        setExit(firstExit);
+
+        //policzenie pierwszych drzwi
         return body;
     }
 

@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import core.Element.Door;
 import core.Element.Human;
 import core.Element.Wall;
 
@@ -28,6 +29,7 @@ public class PedestrianForce extends Game {
     Array<Wall> wallStorage = new Array<Wall>();
     Array<Body> allStorage = new Array<Body>();
     Array<Body> environmentStorage = new Array<Body>();
+    Array<Door> doorStorage = new Array<Door>();
 
     @Override
     public void create() {
@@ -54,6 +56,10 @@ public class PedestrianForce extends Game {
         wallStorage.add(wall3);
         wallStorage.add(wall4);
 
+        Door door1 = new Door(0,0, "door1");
+
+        doorStorage.add(door1);
+
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
@@ -61,7 +67,7 @@ public class PedestrianForce extends Game {
                 Vector3 touchedPoint = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(touchedPoint);
                 Human man = new Human();
-                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, world);
+                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, door1, world);
                 peopleStorage.add(man);
 //                man.setId(pedIdCounter);
 //                pedIdCounter++;

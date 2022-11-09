@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import core.Element.Door;
 import core.Element.Human;
 import core.Element.Wall;
 import core.MathTool.LinearEquations;
@@ -27,6 +28,8 @@ public class WallRepulsion extends Game {
 
     Array<Human> peopleStorage = new Array<Human>();
     Array<Wall> wallStorage = new Array<Wall>();
+
+    Array<Door> doorStorage = new Array<Door>();
 
     @Override
     public void create() {
@@ -72,6 +75,10 @@ public class WallRepulsion extends Game {
 //        wallStorage.add(wall7);
 //        wallStorage.add(wall8);
 
+        Door door1 = new Door(0,0, "door1");
+
+        doorStorage.add(door1);
+
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
@@ -79,7 +86,7 @@ public class WallRepulsion extends Game {
                 Vector3 touchedPoint = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(touchedPoint);
                 Human man = new Human();
-                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, world);
+                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, door1, world);
                 peopleStorage.add(man);
                 return true;
             }

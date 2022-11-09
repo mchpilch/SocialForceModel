@@ -2,10 +2,8 @@ package core;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import core.Experiment.Boot;
-import core.Lab.WallRepulsion;
+import core.Lab.GoToExit;
 import core.Model.SocialForceModel;
-import core.Room.RoomA;
 
 public class DesktopLauncher {
     public static void main(String[] args) {
@@ -16,6 +14,6 @@ public class DesktopLauncher {
 
         config.setWindowedMode(1600,900);
         //config.setWindowedMode(1920,1080);
-        new Lwjgl3Application(new SocialForceModel(), config);
+        new Lwjgl3Application(new GoToExit(), config);
     }
 }

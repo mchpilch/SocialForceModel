@@ -2,17 +2,14 @@ package core.Room;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import core.Element.Human;
 import core.Element.Wall;
 
-public class RoomA extends Game {
+public class BuildingA extends Game {
     World world;
     OrthographicCamera camera;
     Box2DDebugRenderer debugRenderer;
@@ -23,7 +20,7 @@ public class RoomA extends Game {
         camera = new OrthographicCamera(100, 50);
         debugRenderer = new Box2DDebugRenderer();
 
-        float scale = 1.0f;
+        float scale = 2.0f;
         float moveX = -20f;
         float moveY = -10f;
 

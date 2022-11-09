@@ -55,6 +55,11 @@
             <artifactId>gdx-openal</artifactId>
             <version>0.9.9</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.0.1-jre</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>Pong</finalName>
