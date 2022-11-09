@@ -122,10 +122,20 @@ public class GoToExit extends Game {
 
         Door door1 = new Door(-18,0, "door1");
         Door door2 = new Door(0,18, "door2");
+        Door door3 = new Door(36,36, "door3");
+        Door door4 = new Door(-36,-36, "door4");
 
         doorStorage.add(door1);
+        doorStorage.add(door2);
+        doorStorage.add(door3);
+        doorStorage.add(door4);
+
         roomAndDoors.put(room5,door1);
         roomAndDoors.put(room5,door2);
+        roomAndDoors.put(room5,door3);
+        roomAndDoors.put(room5,door4);
+
+
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -158,6 +168,7 @@ public class GoToExit extends Game {
                 checkRoom();
                 System.out.println("AAA:" + roomStorage.get(4).getName());
                 pedestrian.setRoom(roomStorage.get(4));
+                System.out.println("chooseDoor() " +  chooseDoor(pedestrian));
                 chooseDoor(pedestrian);
 
                     float currPosX = pedestrian.body.getPosition().x;
@@ -211,21 +222,32 @@ public class GoToExit extends Game {
         return pseudoExitForce;
     }
 
-    public void chooseDoor(Human pedestrian){ //wybierz odpowiednie drzwi w pomieszczeniu przechowywanym w human
+    public String chooseDoor(Human pedestrian){ //wybierz odpowiednie drzwi w pomieszczeniu przechowywanym w human
+        String doorName = "";
+        float minDistance = 100000; //duża wartość która nie wystąpi i będzie na pewno nadpisana
         Room pedRoom = pedestrian.getRoom();
         Array<Door> doorInCurrentRoom = new Array<Door>();
         for (Room room : roomAndDoors.keySet()) {
-            int numberOfDoorsInRoom = roomAndDoors.get(room).size();
-            for(int position = 0; position < numberOfDoorsInRoom; position++){
-                doorInCurrentRoom.add(Iterables.get(roomAndDoors.get(room), position));
+            if(room.getName().equals(pedRoom.getName())){
+                int numberOfDoorsInRoom = roomAndDoors.get(room).size();
+                for(int position = 0; position < numberOfDoorsInRoom; position++){
+                    doorInCurrentRoom.add(Iterables.get(roomAndDoors.get(room), position));
+                }
             }
-//            if(room.getName().equals(pedRoom)){
-//                System.out.println("AAA");
-//                System.out.println(roomAndDoors.get(room));
-//                System.out.println("BBB");
-//            }
         }
-        System.out.println("doorInCurrentRoom" + doorInCurrentRoom);
+        float pedX = pedestrian.body.getPosition().x;
+        float pedY = pedestrian.body.getPosition().y;
+        for(int i = 0; i < doorInCurrentRoom.size; i++){
+            float doorX = doorInCurrentRoom.get(i).getX();
+            float doorY = doorInCurrentRoom.get(i).getY();
+            Vector2 distanceVec = new Vector2(doorX-pedX,doorY-pedY);
+            float distance = distanceVec.len();
+            if(distance <= minDistance){
+                minDistance = distance;
+                doorName = doorInCurrentRoom.get(i).getCode();
+            }
+        }
+        return doorName;
     }
 
     //Iterables.get(myMultimap.get(key), position);
