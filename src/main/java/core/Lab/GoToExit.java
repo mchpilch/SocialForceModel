@@ -12,20 +12,14 @@ import com.badlogic.gdx.utils.Array;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
-import core.Element.Door;
-import core.Element.Human;
-import core.Element.Room;
-import core.Element.Wall;
-import core.Room.ListenerClass;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import core.Element.*;
+import core.Room.RoomListener;
 
 public class GoToExit extends Game {
     World world;
     OrthographicCamera camera;
     Box2DDebugRenderer debugRenderer;
+
 
     private float timeSeconds = 0f;
     private float period = 1f;
@@ -40,13 +34,21 @@ public class GoToExit extends Game {
     Array<Room> roomStorage = new Array<Room>();
     Multimap<Room,Door> roomAndDoors = ArrayListMultimap.create();  //https://www.baeldung.com/guava-multimap //allows dupicated keys so one key can have many values
 
-    ListenerClass listener = new ListenerClass();
+    RoomListener listener = new RoomListener();
+
 
     @Override
     public void create() {
         world = new World(new Vector2(0, 0), true);
         camera = new OrthographicCamera(100, 50);
         debugRenderer = new Box2DDebugRenderer();
+
+
+        createCollisionListener();
+
+
+        this.world.setContactListener(new RoomListener());
+
 
 //        world.setContactListener(listener);
 //
@@ -108,16 +110,16 @@ public class GoToExit extends Game {
         wallDP_T.createWall(16f, 6f+halfDoorWidth, 16f, 12f, world, scale, moveX, moveY);
         wallDP_B.createWall(16f, 0f, 16f, 6f-halfDoorWidth, world, scale, moveX, moveY);
 
-        Room room1 = new Room("Room-1-Top-Right");
-        Room room2 = new Room("Room-2-Top-Left");
-        Room room3 = new Room("Room-3-Bottom-Left");
-        Room room4 = new Room("Room-4-Bottom-Right");
-        Room room5 = new Room("Room-5-MainHall");
+//        Room room1 = new Room(0,0, 0,0, world,"Room-1-Top-Right");
+//        Room room2 = new Room(0,0, 0,0, world,"Room-2-Top-Left");
+//        Room room3 = new Room(0,0, 0,0, world,"Room-3-Bottom-Left");
+//        Room room4 = new Room(0,0, 0,0, world,"Room-4-Bottom-Right");
+        Room room5 = new Room(0+16f,0+16f, 1f,1f, world,"Room-5-MainHall", scale, moveX, moveY);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
 
-        roomStorage.add(room1);
-        roomStorage.add(room2);
-        roomStorage.add(room3);
-        roomStorage.add(room4);
+//        roomStorage.add(room1);
+//        roomStorage.add(room2);
+//        roomStorage.add(room3);
+//        roomStorage.add(room4);
         roomStorage.add(room5);
 
         Door door1 = new Door(-18,0, "door1");
@@ -157,41 +159,59 @@ public class GoToExit extends Game {
     public void render() {
         Gdx.gl.glClearColor(.125f, .125f, .125f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//        ShapeRenderer shapeRenderer = new ShapeRenderer();
+//
+        Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer(
+                true,
+                true,
+                false,
+                false,//
+                true,
+                false
+        );
+        debugRenderer.render(world,camera.combined);
 
-        debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
+
+
+        //debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
         world.step(1 / 60f, 6, 2);
 
 // GO TO EXIT
         float exitCoefficient = 3f;
         if (peopleStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
+                pedestrian.setRoom(roomStorage.get(0));
                 checkRoom();
-                System.out.println("AAA:" + roomStorage.get(4).getName());
-                pedestrian.setRoom(roomStorage.get(4));
-                System.out.println("chooseDoor() " +  chooseDoor(pedestrian));
+
+                for(int i = 0; i < roomStorage.size; i++){
+                    if(roomStorage.get(i).getName().equals(chooseDoor(pedestrian))){
+                        pedestrian.setRoom(roomStorage.get(i));
+                    }
+                }
+
                 chooseDoor(pedestrian);
 
-                    float currPosX = pedestrian.body.getPosition().x;
-                    float currPosY = pedestrian.body.getPosition().y;
+                float currPosX = pedestrian.body.getPosition().x;
+                float currPosY = pedestrian.body.getPosition().y;
 
-                    Vector2 pseudoExitForce = calculateExitForceDirectionAndPhrase(pedestrian,exitCoefficient);
-                    pedestrian.body.setLinearVelocity(pseudoExitForce);
+                Vector2 pseudoExitForce = calculateExitForceDirectionAndPhrase(pedestrian,exitCoefficient);
+                pedestrian.body.setLinearVelocity(pseudoExitForce);
 
-                    float angle = calculatePedestrianAngle(pseudoExitForce);
-                    pedestrian.body.setTransform(currPosX, currPosY, angle);
+                float angle = calculatePedestrianAngle(pseudoExitForce);
+                pedestrian.body.setTransform(currPosX, currPosY, angle);
 
 
 
-                    timeSeconds += Gdx.graphics.getDeltaTime();
-                    if(timeSeconds > period){
-                        timeSeconds -= period;
-                        timer += period;
-                        float x = pedestrian.body.getLinearVelocity().x;
-                        float y = pedestrian.body.getLinearVelocity().y;
-                        //chooseDoor();
-                        float wynik = (float) Math.sqrt(x*x + y*y);
-                        System.out.println("szybkość: " + wynik);
-                    }
+                timeSeconds += Gdx.graphics.getDeltaTime();
+                if(timeSeconds > period){
+                    timeSeconds -= period;
+                    timer += period;
+                    float x = pedestrian.body.getLinearVelocity().x;
+                    float y = pedestrian.body.getLinearVelocity().y;
+                    //chooseDoor();
+                    float wynik = (float) Math.sqrt(x*x + y*y);
+                    //System.out.println("szybkość: " + wynik);
+                }
             });
         }
 
@@ -199,11 +219,21 @@ public class GoToExit extends Game {
                     if(timeSeconds > period){
                         timeSeconds-=period;
                         timer += period;
-                        System.out.println("allStorage " + allStorage.size + allStorage);
-                        System.out.println("peopleStorage " + peopleStorage.size  + peopleStorage);
-                        System.out.println("environmentStorage " + environmentStorage.size  + environmentStorage);
-
+//                        System.out.println("allStorage " + allStorage.size + allStorage);
+//                        System.out.println("peopleStorage " + peopleStorage.size  + peopleStorage);
+//                        System.out.println("environmentStorage " + environmentStorage.size  + environmentStorage);
                     }
+
+        int numContacts = world.getContactCount();
+        if (numContacts > 0) {
+            Gdx.app.log("contact", "start of contact list");
+            for (Contact contact : world.getContactList()) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                Gdx.app.log("contact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
+            }
+            Gdx.app.log("contact", "end of contact list");
+        }
 
     }
 
@@ -253,11 +283,40 @@ public class GoToExit extends Game {
     //Iterables.get(myMultimap.get(key), position);
 
     public void checkRoom(){ //sprawdza w którym pomieszczeniu znajduje się pedestrian i ustawia mu odpowiednią wartość w human
-        System.out.println("check room");
+       // System.out.println("check room");
+
     }
     public float calculatePedestrianAngle(Vector2 netForce){
         float angle = (float) Math.atan2( netForce.y,netForce.x) ;
         return angle;
+    }
+
+    private void createCollisionListener() {
+        world.setContactListener(new ContactListener() {
+
+            @Override
+            public void beginContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                Gdx.app.log("beginContact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                Gdx.app.log("endContact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+            }
+
+        });
     }
 }
 
