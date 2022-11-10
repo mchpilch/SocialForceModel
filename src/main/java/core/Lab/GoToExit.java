@@ -15,6 +15,9 @@ import com.google.common.collect.Multimap;
 import core.Element.*;
 import core.Room.RoomListener;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class GoToExit extends Game {
     World world;
     OrthographicCamera camera;
@@ -201,18 +204,73 @@ public class GoToExit extends Game {
 
         int numContacts = world.getContactCount();
         if (numContacts > 0) {
-          //  Gdx.app.log("contact", "start of contact list");
             for (Contact contact : world.getContactList()) {
                 Fixture fixtureA = contact.getFixtureA();
                 Fixture fixtureB = contact.getFixtureB();
-                if(fixtureA.isSensor() || fixtureB.isSensor()){
-                   // if(fixtureA.getBody().){
-                        Gdx.app.log("contact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
-                  //  }
 
+                Fixture humanly = fixtureA;
+                Fixture roomy = fixtureB;
+
+                if(fixtureA.isSensor() || fixtureB.isSensor()){
+                    if(fixtureA.getUserData().getClass().equals(Room.class) && fixtureB.getUserData().getClass().equals(Human.class)){
+    //                    System.out.println(fixtureA.getUserData().toString());
+    //                    System.out.println(fixtureB.getUserData().toString());
+                        roomy = fixtureA;
+                        humanly = fixtureB;
+                    } else if (fixtureB.getUserData().getClass().equals(Room.class) && fixtureA.getUserData().getClass().equals(Human.class)) {
+                        roomy = fixtureB;
+                        humanly = fixtureA;
+                    }
+
+                    System.out.println(humanly.getUserData().toString());
+                    System.out.println(roomy.getUserData().toString());
+
+                    String contactOutputHuman = humanly.getUserData().toString();
+                    String contactOutputRoom = roomy.getUserData().toString(); //można włożyć do funkcji
+
+                    Pattern patternHuman = Pattern.compile("id=[0-9]*");
+                    Pattern patternRoom = Pattern.compile("name='Room-[0-9]*-[A-z0-9]*'");
+
+                    Matcher matcherHuman = patternHuman.matcher(contactOutputHuman);
+                    Matcher matcherRoom = patternRoom.matcher(contactOutputRoom);
+
+                    String infoHuman = "";
+                    String infoRoom = "";
+
+                    while (matcherHuman.find()) {
+                        infoHuman = matcherHuman.group(0);
+                    }
+                    //System.out.println("infoHuman: " + infoHuman);
+                    System.out.println(infoHuman);
+
+                    while (matcherRoom.find()) {
+                        infoRoom = matcherRoom.group(0);
+                    }
+                    //System.out.println("infoRoom: " + infoRoom);
+                    System.out.println(infoRoom);
+
+                    Pattern patternHumanBare = Pattern.compile("[0-9]+");
+                    Pattern patternRoomBare = Pattern.compile("Room-[0-9]*-[A-z0-9]*");
+
+                    Matcher matcherHumanBare = patternHumanBare.matcher(infoHuman);
+                    Matcher matcherRoomBare = patternRoomBare.matcher(infoRoom);
+
+                    String bareInfoHuman = "";
+                    String bareInfoRoom = "";
+
+                    while (matcherHumanBare.find()) {
+                        bareInfoHuman = matcherHumanBare.group(0);
+                    }
+                    //System.out.println("bareInfoHuman: " + bareInfoHuman);
+                    System.out.println(bareInfoHuman);
+
+                    while (matcherRoomBare.find()) {
+                        bareInfoRoom = matcherRoomBare.group(0);
+                    }
+                    //System.out.println("bareInfoRoom: " + bareInfoRoom);
+                    System.out.println(bareInfoRoom);
                 }
             }
-          //  Gdx.app.log("contact", "end of contact list");
         }
 
     }

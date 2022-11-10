@@ -7,6 +7,13 @@ public class Room {
 
     public Body body;
 
+    @Override
+    public String toString() {
+        return "Room{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

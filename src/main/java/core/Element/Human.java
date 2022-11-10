@@ -57,14 +57,16 @@ public class Human{//extends Body
 
     public Body createMan(float x, float y, float radius, float density, Door firstExit, World world) {
         this.id = createID();
+
         CircleShape poly = new CircleShape();
         poly.setRadius(radius);
 
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(def);
-        body.createFixture(poly, density);
+        body.createFixture(poly, density).setUserData(this);
         body.setTransform(x, y, 0);
+
         body.setFixedRotation(true); //dzięki temu ja odpowiadam za obrót a nie silnik, no. przy zderzeniach
         poly.dispose();
 
