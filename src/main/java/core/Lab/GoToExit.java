@@ -226,49 +226,11 @@ public class GoToExit extends Game {
                     System.out.println(roomy.getUserData().toString());
 
                     String contactOutputHuman = humanly.getUserData().toString();
-                    String contactOutputRoom = roomy.getUserData().toString(); //można włożyć do funkcji
+                    String contactOutputRoom = roomy.getUserData().toString();
 
-                    Pattern patternHuman = Pattern.compile("id=[0-9]*");
-                    Pattern patternRoom = Pattern.compile("name='Room-[0-9]*-[A-z0-9]*'");
+                    getHumanIdByRegex(contactOutputHuman);
+                    getCurrentRoomNameByRegex(contactOutputRoom);
 
-                    Matcher matcherHuman = patternHuman.matcher(contactOutputHuman);
-                    Matcher matcherRoom = patternRoom.matcher(contactOutputRoom);
-
-                    String infoHuman = "";
-                    String infoRoom = "";
-
-                    while (matcherHuman.find()) {
-                        infoHuman = matcherHuman.group(0);
-                    }
-                    //System.out.println("infoHuman: " + infoHuman);
-                    System.out.println(infoHuman);
-
-                    while (matcherRoom.find()) {
-                        infoRoom = matcherRoom.group(0);
-                    }
-                    //System.out.println("infoRoom: " + infoRoom);
-                    System.out.println(infoRoom);
-
-                    Pattern patternHumanBare = Pattern.compile("[0-9]+");
-                    Pattern patternRoomBare = Pattern.compile("Room-[0-9]*-[A-z0-9]*");
-
-                    Matcher matcherHumanBare = patternHumanBare.matcher(infoHuman);
-                    Matcher matcherRoomBare = patternRoomBare.matcher(infoRoom);
-
-                    String bareInfoHuman = "";
-                    String bareInfoRoom = "";
-
-                    while (matcherHumanBare.find()) {
-                        bareInfoHuman = matcherHumanBare.group(0);
-                    }
-                    //System.out.println("bareInfoHuman: " + bareInfoHuman);
-                    System.out.println(bareInfoHuman);
-
-                    while (matcherRoomBare.find()) {
-                        bareInfoRoom = matcherRoomBare.group(0);
-                    }
-                    //System.out.println("bareInfoRoom: " + bareInfoRoom);
-                    System.out.println(bareInfoRoom);
                 }
             }
         }
@@ -318,6 +280,7 @@ public class GoToExit extends Game {
         return doorName;
     }
 
+
     //Iterables.get(myMultimap.get(key), position);
 
     public void checkRoom(){ //sprawdza w którym pomieszczeniu znajduje się pedestrian i ustawia mu odpowiednią wartość w human
@@ -332,5 +295,64 @@ public class GoToExit extends Game {
     private void createCollisionListener() {
         world.setContactListener(new RoomListener());
     }
+
+    public String getHumanIdByRegex(String contactOutputHuman){
+
+        Pattern patternHuman = Pattern.compile("id=[0-9]*");
+
+        Matcher matcherHuman = patternHuman.matcher(contactOutputHuman);
+
+        String infoHuman = "";
+
+        while (matcherHuman.find()) {
+            infoHuman = matcherHuman.group(0);
+        }
+        //System.out.println("infoHuman: " + infoHuman);
+        System.out.println(infoHuman);
+
+        Pattern patternHumanBare = Pattern.compile("[0-9]+");
+
+        Matcher matcherHumanBare = patternHumanBare.matcher(infoHuman);
+
+        String bareInfoHuman = "";
+
+        while (matcherHumanBare.find()) {
+            bareInfoHuman = matcherHumanBare.group(0);
+        }
+        //System.out.println("bareInfoHuman: " + bareInfoHuman);
+        System.out.println(bareInfoHuman);
+
+        return bareInfoHuman;
+    }
+
+    public String getCurrentRoomNameByRegex(String contactOutputRoom){
+
+        Pattern patternRoom = Pattern.compile("name='Room-[0-9]*-[A-z0-9]*'");
+
+        Matcher matcherRoom = patternRoom.matcher(contactOutputRoom);
+
+        String infoRoom = "";
+
+        while (matcherRoom.find()) {
+            infoRoom = matcherRoom.group(0);
+        }
+        //System.out.println("infoRoom: " + infoRoom);
+        System.out.println(infoRoom);
+
+        Pattern patternRoomBare = Pattern.compile("Room-[0-9]*-[A-z0-9]*");
+
+        Matcher matcherRoomBare = patternRoomBare.matcher(infoRoom);
+
+        String bareInfoRoom = "";
+
+        while (matcherRoomBare.find()) {
+            bareInfoRoom = matcherRoomBare.group(0);
+        }
+        //System.out.println("bareInfoRoom: " + bareInfoRoom);
+        System.out.println(bareInfoRoom);
+
+        return bareInfoRoom;
+    }
+
 }
 
