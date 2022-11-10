@@ -43,32 +43,7 @@ public class GoToExit extends Game {
         camera = new OrthographicCamera(100, 50);
         debugRenderer = new Box2DDebugRenderer();
 
-
         createCollisionListener();
-
-
-        this.world.setContactListener(new RoomListener());
-
-
-//        world.setContactListener(listener);
-//
-//        PolygonShape polygonShape = new PolygonShape();
-//        polygonShape.setAsBox(1, 1);
-//        BodyDef def = new BodyDef();
-//        def.type = BodyDef.BodyType.StaticBody;
-//        Body body = world.createBody(def);
-//
-//
-//        FixtureDef fixtureDef = new FixtureDef();
-//        fixtureDef.density = 1;
-//        fixtureDef.friction = 0.5f;
-//        fixtureDef.restitution = 0.3f;
-//        fixtureDef.isSensor = true;
-//        fixtureDef.shape = polygonShape;
-//
-//        body.createFixture(fixtureDef);
-//        body.setTransform(0, 0, 0);
-//        polygonShape.dispose();
 
         float scale = 1.0f;
         float moveX = -16f;
@@ -226,13 +201,18 @@ public class GoToExit extends Game {
 
         int numContacts = world.getContactCount();
         if (numContacts > 0) {
-            Gdx.app.log("contact", "start of contact list");
+          //  Gdx.app.log("contact", "start of contact list");
             for (Contact contact : world.getContactList()) {
                 Fixture fixtureA = contact.getFixtureA();
                 Fixture fixtureB = contact.getFixtureB();
-                Gdx.app.log("contact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
+                if(fixtureA.isSensor() || fixtureB.isSensor()){
+                   // if(fixtureA.getBody().){
+                        Gdx.app.log("contact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
+                  //  }
+
+                }
             }
-            Gdx.app.log("contact", "end of contact list");
+          //  Gdx.app.log("contact", "end of contact list");
         }
 
     }
@@ -292,31 +272,7 @@ public class GoToExit extends Game {
     }
 
     private void createCollisionListener() {
-        world.setContactListener(new ContactListener() {
-
-            @Override
-            public void beginContact(Contact contact) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-                Gdx.app.log("beginContact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-                Gdx.app.log("endContact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-            }
-
-        });
+        world.setContactListener(new RoomListener());
     }
 }
 
