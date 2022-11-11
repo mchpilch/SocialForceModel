@@ -5,19 +5,19 @@ public class LinearEquations
     //https://danceswithcode.net/engineeringnotes/linear_equations/linear_equations.html
     
     public static void main(String[] args) {
-        System.out.println(3/4f);
-        System.out.println(-4/3f);
-        float[] answer = LinearEquations.solve2x2LinearEquation( 3/4f, 1f, -4/3f, 1f, 5f, -23f );//
-
-        if( answer == null ){
-            System.out.println( "No unique solution exists" );
-        }
-        else
-        {
-            System.out.println("Punkt przecięcia dwóch prostych ");
-            System.out.println( "x1 = Xsz "  + answer[0] );	//x1 = -2
-            System.out.println( "x2 = Ysz "  + answer[1] );	//x2 = -4
-        }
+//        System.out.println(3/4f);
+//        System.out.println(-4/3f);
+//        float[] answer = LinearEquations.solve2x2LinearEquation( 3/4f, 1f, -4/3f, 1f, 5f, -23f );//
+//
+//        if( answer == null ){
+//            System.out.println( "No unique solution exists" );
+//        }
+//        else
+//        {
+//            System.out.println("Punkt przecięcia dwóch prostych ");
+//            System.out.println( "x1 = Xsz "  + answer[0] );	//x1 = -2
+//            System.out.println( "x2 = Ysz "  + answer[1] );	//x2 = -4
+//        }
     }
 
     public static float[] solve2x2LinearEquation(

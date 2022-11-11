@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import core.Element.Door;
-import core.Element.Element;
 import core.Element.Human;
 import core.Element.Wall;
 import core.MathTool.LinearEquations;

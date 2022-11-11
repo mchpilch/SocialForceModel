@@ -92,7 +92,7 @@ public class GoToExit extends Game {
  //       Room room2 = new Room(0,0, 1,1, world,"Room-2-Top-Left", scale, moveX, moveY);
 //        Room room3 = new Room(0,0, 0,0, world,"Room-3-Bottom-Left");
 //        Room room4 = new Room(0,0, 0,0, world,"Room-4-Bottom-Right");
-        Room room5 = new Room(0+16f,0+16f, 1f,1f, world,"Room-5-MainHall", scale, moveX, moveY);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
+        Room room5 = new Room(0.5f+16f,0.5f+16f, 1f,1f, world,"Room-5-MainHall", scale, moveX, moveY);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
 
 //        roomStorage.add(room1);
     //    roomStorage.add(room2);
