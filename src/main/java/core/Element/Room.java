@@ -22,10 +22,10 @@ public class Room {
         this.name = name;
     }
 
-    public Room(float posX, float posY, float width, float height, World world, String name,  float scale, float moveX, float moveY) {
+    public Room(float posX, float posY, float width, float height, World world, String name,  float scale) {
         this.name = name;
-        posX = scale*(posX+moveX);
-        posY = scale*(posY+moveY);
+        posX = scale*(posX);
+        posY = scale*(posY);
         width = scale*width;
         height = scale*height;
         createBoxRoom(world, posX, posY, width, height);

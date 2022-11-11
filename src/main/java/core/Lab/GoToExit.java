@@ -48,12 +48,20 @@ public class GoToExit extends Game {
 
         createCollisionListener();
 
-        float scale = 1.0f;
+        float scale = 1.1f;
         float moveX = -16f;
         float moveY = -16f;
 
         float doorWidth = 2f;
         float halfDoorWidth = doorWidth/2;
+
+
+        Room room1 = new Room(8f,10f, 16/2f,12/2f, world, "Room-1-TopRight", scale);
+        Room room2 = new Room(-8f,10f, 16/2f,12/2f, world, "Room-2-TopLeft", scale);
+        Room room3 = new Room(-8f,-10f, 16/2f,12/2f, world, "Room-3-BottomLeft", scale);
+        Room room4 = new Room(8f,-10f, 16/2f,12/2f, world, "Room-4-BottomRight", scale);
+        Room room5 = new Room(0f,0f, 32/2f,8/2f, world,"Room-5-MainHall", scale);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
+
 
         Wall wallAR = new Wall();
         Wall wallBR_L = new Wall();
@@ -88,33 +96,34 @@ public class GoToExit extends Game {
         wallDP_T.createWall(16f, 6f+halfDoorWidth, 16f, 12f, world, scale, moveX, moveY);
         wallDP_B.createWall(16f, 0f, 16f, 6f-halfDoorWidth, world, scale, moveX, moveY);
 
-//        Room room1 = new Room(0,0, 0,0, world,"Room-1-Top-Right");
- //       Room room2 = new Room(0,0, 1,1, world,"Room-2-Top-Left", scale, moveX, moveY);
-//        Room room3 = new Room(0,0, 0,0, world,"Room-3-Bottom-Left");
-//        Room room4 = new Room(0,0, 0,0, world,"Room-4-Bottom-Right");
-        Room room5 = new Room(0.5f+16f,0.5f+16f, 1f,1f, world,"Room-5-MainHall", scale, moveX, moveY);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
 
-//        roomStorage.add(room1);
-    //    roomStorage.add(room2);
-//        roomStorage.add(room3);
-//        roomStorage.add(room4);
+        roomStorage.add(room1);
+        roomStorage.add(room2);
+        roomStorage.add(room3);
+        roomStorage.add(room4);
         roomStorage.add(room5);
 
 
-        Door door1 = new Door(0,0, "door1", scale, moveX, moveY);
-//        Door door2 = new Door(0,18, "door2");
-//        Door door3 = new Door(36,36, "door3");
-//        Door door4 = new Door(-36,-36, "door4");
+        Door door1 = new Door(0,16, "door1", scale, moveX, moveY);
+        Door door2 = new Door(32,16, "door2", scale, moveX, moveY);
+        Door door3 = new Door(8,20, "door3", scale, moveX, moveY);
+        Door door4 = new Door(24,12, "door4", scale, moveX, moveY);
+        Door door5 = new Door(16,26, "door5", scale, moveX, moveY);
+        Door door6 = new Door(16,6, "door6", scale, moveX, moveY);
 
         doorStorage.add(door1);
-//        doorStorage.add(door2);
-//        doorStorage.add(door3);
-//        doorStorage.add(door4);
+        doorStorage.add(door2);
+        doorStorage.add(door3);
+        doorStorage.add(door4);
+        doorStorage.add(door5);
+        doorStorage.add(door6);
 
         roomAndDoors.put(room5,door1);
-//        roomAndDoors.put(room5,door2);
-//        roomAndDoors.put(room5,door3);
-//        roomAndDoors.put(room5,door4);
+        roomAndDoors.put(room5,door2);
+        roomAndDoors.put(room2,door3);
+        roomAndDoors.put(room4,door4);
+        roomAndDoors.put(room1,door5);
+        roomAndDoors.put(room3,door6);
 
 
 
