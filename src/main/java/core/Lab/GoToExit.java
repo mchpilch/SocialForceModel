@@ -89,31 +89,32 @@ public class GoToExit extends Game {
         wallDP_B.createWall(16f, 0f, 16f, 6f-halfDoorWidth, world, scale, moveX, moveY);
 
 //        Room room1 = new Room(0,0, 0,0, world,"Room-1-Top-Right");
-//        Room room2 = new Room(0,0, 0,0, world,"Room-2-Top-Left");
+ //       Room room2 = new Room(0,0, 1,1, world,"Room-2-Top-Left", scale, moveX, moveY);
 //        Room room3 = new Room(0,0, 0,0, world,"Room-3-Bottom-Left");
 //        Room room4 = new Room(0,0, 0,0, world,"Room-4-Bottom-Right");
         Room room5 = new Room(0+16f,0+16f, 1f,1f, world,"Room-5-MainHall", scale, moveX, moveY);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
 
 //        roomStorage.add(room1);
-//        roomStorage.add(room2);
+    //    roomStorage.add(room2);
 //        roomStorage.add(room3);
 //        roomStorage.add(room4);
         roomStorage.add(room5);
 
-        Door door1 = new Door(-18,0, "door1");
-        Door door2 = new Door(0,18, "door2");
-        Door door3 = new Door(36,36, "door3");
-        Door door4 = new Door(-36,-36, "door4");
+
+        Door door1 = new Door(0,0, "door1", scale, moveX, moveY);
+//        Door door2 = new Door(0,18, "door2");
+//        Door door3 = new Door(36,36, "door3");
+//        Door door4 = new Door(-36,-36, "door4");
 
         doorStorage.add(door1);
-        doorStorage.add(door2);
-        doorStorage.add(door3);
-        doorStorage.add(door4);
+//        doorStorage.add(door2);
+//        doorStorage.add(door3);
+//        doorStorage.add(door4);
 
         roomAndDoors.put(room5,door1);
-        roomAndDoors.put(room5,door2);
-        roomAndDoors.put(room5,door3);
-        roomAndDoors.put(room5,door4);
+//        roomAndDoors.put(room5,door2);
+//        roomAndDoors.put(room5,door3);
+//        roomAndDoors.put(room5,door4);
 
 
 
@@ -159,7 +160,6 @@ public class GoToExit extends Game {
         if (peopleStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
                 pedestrian.setRoom(roomStorage.get(0));
-                checkRoom();
 
                 for(int i = 0; i < roomStorage.size; i++){
                     if(roomStorage.get(i).getName().equals(chooseDoor(pedestrian))){
@@ -193,15 +193,7 @@ public class GoToExit extends Game {
             });
         }
 
-                timeSeconds += Gdx.graphics.getDeltaTime();
-                    if(timeSeconds > period){
-                        timeSeconds-=period;
-                        timer += period;
-//                        System.out.println("allStorage " + allStorage.size + allStorage);
-//                        System.out.println("peopleStorage " + peopleStorage.size  + peopleStorage);
-//                        System.out.println("environmentStorage " + environmentStorage.size  + environmentStorage);
-                    }
-
+        //part responsible for actualising awareness of rooms in pedestrians
         int numContacts = world.getContactCount();
         if (numContacts > 0) {
             for (Contact contact : world.getContactList()) {
@@ -210,31 +202,40 @@ public class GoToExit extends Game {
 
                 Fixture humanly = fixtureA;
                 Fixture roomy = fixtureB;
+                if(fixtureA != null && fixtureB != null && fixtureA.getUserData() != null && fixtureB.getUserData() != null){
+                    if(fixtureA.isSensor() || fixtureB.isSensor()){
+                        if(fixtureA.getUserData().getClass().equals(Room.class) && fixtureB.getUserData().getClass().equals(Human.class)){
+                            //                    System.out.println(fixtureA.getUserData().toString());
+                            //                    System.out.println(fixtureB.getUserData().toString());
+                            roomy = fixtureA;
+                            humanly = fixtureB;
+                        } else if (fixtureB.getUserData().getClass().equals(Room.class) && fixtureA.getUserData().getClass().equals(Human.class)) {
+                            roomy = fixtureB;
+                            humanly = fixtureA;
+                        }
 
-                if(fixtureA.isSensor() || fixtureB.isSensor()){
-                    if(fixtureA.getUserData().getClass().equals(Room.class) && fixtureB.getUserData().getClass().equals(Human.class)){
-    //                    System.out.println(fixtureA.getUserData().toString());
-    //                    System.out.println(fixtureB.getUserData().toString());
-                        roomy = fixtureA;
-                        humanly = fixtureB;
-                    } else if (fixtureB.getUserData().getClass().equals(Room.class) && fixtureA.getUserData().getClass().equals(Human.class)) {
-                        roomy = fixtureB;
-                        humanly = fixtureA;
+//                        System.out.println(humanly.getUserData().toString());
+//                        System.out.println(roomy.getUserData().toString());
+
+                        String contactOutputHuman = humanly.getUserData().toString();
+                        String contactOutputRoom = roomy.getUserData().toString();
+
+                        getHumanIdByRegex(contactOutputHuman);
+                        getCurrentRoomNameByRegex(contactOutputRoom);
                     }
-
-                    System.out.println(humanly.getUserData().toString());
-                    System.out.println(roomy.getUserData().toString());
-
-                    String contactOutputHuman = humanly.getUserData().toString();
-                    String contactOutputRoom = roomy.getUserData().toString();
-
-                    getHumanIdByRegex(contactOutputHuman);
-                    getCurrentRoomNameByRegex(contactOutputRoom);
-
                 }
             }
         }
 
+
+                timeSeconds += Gdx.graphics.getDeltaTime();
+                    if(timeSeconds > period){
+                        timeSeconds-=period;
+                        timer += period;
+//                        System.out.println("allStorage " + allStorage.size + allStorage);
+//                        System.out.println("peopleStorage " + peopleStorage.size  + peopleStorage);
+//                        System.out.println("environmentStorage " + environmentStorage.size  + environmentStorage);
+                    }
     }
 
     @Override
@@ -308,7 +309,7 @@ public class GoToExit extends Game {
             infoHuman = matcherHuman.group(0);
         }
         //System.out.println("infoHuman: " + infoHuman);
-        System.out.println(infoHuman);
+//        System.out.println(infoHuman);
 
         Pattern patternHumanBare = Pattern.compile("[0-9]+");
 
@@ -320,7 +321,7 @@ public class GoToExit extends Game {
             bareInfoHuman = matcherHumanBare.group(0);
         }
         //System.out.println("bareInfoHuman: " + bareInfoHuman);
-        System.out.println(bareInfoHuman);
+        //System.out.println(bareInfoHuman);
 
         return bareInfoHuman;
     }
@@ -337,7 +338,7 @@ public class GoToExit extends Game {
             infoRoom = matcherRoom.group(0);
         }
         //System.out.println("infoRoom: " + infoRoom);
-        System.out.println(infoRoom);
+        //System.out.println(infoRoom);
 
         Pattern patternRoomBare = Pattern.compile("Room-[0-9]*-[A-z0-9]*");
 
@@ -349,7 +350,7 @@ public class GoToExit extends Game {
             bareInfoRoom = matcherRoomBare.group(0);
         }
         //System.out.println("bareInfoRoom: " + bareInfoRoom);
-        System.out.println(bareInfoRoom);
+        //System.out.println(bareInfoRoom);
 
         return bareInfoRoom;
     }

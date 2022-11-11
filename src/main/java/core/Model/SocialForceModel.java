@@ -220,7 +220,7 @@ public class SocialForceModel extends Game {
 
         //wallAR.createWall(0f, 20f, 40f, 20f, world, scale, moveX, moveY);
 
-        Door door1 = new Door(0,0, "door1");
+        Door door1 = new Door(0,0, "door1", scale, moveX, moveY);
 
         doorStorage.add(door1);
         Gdx.input.setInputProcessor(new InputAdapter() {

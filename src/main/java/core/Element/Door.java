@@ -28,9 +28,9 @@ public class Door {
         this.code = code;
     }
 
-    public Door(float x, float y, String code) {
-        this.x = x;
-        this.y = y;
+    public Door(float x, float y, String code, float scale, float moveX, float moveY) {
+        this.x = scale*(x+moveX);
+        this.y = scale*(y+moveY);
         this.code = code;
     }
 }

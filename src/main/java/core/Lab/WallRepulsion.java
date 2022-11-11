@@ -75,7 +75,7 @@ public class WallRepulsion extends Game {
 //        wallStorage.add(wall7);
 //        wallStorage.add(wall8);
 
-        Door door1 = new Door(0,0, "door1");
+        Door door1 = new Door(0,0, "door1", scale, moveX, moveY);
 
         doorStorage.add(door1);
 

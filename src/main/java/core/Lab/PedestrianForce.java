@@ -56,7 +56,7 @@ public class PedestrianForce extends Game {
         wallStorage.add(wall3);
         wallStorage.add(wall4);
 
-        Door door1 = new Door(0,0, "door1");
+        Door door1 = new Door(0,0, "door1", scale, moveX, moveY);
 
         doorStorage.add(door1);
 
