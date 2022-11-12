@@ -1,4 +1,4 @@
-package core.Experiments;
+package core.Experiment;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -102,8 +102,9 @@ public class GoToExitExper extends Game {
                 man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, door3, world);
                 peopleStorage.add(man);
                 allStorage.add(man.body);
+               //whichRoom(man);
                 //Human.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 10, world);
-                man.setRoom(room5);//
+                man.setRoom(room2);//
                 return true;
             }
         });
@@ -256,13 +257,14 @@ public class GoToExitExper extends Game {
 //                            }
                         //}
                         for(int i = 0; i < peopleStorage.size; i++){
-                            if(String.valueOf(peopleStorage.get(i).getId()).equals(humanID)){
+                            if(String.valueOf(pedestrian.getId()).equals(humanID)){
                                 System.out.println("Znaleziono peda z takim samym ID");
                                 for(int j = 0; j < roomStorage.size; j++){
 //                                    System.out.println(roomStorage.get(j).getName());
 //                                    System.out.println(pedestrian.getRoom().getName());
                                     if(roomStorage.get(j).getName().equals(curRoom)){
                                         //System.out.println("USTAWIAM NOWY POKOJ : " + curRoom);
+                                        System.out.println("CHANGE FOR PED " + pedestrian.getId() );
                                         pedestrian.setRoom(roomStorage.get(j));
 
                                         //System.out.println("SPAWDZENIE 1 " + pedestrian.getRoom());
