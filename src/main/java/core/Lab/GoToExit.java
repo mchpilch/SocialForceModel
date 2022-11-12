@@ -48,7 +48,7 @@ public class GoToExit extends Game {
 
         createCollisionListener();
 
-        float scale = 1.1f;
+        float scale = 1f;
         float moveX = -16f;
         float moveY = -16f;
 
@@ -104,12 +104,13 @@ public class GoToExit extends Game {
         roomStorage.add(room5);
 
 
-        Door door1 = new Door(0,16, "door1", scale, moveX, moveY);
-        Door door2 = new Door(32,16, "door2", scale, moveX, moveY);
-        Door door3 = new Door(8,20, "door3", scale, moveX, moveY);
-        Door door4 = new Door(24,12, "door4", scale, moveX, moveY);
-        Door door5 = new Door(16,26, "door5", scale, moveX, moveY);
-        Door door6 = new Door(16,6, "door6", scale, moveX, moveY);
+        float margin = 1;
+        Door door1 = new Door(0-margin,16, "door1", scale, moveX, moveY);
+        Door door2 = new Door(32+margin,16, "door2", scale, moveX, moveY);
+        Door door3 = new Door(8,20-margin, "door3", scale, moveX, moveY);
+        Door door4 = new Door(24,12+margin, "door4", scale, moveX, moveY);
+        Door door5 = new Door(16-margin,26, "door5", scale, moveX, moveY);
+        Door door6 = new Door(16+margin,6, "door6", scale, moveX, moveY);
 
         doorStorage.add(door1);
         doorStorage.add(door2);
@@ -138,6 +139,7 @@ public class GoToExit extends Game {
                 peopleStorage.add(man);
                 allStorage.add(man.body);
                 //Human.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 10, world);
+                man.setRoom(room5);//
                 return true;
             }
         });
@@ -165,17 +167,12 @@ public class GoToExit extends Game {
         world.step(1 / 60f, 6, 2);
 
 // GO TO EXIT
+        //part responsible for actualising awareness of rooms in pedestrians
         float exitCoefficient = 3f;
         if (peopleStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
-                pedestrian.setRoom(roomStorage.get(0));
 
-                for(int i = 0; i < roomStorage.size; i++){
-                    if(roomStorage.get(i).getName().equals(chooseDoor(pedestrian))){
-                        pedestrian.setRoom(roomStorage.get(i));
-                    }
-                }
-
+                whichRoom(pedestrian);
                 chooseDoor(pedestrian);
 
                 float currPosX = pedestrian.body.getPosition().x;
@@ -187,8 +184,6 @@ public class GoToExit extends Game {
                 float angle = calculatePedestrianAngle(pseudoExitForce);
                 pedestrian.body.setTransform(currPosX, currPosY, angle);
 
-
-
                 timeSeconds += Gdx.graphics.getDeltaTime();
                 if(timeSeconds > period){
                     timeSeconds -= period;
@@ -198,53 +193,20 @@ public class GoToExit extends Game {
                     //chooseDoor();
                     float wynik = (float) Math.sqrt(x*x + y*y);
                     //System.out.println("szybkość: " + wynik);
+                    //System.out.println("PED ROOM " + pedestrian.getId() + " " + pedestrian.getRoom());
                 }
             });
         }
-
-        //part responsible for actualising awareness of rooms in pedestrians
-        int numContacts = world.getContactCount();
-        if (numContacts > 0) {
-            for (Contact contact : world.getContactList()) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-
-                Fixture humanly = fixtureA;
-                Fixture roomy = fixtureB;
-                if(fixtureA != null && fixtureB != null && fixtureA.getUserData() != null && fixtureB.getUserData() != null){
-                    if(fixtureA.isSensor() || fixtureB.isSensor()){
-                        if(fixtureA.getUserData().getClass().equals(Room.class) && fixtureB.getUserData().getClass().equals(Human.class)){
-                            //                    System.out.println(fixtureA.getUserData().toString());
-                            //                    System.out.println(fixtureB.getUserData().toString());
-                            roomy = fixtureA;
-                            humanly = fixtureB;
-                        } else if (fixtureB.getUserData().getClass().equals(Room.class) && fixtureA.getUserData().getClass().equals(Human.class)) {
-                            roomy = fixtureB;
-                            humanly = fixtureA;
-                        }
-
-//                        System.out.println(humanly.getUserData().toString());
-//                        System.out.println(roomy.getUserData().toString());
-
-                        String contactOutputHuman = humanly.getUserData().toString();
-                        String contactOutputRoom = roomy.getUserData().toString();
-
-                        getHumanIdByRegex(contactOutputHuman);
-                        getCurrentRoomNameByRegex(contactOutputRoom);
-                    }
-                }
-            }
-        }
-
-
-                timeSeconds += Gdx.graphics.getDeltaTime();
-                    if(timeSeconds > period){
-                        timeSeconds-=period;
-                        timer += period;
-//                        System.out.println("allStorage " + allStorage.size + allStorage);
-//                        System.out.println("peopleStorage " + peopleStorage.size  + peopleStorage);
-//                        System.out.println("environmentStorage " + environmentStorage.size  + environmentStorage);
-                    }
+//                timeSeconds += Gdx.graphics.getDeltaTime();
+//                    if(timeSeconds > period){
+//                        timeSeconds-=period;
+//                        timer += period;
+////                        System.out.println("allStorage " + allStorage.size + allStorage);
+////                        System.out.println("peopleStorage " + peopleStorage.size  + peopleStorage);
+////                        System.out.println("environmentStorage " + environmentStorage.size  + environmentStorage);
+//
+//
+//                    }
     }
 
     @Override
@@ -262,7 +224,7 @@ public class GoToExit extends Game {
         return pseudoExitForce;
     }
 
-    public String chooseDoor(Human pedestrian){ //wybierz odpowiednie drzwi w pomieszczeniu przechowywanym w human
+    public void chooseDoor(Human pedestrian){ //wybierz odpowiednie drzwi w pomieszczeniu przechowywanym w human
         String doorName = "";
         float minDistance = 100000; //duża wartość która nie wystąpi i będzie na pewno nadpisana
         Room pedRoom = pedestrian.getRoom();
@@ -287,16 +249,84 @@ public class GoToExit extends Game {
                 doorName = doorInCurrentRoom.get(i).getCode();
             }
         }
-        return doorName;
+
+        for(int i = 0; i < doorStorage.size; i++){
+            if(doorStorage.get(i).getCode().equals(doorName)){
+                pedestrian.setExit(doorStorage.get(i));
+                break;
+            }
+        }
+
     }
 
+    public void whichRoom(Human pedestrian){
+        //System.out.println("XXX BEFORE: " + pedestrian.getRoom().getName());
+        int numContacts = world.getContactCount();
+        if (numContacts > 0) {
+            for (Contact contact : world.getContactList()) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
 
-    //Iterables.get(myMultimap.get(key), position);
+                Fixture humanly;// = fixtureA;
+                Fixture roomy;// = fixtureB;
+                if(fixtureA != null && fixtureB != null && fixtureA.getUserData() != null && fixtureB.getUserData() != null){
+                    if(fixtureA.isSensor() || fixtureB.isSensor()){
+                        if(fixtureA.getUserData().getClass().equals(Room.class) && fixtureB.getUserData().getClass().equals(Human.class)){
+                            //                    System.out.println(fixtureA.getUserData().toString());
+                            //                    System.out.println(fixtureB.getUserData().toString());
+                            roomy = fixtureA;
+                            humanly = fixtureB;
+                        } else if (fixtureB.getUserData().getClass().equals(Room.class) && fixtureA.getUserData().getClass().equals(Human.class)) {
+                            roomy = fixtureB;
+                            humanly = fixtureA;
+                        } else {
+                            break;
+                        }
 
-    public void checkRoom(){ //sprawdza w którym pomieszczeniu znajduje się pedestrian i ustawia mu odpowiednią wartość w human
-       // System.out.println("check room");
+//                                System.out.println(humanly.getUserData().toString()+"X");
+//                                System.out.println(roomy.getUserData().toString()+"Y");
 
+                        String contactOutputHuman = humanly.getUserData().toString();
+                        String contactOutputRoom = roomy.getUserData().toString();
+
+                        String humanID = getHumanIdByRegex(contactOutputHuman);
+                        String curRoom = getCurrentRoomNameByRegex(contactOutputRoom);
+
+//                        System.out.println("humanID " + humanID);
+//                        System.out.println("curRoom " + curRoom);
+
+                        //for(int i = 0; i < peopleStorage.size; i++){
+//                            if(String.valueOf(pedestrian.getId()).equals(humanID)){
+//                                for(int j = 0; j < roomStorage.size; j++){
+//                                    pedestrian.setRoom(roomStorage.get(j));
+//                                }
+//                            }
+                        //}
+                        for(int i = 0; i < peopleStorage.size; i++){
+                            if(String.valueOf(pedestrian.getId()).equals(humanID)){
+                                System.out.println("Znaleziono peda z takim samym ID");
+                                for(int j = 0; j < roomStorage.size; j++){
+//                                    System.out.println(roomStorage.get(j).getName());
+//                                    System.out.println(pedestrian.getRoom().getName());
+                                    if(roomStorage.get(j).getName().equals(curRoom)){
+                                        //System.out.println("USTAWIAM NOWY POKOJ : " + curRoom);
+                                        System.out.println("CHANGE FOR PED " + pedestrian.getId() );
+                                        pedestrian.setRoom(roomStorage.get(j));
+
+                                        //System.out.println("SPAWDZENIE 1 " + pedestrian.getRoom());
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            //System.out.println("SPAWDZENIE 2 " + pedestrian.getRoom());
+        }
+        // System.out.println("YYY AFTER: " + pedestrian.getRoom().getName());
     }
+
     public float calculatePedestrianAngle(Vector2 netForce){
         float angle = (float) Math.atan2( netForce.y,netForce.x) ;
         return angle;
@@ -363,6 +393,4 @@ public class GoToExit extends Game {
 
         return bareInfoRoom;
     }
-
 }
-
