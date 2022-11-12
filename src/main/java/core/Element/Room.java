@@ -50,8 +50,4 @@ public class Room {
         this.body = world.createBody(bodyDef);
         this.body.createFixture(fixtureDef).setUserData(this); //fixture considers itself as RoomObject, OK?
     }
-
-    public void hit(){
-        System.out.println(name + " HIT");
-    }
 }

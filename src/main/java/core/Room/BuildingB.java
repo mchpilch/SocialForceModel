@@ -7,6 +7,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import core.Element.Door;
+import core.Element.Human;
+import core.Element.Room;
 import core.Element.Wall;
 
 public class BuildingB extends Game {
@@ -14,15 +20,30 @@ public class BuildingB extends Game {
     OrthographicCamera camera;
     Box2DDebugRenderer debugRenderer;
 
+    Array<Human> peopleStorage = new Array<Human>();
+    Array<Wall> wallStorage = new Array<Wall>();
+    Array<Door> doorStorage = new Array<Door>();
+    Array<Room> roomStorage = new Array<Room>();
+    Multimap<Room,Door> roomAndDoors = ArrayListMultimap.create();  //https://www.baeldung.com/guava-multimap //allows dupicated keys so one key can have many values
+
+
     @Override
     public void create() {
         world = new World(new Vector2(0, 0), true);
         camera = new OrthographicCamera(100, 50);
         debugRenderer = new Box2DDebugRenderer();
 
+        //Building_B
+
         float scale = 1.0f;
         float moveX = -20f;
         float moveY = -10f;
+
+        float doorWidth = 2f;
+        float halfDoorWidth = doorWidth/2;
+
+        float doorMargin = 1f;
+        float roomMargin = -0.8f;
 
         //WALLs parallel
         //Wall wallAR = new Wall();

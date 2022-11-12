@@ -9,13 +9,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 import core.Element.Door;
 import core.Element.Human;
+import core.Element.Room;
 import core.Element.Wall;
 import core.MathTool.LinearEquations;
+import core.Room.RoomListener;
 
-import static core.MathTool.ConvertToShoulderSpan.convertToShoulderSpan;
-import static core.MathTool.NormalDistribution.generateRandomBMI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SocialForceModel extends Game {
 
@@ -37,12 +42,9 @@ public class SocialForceModel extends Game {
 
     Array<Human> peopleStorage = new Array<Human>();
     Array<Wall> wallStorage = new Array<Wall>();
-    Array<Body> allStorage = new Array<Body>();
-    Array<Body> environmentStorage = new Array<Body>();
     Array<Door> doorStorage = new Array<Door>();
-
-    float exitCoordinatesX = 0;
-    float exitCoordinatesY = -12;
+    Array<Room> roomStorage = new Array<Room>();
+    Multimap<Room,Door> roomAndDoors = ArrayListMultimap.create();  //https://www.baeldung.com/guava-multimap //allows dupicated keys so one key can have many values
 
 
     @Override
@@ -51,177 +53,100 @@ public class SocialForceModel extends Game {
         camera = new OrthographicCamera(100, 50);
         debugRenderer = new Box2DDebugRenderer();
 
-//        float scale = 2f;
-//        float moveX = 0f;
-//        float moveY = 0f;
-//
-//        Wall wall0bottomLeft = new Wall();
-//        Wall wall0bottomRight = new Wall();
-//
-//        Wall wall1bottomLeft = new Wall();
-//        Wall wall1bottomRight = new Wall();
-//
-//        Wall wall2bottomLeft = new Wall();
-//        Wall wall2bottomRight = new Wall();
-//
-////        Wall wall1 = new Wall();
-//        Wall wall2 = new Wall();
-//        Wall wall3 = new Wall();
-//        Wall wall4 = new Wall();
-//
-//
-//        Element.createCircle(0,-12.73f,0.5f,1,world);
-//
-//
-//        //wall1.createWall(-20, -10f, 20, -10f, world); //bottom wall
-//        wall0bottomLeft.createWall(-20, -10f, -1f, -10f, world, scale, moveX, moveY); //bottom wall
-//        wall0bottomRight.createWall(1f, -10f, 20, -10f, world, scale, moveX, moveY); //bottom wall
-//
-//        wall1bottomLeft.createWall(-20, -5f, -2, -5f, world, scale, moveX, moveY); //bottom wall
-//        wall1bottomRight.createWall(2, -5f, 20, -5f, world, scale, moveX, moveY); //bottom wall
-//
-//        wall2bottomLeft.createWall(-20, 5f, -2, 5f, world, scale, moveX, moveY); //bottom wall
-//        wall2bottomRight.createWall(2, 5f, 20, 5f, world, scale, moveX, moveY); //bottom wall
-//
-//        wall2.createWall(-20, 10f, 20, 10f, world, scale, moveX, moveY); // top wall
-//        wall3.createWall(-20, -10, -20, 10, world, scale, moveX, moveY); // left wall
-//        wall4.createWall(20, -10, 20, 10, world, scale, moveX, moveY); // right wall
-//
-//        //wallStorage.add(wall1);
-//        wallStorage.add(wall0bottomLeft);
-//        wallStorage.add(wall0bottomRight);
-//        wallStorage.add(wall1bottomLeft);
-//        wallStorage.add(wall1bottomRight);
-//        wallStorage.add(wall2bottomLeft);
-//        wallStorage.add(wall2bottomRight);
-//        wallStorage.add(wall2);
-//        wallStorage.add(wall3);
-//        wallStorage.add(wall4);
-//
-//
-//       // Element.createRectangle(BodyDef.BodyType.StaticBody,exitCoordinatesX,exitCoordinatesY,1,1,0, world);
-//
-////        System.out.println("MESSAGE");
-////        System.out.println( environmentStorage.size);
-
-
-
-
+        //Building_C
 
         float scale = 1.0f;
-        float moveX = -20f;
-        float moveY = -10f;
+        float moveX = -16f;
+        float moveY = -16f;
 
-        //WALLs parallel
+        float doorWidth = 2f;
+        float halfDoorWidth = doorWidth/2;
+
+        float doorMargin = 1f;
+        float roomMargin = -0.8f;
+
         Wall wallAR = new Wall();
-        //Wall wallCR = new Wall();
-        Wall wallCRseg1 = new Wall();
-        Wall wallCRseg2 = new Wall();
-        Wall wallCRseg3 = new Wall();
-        Wall wallER = new Wall();
-        Wall wallFR = new Wall();
-        Wall wallMR = new Wall();
-        Wall wallNR = new Wall();
-        Wall wallGR = new Wall();
-        Wall wallHR = new Wall();
-        Wall wallOR = new Wall();
-        Wall wallPR = new Wall();
-        Wall wallIR = new Wall();
-        Wall wallJR = new Wall();
-        Wall wallKR = new Wall();
-        Wall wallLR = new Wall();
-
-        wallAR.createWall(0f, 20f, 40f, 20f, world, scale, moveX, moveY);
-        //wallCR.createWall(0f, 0f, 40f, 0f, world, scale, moveX, moveY);
-        wallCRseg1.createWall(0f, 0f, 9f, 0f, world, scale, moveX, moveY);
-        wallCRseg2.createWall(11f, 0f, 18f, 0f, world, scale, moveX, moveY);
-        wallCRseg3.createWall(20f, 0f, 40f, 0f, world, scale, moveX, moveY);
-        wallER.createWall(0f, 12f, 3f, 12f, world, scale, moveX, moveY);
-        wallFR.createWall(5f, 12f, 22f, 12f, world, scale, moveX, moveY);
-        wallMR.createWall(16f, 15f, 17f, 15f, world, scale, moveX, moveY);
-        wallNR.createWall(19f, 17f, 27f, 17f, world, scale, moveX, moveY);
-        wallGR.createWall(24f, 12f, 40f, 12f, world, scale, moveX, moveY);
-        wallHR.createWall(0f, 7f, 9f, 7f, world, scale, moveX, moveY);
-        wallOR.createWall(0f, 4f, 9f, 4f, world, scale, moveX, moveY);
-        wallPR.createWall(11f, 4f, 12f, 4f, world, scale, moveX, moveY);
-        wallIR.createWall(11f, 7f, 18f, 7f, world, scale, moveX, moveY);
-        wallJR.createWall(20f, 7f, 21f, 7f, world, scale, moveX, moveY);
-        wallKR.createWall(27f, 7f, 28f, 7f, world, scale, moveX, moveY);
-        wallLR.createWall(30f, 7f, 40f, 7f, world, scale, moveX, moveY);
+        Wall wallBR_L = new Wall();
+        Wall wallBR_P = new Wall();
+        Wall wallCR_L = new Wall();
+        Wall wallCR_P = new Wall();
+        Wall wallDR = new Wall();
 
         wallStorage.add(wallAR);
-        //wallStorage.add(wallCR);
-        wallStorage.add(wallCRseg1);
-        wallStorage.add(wallCRseg2);
-        wallStorage.add(wallCRseg3);
-        wallStorage.add(wallER);
-        wallStorage.add(wallFR);
-        wallStorage.add(wallMR);
-        wallStorage.add(wallNR);
-        wallStorage.add(wallGR);
-        wallStorage.add(wallHR);
-        wallStorage.add(wallOR);
-        wallStorage.add(wallPR);
-        wallStorage.add(wallIR);
-        wallStorage.add(wallJR);
-        wallStorage.add(wallKR);
-        wallStorage.add(wallLR);
+        wallStorage.add(wallBR_L);
+        wallStorage.add(wallBR_P);
+        wallStorage.add(wallCR_L);
+        wallStorage.add(wallCR_P);
+        wallStorage.add(wallDR);
+
+        wallAR.createWall(0f, 0f, 32f, 0f, world, scale, moveX, moveY);
+        wallBR_L.createWall(0f, 12f, 24f-halfDoorWidth, 12f, world, scale, moveX, moveY);
+        wallBR_P.createWall(24f+halfDoorWidth, 12f, 32f, 12f, world, scale, moveX, moveY);
+        wallCR_L.createWall(0f, 20f, 8f-halfDoorWidth, 20f, world, scale, moveX, moveY);
+        wallCR_P.createWall(8f+halfDoorWidth, 20f, 32f, 20f, world, scale, moveX, moveY);
+        wallDR.createWall(0f, 32f, 32f, 32f, world, scale, moveX, moveY);
+
+        Wall wallAP_T = new Wall();
+        Wall wallAP_B = new Wall();
+        Wall wallBP_T = new Wall();
+        Wall wallBP_B = new Wall();
+        Wall wallCP_T = new Wall();
+        Wall wallCP_B = new Wall();
+        Wall wallDP_T = new Wall();
+        Wall wallDP_B = new Wall();
+
+        wallAP_T.createWall(0f, 16f+halfDoorWidth, 0f, 32f, world, scale, moveX, moveY);
+        wallAP_B.createWall(0f, 0f, 0f, 16f-halfDoorWidth, world, scale, moveX, moveY);
+        wallBP_T.createWall(32f, 16f+halfDoorWidth, 32f, 32f, world, scale, moveX, moveY);
+        wallBP_B.createWall(32f, 0f, 32f, 16f-halfDoorWidth, world, scale, moveX, moveY);
+        wallCP_T.createWall(16f, 26f+halfDoorWidth, 16f, 32f, world, scale, moveX, moveY);
+        wallCP_B.createWall(16f, 20f, 16f, 26f-halfDoorWidth, world, scale, moveX, moveY);
+        wallDP_T.createWall(16f, 6f+halfDoorWidth, 16f, 12f, world, scale, moveX, moveY);
+        wallDP_B.createWall(16f, 0f, 16f, 6f-halfDoorWidth, world, scale, moveX, moveY);
+
+        wallStorage.add(wallAP_T);
+        wallStorage.add(wallAP_B);
+        wallStorage.add(wallBP_T);
+        wallStorage.add(wallBP_B);
+        wallStorage.add(wallCP_T);
+        wallStorage.add(wallCP_B);
+        wallStorage.add(wallDP_T);
+        wallStorage.add(wallDP_B);
+
+        Room room1 = new Room(8f,10f, 16/2+roomMargin,12/2f+roomMargin, world, "Room-1-TopRight", scale);
+        Room room2 = new Room(-8f,10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-2-TopLeft", scale);
+        Room room3 = new Room(-8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-3-BottomLeft", scale);
+        Room room4 = new Room(8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-4-BottomRight", scale);
+        Room room5 = new Room(0f,0f, 32/2f+roomMargin,8/2f+roomMargin, world,"Room-5-MainHall", scale);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
+
+        roomStorage.add(room1);
+        roomStorage.add(room2);
+        roomStorage.add(room3);
+        roomStorage.add(room4);
+        roomStorage.add(room5);
 
 
-
-        //WALLs perpendicular
-        Wall wallBP = new Wall();
-        Wall wallCP = new Wall();
-        Wall wallQP = new Wall();
-        Wall wallTP = new Wall();
-        Wall wallUP = new Wall();
-        Wall wallVP = new Wall();
-        Wall wallWP = new Wall();
-        Wall wallSP = new Wall();
-        Wall wallRP = new Wall();
-        Wall wallZP = new Wall();
-
-        wallBP.createWall(40f, 0f, 40f, 20f, world, scale, moveX, moveY);
-        wallCP.createWall(0f, 0f, 0f, 20f, world, scale, moveX, moveY);
-        wallQP.createWall(16f, 12f, 16f, 20f, world, scale, moveX, moveY);
-        wallTP.createWall(21f, 19f, 21f, 20f, world, scale, moveX, moveY);
-        wallUP.createWall(27f, 15f, 27f, 20f, world, scale, moveX, moveY);
-        wallVP.createWall(27f, 12f, 27f, 13f, world, scale, moveX, moveY);
-        wallWP.createWall(27f, 0f, 27f, 7f, world, scale, moveX, moveY);
-        wallSP.createWall(21f, 0f, 21f, 7f, world, scale, moveX, moveY);
-        wallRP.createWall(17f, 0f, 17f, 7f, world, scale, moveX, moveY);
-        wallZP.createWall(12f, 0f, 12f, 5f, world, scale, moveX, moveY);
-
-        wallStorage.add(wallBP);
-        wallStorage.add(wallCP);
-        wallStorage.add(wallQP);
-        wallStorage.add(wallTP);
-        wallStorage.add(wallUP);
-        wallStorage.add(wallVP);
-        wallStorage.add(wallWP);
-        wallStorage.add(wallSP);
-        wallStorage.add(wallRP);
-        wallStorage.add(wallZP);
-
-        //WALLs other
-        Wall wallCrookedOne = new Wall();
-        Wall wallCrookedTwo = new Wall();
-
-        wallCrookedOne.createWall(17f, 15f, 18f, 16f, world, scale, moveX, moveY);
-        wallCrookedTwo.createWall(19f, 17f, 21f, 19f, world, scale, moveX, moveY);
-
-        wallStorage.add(wallCrookedOne);
-        wallStorage.add(wallCrookedTwo);
-
-
-
-
-
-        //wallAR.createWall(0f, 20f, 40f, 20f, world, scale, moveX, moveY);
-
-        Door door1 = new Door(0,0, "door1", scale, moveX, moveY);
+        Door door1 = new Door(0-doorMargin,16, "door1", scale, moveX, moveY);
+        Door door2 = new Door(32+doorMargin,16, "door2", scale, moveX, moveY);
+        Door door3 = new Door(8,20-doorMargin, "door3", scale, moveX, moveY);
+        Door door4 = new Door(24,12+doorMargin, "door4", scale, moveX, moveY);
+        Door door5 = new Door(16-doorMargin,26, "door5", scale, moveX, moveY);
+        Door door6 = new Door(16+doorMargin,6, "door6", scale, moveX, moveY);
 
         doorStorage.add(door1);
+        doorStorage.add(door2);
+        doorStorage.add(door3);
+        doorStorage.add(door4);
+        doorStorage.add(door5);
+        doorStorage.add(door6);
+
+        roomAndDoors.put(room5,door1);
+        roomAndDoors.put(room5,door2);
+        roomAndDoors.put(room2,door3);
+        roomAndDoors.put(room4,door4);
+        roomAndDoors.put(room1,door5);
+        roomAndDoors.put(room3,door6);
+
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
@@ -229,14 +154,70 @@ public class SocialForceModel extends Game {
                 Vector3 touchedPoint = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(touchedPoint);
                 Human man = new Human();
-                float BMI = generateRandomBMI();
-                float shoulderSpan = convertToShoulderSpan(BMI);
-                man.createMan(touchedPoint.x, touchedPoint.y, shoulderSpan/2, 1000, door1, world);
+                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, door3, world);
                 peopleStorage.add(man);
-                allStorage.add(man.body);
+                //whichRoom(man);
+                //Human.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 10, world);
+                man.setRoom(room2);//
                 return true;
             }
         });
+
+//        Gdx.input.setInputProcessor(new InputAdapter() {
+//            @Override
+//            public boolean touchDown (int x, int y, int pointer, int button) {
+//
+//                Vector3 touchedPoint = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+//                camera.unproject(touchedPoint);
+//                Human man = new Human();
+//                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man1 = new Human();
+//                man1.createMan(touchedPoint.x+1, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man2 = new Human();
+//                man2.createMan(touchedPoint.x+2, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man3 = new Human();
+//                man3.createMan(touchedPoint.x+3, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man4 = new Human();
+//                man4.createMan(touchedPoint.x+4, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man5 = new Human();
+//                man5.createMan(touchedPoint.x+5, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man6 = new Human();
+//                man6.createMan(touchedPoint.x+6, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man7 = new Human();
+//                man7.createMan(touchedPoint.x+7, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man8 = new Human();
+//                man8.createMan(touchedPoint.x+8, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man9 = new Human();
+//                man9.createMan(touchedPoint.x+9, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man10 = new Human();
+//                man10.createMan(touchedPoint.x+10, touchedPoint.y, 0.5f, 25, door1, world);
+//
+//                peopleStorage.add(man);
+//                peopleStorage.add(man1);
+//                peopleStorage.add(man2);
+//                peopleStorage.add(man3);
+//                peopleStorage.add(man4);
+//                peopleStorage.add(man5);
+//                peopleStorage.add(man6);
+//                peopleStorage.add(man7);
+//                peopleStorage.add(man8);
+//                peopleStorage.add(man9);
+//                peopleStorage.add(man10);
+//
+//                man.setRoom(room5);//
+//                man1.setRoom(room5);//
+//                man2.setRoom(room5);//
+//                man3.setRoom(room5);//
+//                man4.setRoom(room5);//
+//                man5.setRoom(room5);//
+//                man6.setRoom(room5);//
+//                man7.setRoom(room5);//
+//                man8.setRoom(room5);//
+//                man9.setRoom(room5);//
+//                man10.setRoom(room5);//
+//                return true;
+//            }
+//        });
     }
 
     @Override
@@ -252,7 +233,7 @@ public class SocialForceModel extends Game {
         float wallRepNomCoeff2 = 0.1f; //0.1f
         int powerR = 2; //2f
 
-        float exitCoefficient = 5f; //3f
+        float exitCoefficient = 2f; //3f
 
 
 
@@ -269,7 +250,9 @@ public class SocialForceModel extends Game {
 
             if(peopleStorage.notEmpty()){
                  netGravForce = calculateNetGravityForce(pedestrian, personalborder, coeffGPlus, coeffGMinus);
-                 netExitForce = calculateExitForceDirectionAndPhrase(pedestrian, exitCoordinatesX,exitCoordinatesY, exitCoefficient);
+                 netExitForce = calculateExitForce(pedestrian, pedestrian.getExit().getX(), pedestrian.getExit().getY(), exitCoefficient);
+
+
                 if(wallStorage.notEmpty()){
                      netWallForce = calculateNetWallForce(pedestrian, wallRepNomCoeff, wallRepNomCoeff2, powerR);
                 }
@@ -504,9 +487,202 @@ public class SocialForceModel extends Game {
         }
         return false;
     }
-    // END
+    // WALL END
 
-    public Vector2 calculateExitForceDirectionAndPhrase(Human pedestrian, float exitCoordinatesX, float exitCoordinatesY, float exitCoefficient){
+    // EXIT START
+    private void createCollisionListener() {
+        world.setContactListener(new RoomListener());
+    }
+
+    public String getHumanIdByRegex(String contactOutputHuman){
+
+        Pattern patternHuman = Pattern.compile("id=[0-9]*");
+
+        Matcher matcherHuman = patternHuman.matcher(contactOutputHuman);
+
+        String infoHuman = "";
+
+        while (matcherHuman.find()) {
+            infoHuman = matcherHuman.group(0);
+        }
+        //System.out.println("infoHuman: " + infoHuman);
+//        System.out.println(infoHuman);
+
+        Pattern patternHumanBare = Pattern.compile("[0-9]+");
+
+        Matcher matcherHumanBare = patternHumanBare.matcher(infoHuman);
+
+        String bareInfoHuman = "";
+
+        while (matcherHumanBare.find()) {
+            bareInfoHuman = matcherHumanBare.group(0);
+        }
+        //System.out.println("bareInfoHuman: " + bareInfoHuman);
+        //System.out.println(bareInfoHuman);
+
+        return bareInfoHuman;
+    }
+
+    public String getCurrentRoomNameByRegex(String contactOutputRoom){
+
+        Pattern patternRoom = Pattern.compile("name='Room-[0-9]*-[A-z0-9]*'");
+
+        Matcher matcherRoom = patternRoom.matcher(contactOutputRoom);
+
+        String infoRoom = "";
+
+        while (matcherRoom.find()) {
+            infoRoom = matcherRoom.group(0);
+        }
+        //System.out.println("infoRoom: " + infoRoom);
+        //System.out.println(infoRoom);
+
+        Pattern patternRoomBare = Pattern.compile("Room-[0-9]*-[A-z0-9]*");
+
+        Matcher matcherRoomBare = patternRoomBare.matcher(infoRoom);
+
+        String bareInfoRoom = "";
+
+        while (matcherRoomBare.find()) {
+            bareInfoRoom = matcherRoomBare.group(0);
+        }
+        //System.out.println("bareInfoRoom: " + bareInfoRoom);
+        //System.out.println(bareInfoRoom);
+
+        return bareInfoRoom;
+    }
+
+    public void chooseDoor(Human pedestrian){ //wybierz odpowiednie drzwi w pomieszczeniu przechowywanym w human
+        String doorName = "";
+        float minDistance = 100000; //duża wartość która nie wystąpi i będzie na pewno nadpisana
+        Room pedRoom = pedestrian.getRoom();
+        Array<Door> doorInCurrentRoom = new Array<Door>();
+        for (Room room : roomAndDoors.keySet()) {
+            if(room.getName().equals(pedRoom.getName())){
+                int numberOfDoorsInRoom = roomAndDoors.get(room).size();
+                for(int position = 0; position < numberOfDoorsInRoom; position++){
+                    doorInCurrentRoom.add(Iterables.get(roomAndDoors.get(room), position));
+                }
+            }
+        }
+        float pedX = pedestrian.body.getPosition().x;
+        float pedY = pedestrian.body.getPosition().y;
+        for(int i = 0; i < doorInCurrentRoom.size; i++){
+            float doorX = doorInCurrentRoom.get(i).getX();
+            float doorY = doorInCurrentRoom.get(i).getY();
+            Vector2 distanceVec = new Vector2(doorX-pedX,doorY-pedY);
+            float distance = distanceVec.len();
+            if(distance <= minDistance){
+                minDistance = distance;
+                doorName = doorInCurrentRoom.get(i).getCode();
+            }
+        }
+
+        for(int i = 0; i < doorStorage.size; i++){
+            if(doorStorage.get(i).getCode().equals(doorName)){
+                pedestrian.setExit(doorStorage.get(i));
+                break;
+            }
+        }
+
+    }
+
+    public String[] whichRoom(Human pedestrian){
+        //System.out.println("XXX BEFORE: " + pedestrian.getRoom().getName());
+        int numContacts = world.getContactCount();
+        if (numContacts > 0) {
+            for (Contact contact : world.getContactList()) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+
+                Fixture humanly;// = fixtureA;
+                Fixture roomy;// = fixtureB;
+                if(fixtureA != null && fixtureB != null && fixtureA.getUserData() != null && fixtureB.getUserData() != null){
+                    if(fixtureA.isSensor() || fixtureB.isSensor()){
+                        if(fixtureA.getUserData().getClass().equals(Room.class) && fixtureB.getUserData().getClass().equals(Human.class)){
+                            //                    System.out.println(fixtureA.getUserData().toString());
+                            //                    System.out.println(fixtureB.getUserData().toString());
+                            roomy = fixtureA;
+                            humanly = fixtureB;
+                        } else if (fixtureB.getUserData().getClass().equals(Room.class) && fixtureA.getUserData().getClass().equals(Human.class)) {
+                            roomy = fixtureB;
+                            humanly = fixtureA;
+                        } else {
+                            break;
+                        }
+
+//                                System.out.println(humanly.getUserData().toString()+"X");
+//                                System.out.println(roomy.getUserData().toString()+"Y");
+
+                        String contactOutputHuman = humanly.getUserData().toString();
+                        String contactOutputRoom = roomy.getUserData().toString();
+
+                        String humanID = getHumanIdByRegex(contactOutputHuman);
+                        String curRoom = getCurrentRoomNameByRegex(contactOutputRoom);
+
+                        String[] res = {humanID,curRoom};
+
+                        return res;
+
+//                        System.out.println("humanID " + humanID);
+//                        System.out.println("curRoom " + curRoom);
+
+                        //for(int i = 0; i < peopleStorage.size; i++){
+//                            if(String.valueOf(pedestrian.getId()).equals(humanID)){
+//                                for(int j = 0; j < roomStorage.size; j++){
+//                                    pedestrian.setRoom(roomStorage.get(j));
+//                                }
+//                            }
+                        //}
+                        //  for(int i = 0; i < peopleStorage.size; i++){
+//                            if(String.valueOf(pedestrian.getId()).equals(humanID)){
+//                                System.out.println("Znaleziono peda z takim samym ID");
+//                                for(int j = 0; j < roomStorage.size; j++){
+////                                    System.out.println(roomStorage.get(j).getName());
+////                                    System.out.println(pedestrian.getRoom().getName());
+//                                    if(roomStorage.get(j).getName().equals(curRoom)){
+//                                        //System.out.println("USTAWIAM NOWY POKOJ : " + curRoom);
+//                                        System.out.println("CHANGE FOR PED " + pedestrian.getId() );
+//                                        pedestrian.setRoom(roomStorage.get(j));
+//
+//                                        //System.out.println("SPAWDZENIE 1 " + pedestrian.getRoom());
+//                                    }
+//
+//                                }
+//                            }
+                        //    }
+                    }
+                }
+            }
+            //System.out.println("SPAWDZENIE 2 " + pedestrian.getRoom());
+        }
+        // System.out.println("YYY AFTER: " + pedestrian.getRoom().getName());
+        String[] a = {};
+        return  a;
+    }
+
+    public void pedestrianRoomAwareness(Human pedestrian){
+        //zorientuj się w jakim pokoju jesteś
+        String roomService[] = whichRoom(pedestrian);
+        if(roomService.length > 0){
+            String humanID = roomService[0];
+            String curRoom = roomService[1];
+            if(String.valueOf(pedestrian.getId()).equals(humanID)){
+                for(int j = 0; j < roomStorage.size; j++){
+                    if(roomStorage.get(j).getName().equals(curRoom)){
+                        pedestrian.setRoom(roomStorage.get(j));
+                    }
+                }
+            }
+        }
+        //wybierz najbliższe drzwi w tym pokoju
+        chooseDoor(pedestrian);
+    }
+
+
+    public Vector2 calculateExitForce(Human pedestrian, float exitCoordinatesX, float exitCoordinatesY, float exitCoefficient) {
+
+        pedestrianRoomAwareness(pedestrian);
 
         float valuePseudoExitForceX = exitCoordinatesX - pedestrian.body.getPosition().x;
         float valuePseudoExitForceY = exitCoordinatesY - pedestrian.body.getPosition().y;

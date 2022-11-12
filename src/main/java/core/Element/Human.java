@@ -44,14 +44,23 @@ public class Human{//extends Body
         this.room = room;
     }
 
+//    @Override
+//    public String toString() {
+//        return "Human{" +
+//                "body=" + body +
+//                ", id=" + id +
+//                ", humanForces=" + humanForces +
+//                ", exit=" + exit +
+//                ", room=" + room.getName() +
+//                '}';
+//    }
+
     @Override
     public String toString() {
         return "Human{" +
-                "body=" + body +
-                ", id=" + id +
-                ", humanForces=" + humanForces +
-                ", exit=" + exit +
-                ", room=" + room +
+                " id=" + id +
+                ", exit=" + exit.getCode() +
+                ", room=" + room.getName() +
                 '}';
     }
 

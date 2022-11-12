@@ -37,7 +37,6 @@ public class GoToExitExper extends Game {
     Array<Room> roomStorage = new Array<Room>();
     Multimap<Room,Door> roomAndDoors = ArrayListMultimap.create();  //https://www.baeldung.com/guava-multimap //allows dupicated keys so one key can have many values
 
-
     @Override
     public void create() {
         world = new World(new Vector2(0, 0), true);
@@ -53,43 +52,76 @@ public class GoToExitExper extends Game {
         float doorWidth = 2f;
         float halfDoorWidth = doorWidth/2;
 
+        float roomMargin = -0.8f;
+        Room room1 = new Room(8f,10f, 16/2+roomMargin,12/2f+roomMargin, world, "Room-1-TopRight", scale);
+        Room room2 = new Room(-8f,10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-2-TopLeft", scale);
+        Room room3 = new Room(-8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-3-BottomLeft", scale);
+        Room room4 = new Room(8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-4-BottomRight", scale);
+        Room room5 = new Room(0f,0f, 32/2f+roomMargin,8/2f+roomMargin, world,"Room-5-MainHall", scale);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
 
-        Room room1 = new Room(8f+moveX,0f+moveY, 16/2f,12/2f, world, "Room-1-TopRight", scale);
-        Room room2 = new Room(-8f+moveX,0f+moveY, 16/2f,12/2f, world, "Room-2-TopLeft", scale);
-//        Room room3 = new Room(-8f,-10f, 16/2f,12/2f, world, "Room-3-BottomLeft", scale);
-//        Room room4 = new Room(8f,-10f, 16/2f,12/2f, world, "Room-4-BottomRight", scale);
-        Room room5 = new Room(0f+moveX,15f+moveY, 32/2f,8/2f, world,"Room-5-MainHall", scale);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
 
+        Wall wallAR = new Wall();
+        Wall wallBR_L = new Wall();
+        Wall wallBR_P = new Wall();
+        Wall wallCR_L = new Wall();
+        Wall wallCR_P = new Wall();
+        Wall wallDR = new Wall();
+
+
+        wallAR.createWall(0f, 0f, 32f, 0f, world, scale, moveX, moveY);
+        wallBR_L.createWall(0f, 12f, 24f-halfDoorWidth, 12f, world, scale, moveX, moveY);
+        wallBR_P.createWall(24f+halfDoorWidth, 12f, 32f, 12f, world, scale, moveX, moveY);
+        wallCR_L.createWall(0f, 20f, 8f-halfDoorWidth, 20f, world, scale, moveX, moveY);
+        wallCR_P.createWall(8f+halfDoorWidth, 20f, 32f, 20f, world, scale, moveX, moveY);
+        wallDR.createWall(0f, 32f, 32f, 32f, world, scale, moveX, moveY);
+
+        Wall wallAP_T = new Wall();
+        Wall wallAP_B = new Wall();
+        Wall wallBP_T = new Wall();
+        Wall wallBP_B = new Wall();
+        Wall wallCP_T = new Wall();
+        Wall wallCP_B = new Wall();
+        Wall wallDP_T = new Wall();
+        Wall wallDP_B = new Wall();
+
+        wallAP_T.createWall(0f, 16f+halfDoorWidth, 0f, 32f, world, scale, moveX, moveY);
+        wallAP_B.createWall(0f, 0f, 0f, 16f-halfDoorWidth, world, scale, moveX, moveY);
+        wallBP_T.createWall(32f, 16f+halfDoorWidth, 32f, 32f, world, scale, moveX, moveY);
+        wallBP_B.createWall(32f, 0f, 32f, 16f-halfDoorWidth, world, scale, moveX, moveY);
+        wallCP_T.createWall(16f, 26f+halfDoorWidth, 16f, 32f, world, scale, moveX, moveY);
+        wallCP_B.createWall(16f, 20f, 16f, 26f-halfDoorWidth, world, scale, moveX, moveY);
+        wallDP_T.createWall(16f, 6f+halfDoorWidth, 16f, 12f, world, scale, moveX, moveY);
+        wallDP_B.createWall(16f, 0f, 16f, 6f-halfDoorWidth, world, scale, moveX, moveY);
 
 
         roomStorage.add(room1);
         roomStorage.add(room2);
-//        roomStorage.add(room3);
-//        roomStorage.add(room4);
+        roomStorage.add(room3);
+        roomStorage.add(room4);
         roomStorage.add(room5);
 
 
-        Door door1 = new Door(0,50, "door1", scale, moveX, moveY);
-//        Door door2 = new Door(32,16, "door2", scale, moveX, moveY);
-        Door door3 = new Door(-25,0, "door3", scale, moveX, moveY);
-//        Door door4 = new Door(24,12, "door4", scale, moveX, moveY);
-        Door door5 = new Door(25,0, "door5", scale, moveX, moveY);
-//        Door door6 = new Door(16,6, "door6", scale, moveX, moveY);
+        float doorMargin = 1f;
+        Door door1 = new Door(0-doorMargin,16, "door1", scale, moveX, moveY);
+        Door door2 = new Door(32+doorMargin,16, "door2", scale, moveX, moveY);
+        Door door3 = new Door(8,20-doorMargin, "door3", scale, moveX, moveY);
+        Door door4 = new Door(24,12+doorMargin, "door4", scale, moveX, moveY);
+        Door door5 = new Door(16-doorMargin,26, "door5", scale, moveX, moveY);
+        Door door6 = new Door(16+doorMargin,6, "door6", scale, moveX, moveY);
 
         doorStorage.add(door1);
-//        doorStorage.add(door2);
+        doorStorage.add(door2);
         doorStorage.add(door3);
-//        doorStorage.add(door4);
+        doorStorage.add(door4);
         doorStorage.add(door5);
-//        doorStorage.add(door6);
+        doorStorage.add(door6);
 
         roomAndDoors.put(room5,door1);
-//        roomAndDoors.put(room5,door2);
-        roomAndDoors.put(room1,door5);
-//        roomAndDoors.put(room4,door4);
+        roomAndDoors.put(room5,door2);
         roomAndDoors.put(room2,door3);
-//        roomAndDoors.put(room3,door6);
-
+        roomAndDoors.put(room4,door4);
+        roomAndDoors.put(room1,door5);
+        roomAndDoors.put(room3,door6);
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -98,55 +130,75 @@ public class GoToExitExper extends Game {
                 Vector3 touchedPoint = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(touchedPoint);
                 Human man = new Human();
-                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, door1, world);
-                Human man1 = new Human();
-                man1.createMan(touchedPoint.x+1, touchedPoint.y, 0.5f, 25, door1, world);
-                Human man2 = new Human();
-                man2.createMan(touchedPoint.x+2, touchedPoint.y, 0.5f, 25, door1, world);
-                Human man3 = new Human();
-                man3.createMan(touchedPoint.x+3, touchedPoint.y, 0.5f, 25, door1, world);
-                Human man4 = new Human();
-                man4.createMan(touchedPoint.x+4, touchedPoint.y, 0.5f, 25, door1, world);
-                Human man5 = new Human();
-                man5.createMan(touchedPoint.x+5, touchedPoint.y, 0.5f, 25, door1, world);
-                Human man6 = new Human();
-                man6.createMan(touchedPoint.x+6, touchedPoint.y, 0.5f, 25, door1, world);
-                Human man7 = new Human();
-                man7.createMan(touchedPoint.x+7, touchedPoint.y, 0.5f, 25, door1, world);
-                Human man8 = new Human();
-                man8.createMan(touchedPoint.x+8, touchedPoint.y, 0.5f, 25, door1, world);
-                Human man9 = new Human();
-                man9.createMan(touchedPoint.x+9, touchedPoint.y, 0.5f, 25, door1, world);
-                Human man10 = new Human();
-                man10.createMan(touchedPoint.x+10, touchedPoint.y, 0.5f, 25, door1, world);
-
+                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, door3, world);
                 peopleStorage.add(man);
-                peopleStorage.add(man1);
-                peopleStorage.add(man2);
-                peopleStorage.add(man3);
-                peopleStorage.add(man4);
-                peopleStorage.add(man5);
-                peopleStorage.add(man6);
-                peopleStorage.add(man7);
-                peopleStorage.add(man8);
-                peopleStorage.add(man9);
-                peopleStorage.add(man10);
                 allStorage.add(man.body);
+                //whichRoom(man);
                 //Human.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 10, world);
-                man.setRoom(room5);//
-                man1.setRoom(room5);//
-                man2.setRoom(room5);//
-                man3.setRoom(room5);//
-                man4.setRoom(room5);//
-                man5.setRoom(room5);//
-                man6.setRoom(room5);//
-                man7.setRoom(room5);//
-                man8.setRoom(room5);//
-                man9.setRoom(room5);//
-                man10.setRoom(room5);//
+                man.setRoom(room2);//
                 return true;
             }
         });
+
+//        Gdx.input.setInputProcessor(new InputAdapter() {
+//            @Override
+//            public boolean touchDown (int x, int y, int pointer, int button) {
+//
+//                Vector3 touchedPoint = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+//                camera.unproject(touchedPoint);
+//                Human man = new Human();
+//                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man1 = new Human();
+//                man1.createMan(touchedPoint.x+1, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man2 = new Human();
+//                man2.createMan(touchedPoint.x+2, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man3 = new Human();
+//                man3.createMan(touchedPoint.x+3, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man4 = new Human();
+//                man4.createMan(touchedPoint.x+4, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man5 = new Human();
+//                man5.createMan(touchedPoint.x+5, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man6 = new Human();
+//                man6.createMan(touchedPoint.x+6, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man7 = new Human();
+//                man7.createMan(touchedPoint.x+7, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man8 = new Human();
+//                man8.createMan(touchedPoint.x+8, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man9 = new Human();
+//                man9.createMan(touchedPoint.x+9, touchedPoint.y, 0.5f, 25, door1, world);
+//                Human man10 = new Human();
+//                man10.createMan(touchedPoint.x+10, touchedPoint.y, 0.5f, 25, door1, world);
+//
+//                peopleStorage.add(man);
+//                peopleStorage.add(man1);
+//                peopleStorage.add(man2);
+//                peopleStorage.add(man3);
+//                peopleStorage.add(man4);
+//                peopleStorage.add(man5);
+//                peopleStorage.add(man6);
+//                peopleStorage.add(man7);
+//                peopleStorage.add(man8);
+//                peopleStorage.add(man9);
+//                peopleStorage.add(man10);
+//
+//                man.setRoom(room5);//
+//                man1.setRoom(room5);//
+//                man2.setRoom(room5);//
+//                man3.setRoom(room5);//
+//                man4.setRoom(room5);//
+//                man5.setRoom(room5);//
+//                man6.setRoom(room5);//
+//                man7.setRoom(room5);//
+//                man8.setRoom(room5);//
+//                man9.setRoom(room5);//
+//                man10.setRoom(room5);//
+//                return true;
+//            }
+//        });
+
+
+
+
     }
 
     @Override
@@ -175,18 +227,21 @@ public class GoToExitExper extends Game {
         float exitCoefficient = 3f;
         if (peopleStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
-                if(whichRoom(pedestrian).length > 0){
-                    String humanID = whichRoom(pedestrian)[0];
-                    String curRoom = whichRoom(pedestrian)[1];
+
+                String roomService[] = whichRoom(pedestrian);
+                if(roomService.length > 0){
+                    String humanID = roomService[0];
+                    String curRoom = roomService[1];
                     if(String.valueOf(pedestrian.getId()).equals(humanID)){
-                        System.out.println("Znaleziono peda z takim samym ID");
+                        //System.out.println("Znaleziono peda z takim samym ID");
                         for(int j = 0; j < roomStorage.size; j++){
-    //                                    System.out.println(roomStorage.get(j).getName());
-    //                                    System.out.println(pedestrian.getRoom().getName());
+                            //                                    System.out.println(roomStorage.get(j).getName());
+                            //                                    System.out.println(pedestrian.getRoom().getName());
 
                             if(roomStorage.get(j).getName().equals(curRoom)){
                                 //System.out.println("USTAWIAM NOWY POKOJ : " + curRoom);
-                                System.out.println("CHANGE FOR PED " + pedestrian.getId() );
+                                // System.out.println("CHANGE FOR PED " + pedestrian.getId() );
+
                                 pedestrian.setRoom(roomStorage.get(j));
 
                                 //System.out.println("SPAWDZENIE 1 " + pedestrian.getRoom());
@@ -217,8 +272,11 @@ public class GoToExitExper extends Game {
                     float wynik = (float) Math.sqrt(x*x + y*y);
                     //System.out.println("szybkość: " + wynik);
                     //System.out.println("PED ROOM " + pedestrian.getId() + " " + pedestrian.getRoom());
+
+                    System.out.println(pedestrian.toString());
                 }
             });
+
         }
     }
 
@@ -239,7 +297,7 @@ public class GoToExitExper extends Game {
 
     public void chooseDoor(Human pedestrian){ //wybierz odpowiednie drzwi w pomieszczeniu przechowywanym w human
         String doorName = "";
-        float minDistance = 100000f; //duża wartość która nie wystąpi i będzie na pewno nadpisana
+        float minDistance = 100000; //duża wartość która nie wystąpi i będzie na pewno nadpisana
         Room pedRoom = pedestrian.getRoom();
         Array<Door> doorInCurrentRoom = new Array<Door>();
         for (Room room : roomAndDoors.keySet()) {
@@ -269,6 +327,7 @@ public class GoToExitExper extends Game {
                 break;
             }
         }
+
     }
 
     public String[] whichRoom(Human pedestrian){
@@ -318,7 +377,7 @@ public class GoToExitExper extends Game {
 //                                }
 //                            }
                         //}
-                      //  for(int i = 0; i < peopleStorage.size; i++){
+                        //  for(int i = 0; i < peopleStorage.size; i++){
 //                            if(String.valueOf(pedestrian.getId()).equals(humanID)){
 //                                System.out.println("Znaleziono peda z takim samym ID");
 //                                for(int j = 0; j < roomStorage.size; j++){
@@ -334,17 +393,16 @@ public class GoToExitExper extends Game {
 //
 //                                }
 //                            }
-                    //    }
+                        //    }
                     }
                 }
             }
             //System.out.println("SPAWDZENIE 2 " + pedestrian.getRoom());
         }
-       // System.out.println("YYY AFTER: " + pedestrian.getRoom().getName());
+        // System.out.println("YYY AFTER: " + pedestrian.getRoom().getName());
         String[] a = {};
         return  a;
     }
-
 
     public float calculatePedestrianAngle(Vector2 netForce){
         float angle = (float) Math.atan2( netForce.y,netForce.x) ;
