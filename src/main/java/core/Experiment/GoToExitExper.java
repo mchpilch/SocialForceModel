@@ -91,7 +91,6 @@ public class GoToExitExper extends Game {
 //        roomAndDoors.put(room3,door6);
 
 
-
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
@@ -99,12 +98,52 @@ public class GoToExitExper extends Game {
                 Vector3 touchedPoint = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 camera.unproject(touchedPoint);
                 Human man = new Human();
-                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, door3, world);
+                man.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 25, door1, world);
+                Human man1 = new Human();
+                man1.createMan(touchedPoint.x+1, touchedPoint.y, 0.5f, 25, door1, world);
+                Human man2 = new Human();
+                man2.createMan(touchedPoint.x+2, touchedPoint.y, 0.5f, 25, door1, world);
+                Human man3 = new Human();
+                man3.createMan(touchedPoint.x+3, touchedPoint.y, 0.5f, 25, door1, world);
+                Human man4 = new Human();
+                man4.createMan(touchedPoint.x+4, touchedPoint.y, 0.5f, 25, door1, world);
+                Human man5 = new Human();
+                man5.createMan(touchedPoint.x+5, touchedPoint.y, 0.5f, 25, door1, world);
+                Human man6 = new Human();
+                man6.createMan(touchedPoint.x+6, touchedPoint.y, 0.5f, 25, door1, world);
+                Human man7 = new Human();
+                man7.createMan(touchedPoint.x+7, touchedPoint.y, 0.5f, 25, door1, world);
+                Human man8 = new Human();
+                man8.createMan(touchedPoint.x+8, touchedPoint.y, 0.5f, 25, door1, world);
+                Human man9 = new Human();
+                man9.createMan(touchedPoint.x+9, touchedPoint.y, 0.5f, 25, door1, world);
+                Human man10 = new Human();
+                man10.createMan(touchedPoint.x+10, touchedPoint.y, 0.5f, 25, door1, world);
+
                 peopleStorage.add(man);
+                peopleStorage.add(man1);
+                peopleStorage.add(man2);
+                peopleStorage.add(man3);
+                peopleStorage.add(man4);
+                peopleStorage.add(man5);
+                peopleStorage.add(man6);
+                peopleStorage.add(man7);
+                peopleStorage.add(man8);
+                peopleStorage.add(man9);
+                peopleStorage.add(man10);
                 allStorage.add(man.body);
-               //whichRoom(man);
                 //Human.createMan(touchedPoint.x, touchedPoint.y, 0.5f, 10, world);
-                man.setRoom(room2);//
+                man.setRoom(room5);//
+                man1.setRoom(room5);//
+                man2.setRoom(room5);//
+                man3.setRoom(room5);//
+                man4.setRoom(room5);//
+                man5.setRoom(room5);//
+                man6.setRoom(room5);//
+                man7.setRoom(room5);//
+                man8.setRoom(room5);//
+                man9.setRoom(room5);//
+                man10.setRoom(room5);//
                 return true;
             }
         });
@@ -136,8 +175,27 @@ public class GoToExitExper extends Game {
         float exitCoefficient = 3f;
         if (peopleStorage.notEmpty()) {
             peopleStorage.forEach(pedestrian -> {
+                if(whichRoom(pedestrian).length > 0){
+                    String humanID = whichRoom(pedestrian)[0];
+                    String curRoom = whichRoom(pedestrian)[1];
+                    if(String.valueOf(pedestrian.getId()).equals(humanID)){
+                        System.out.println("Znaleziono peda z takim samym ID");
+                        for(int j = 0; j < roomStorage.size; j++){
+    //                                    System.out.println(roomStorage.get(j).getName());
+    //                                    System.out.println(pedestrian.getRoom().getName());
 
-                whichRoom(pedestrian);
+                            if(roomStorage.get(j).getName().equals(curRoom)){
+                                //System.out.println("USTAWIAM NOWY POKOJ : " + curRoom);
+                                System.out.println("CHANGE FOR PED " + pedestrian.getId() );
+                                pedestrian.setRoom(roomStorage.get(j));
+
+                                //System.out.println("SPAWDZENIE 1 " + pedestrian.getRoom());
+                            }
+
+                        }
+                    }
+                }
+
                 chooseDoor(pedestrian);
 
                 float currPosX = pedestrian.body.getPosition().x;
@@ -213,7 +271,7 @@ public class GoToExitExper extends Game {
         }
     }
 
-    public void whichRoom(Human pedestrian){
+    public String[] whichRoom(Human pedestrian){
         //System.out.println("XXX BEFORE: " + pedestrian.getRoom().getName());
         int numContacts = world.getContactCount();
         if (numContacts > 0) {
@@ -246,6 +304,10 @@ public class GoToExitExper extends Game {
                         String humanID = getHumanIdByRegex(contactOutputHuman);
                         String curRoom = getCurrentRoomNameByRegex(contactOutputRoom);
 
+                        String[] res = {humanID,curRoom};
+
+                        return res;
+
 //                        System.out.println("humanID " + humanID);
 //                        System.out.println("curRoom " + curRoom);
 
@@ -256,29 +318,31 @@ public class GoToExitExper extends Game {
 //                                }
 //                            }
                         //}
-                        for(int i = 0; i < peopleStorage.size; i++){
-                            if(String.valueOf(pedestrian.getId()).equals(humanID)){
-                                System.out.println("Znaleziono peda z takim samym ID");
-                                for(int j = 0; j < roomStorage.size; j++){
-//                                    System.out.println(roomStorage.get(j).getName());
-//                                    System.out.println(pedestrian.getRoom().getName());
-                                    if(roomStorage.get(j).getName().equals(curRoom)){
-                                        //System.out.println("USTAWIAM NOWY POKOJ : " + curRoom);
-                                        System.out.println("CHANGE FOR PED " + pedestrian.getId() );
-                                        pedestrian.setRoom(roomStorage.get(j));
-
-                                        //System.out.println("SPAWDZENIE 1 " + pedestrian.getRoom());
-                                    }
-
-                                }
-                            }
-                        }
+                      //  for(int i = 0; i < peopleStorage.size; i++){
+//                            if(String.valueOf(pedestrian.getId()).equals(humanID)){
+//                                System.out.println("Znaleziono peda z takim samym ID");
+//                                for(int j = 0; j < roomStorage.size; j++){
+////                                    System.out.println(roomStorage.get(j).getName());
+////                                    System.out.println(pedestrian.getRoom().getName());
+//                                    if(roomStorage.get(j).getName().equals(curRoom)){
+//                                        //System.out.println("USTAWIAM NOWY POKOJ : " + curRoom);
+//                                        System.out.println("CHANGE FOR PED " + pedestrian.getId() );
+//                                        pedestrian.setRoom(roomStorage.get(j));
+//
+//                                        //System.out.println("SPAWDZENIE 1 " + pedestrian.getRoom());
+//                                    }
+//
+//                                }
+//                            }
+                    //    }
                     }
                 }
             }
             //System.out.println("SPAWDZENIE 2 " + pedestrian.getRoom());
         }
        // System.out.println("YYY AFTER: " + pedestrian.getRoom().getName());
+        String[] a = {};
+        return  a;
     }
 
 
