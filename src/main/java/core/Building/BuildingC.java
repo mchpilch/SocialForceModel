@@ -1,4 +1,4 @@
-package core.Room;
+package core.Building;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -98,6 +98,7 @@ public class BuildingC extends Game {
         Room room3 = new Room(-8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-3-BottomLeft", scale);
         Room room4 = new Room(8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-4-BottomRight", scale);
         Room room5 = new Room(0f,0f, 32/2f+roomMargin,8/2f+roomMargin, world,"Room-5-MainHall", scale);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
+
 
         roomStorage.add(room1);
         roomStorage.add(room2);

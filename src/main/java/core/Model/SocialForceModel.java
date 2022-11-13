@@ -17,7 +17,7 @@ import core.Element.Human;
 import core.Element.Room;
 import core.Element.Wall;
 import core.MathTool.LinearEquations;
-import core.Room.RoomListener;
+import core.Building.RoomListener;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

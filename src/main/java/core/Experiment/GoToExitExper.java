@@ -13,7 +13,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 import core.Element.*;
-import core.Room.RoomListener;
+import core.Building.RoomListener;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

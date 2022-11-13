@@ -2,9 +2,10 @@ package core;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import core.Experiment.GoToExitExper;
-import core.Lab.GoToExit;
-import core.Model.SocialForceModel;
+
+import core.Building.*;
+import core.Experiment.*;
+import core.Model.*;
 
 public class DesktopLauncher {
     public static void main(String[] args) {

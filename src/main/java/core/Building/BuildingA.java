@@ -1,4 +1,4 @@
-package core.Room;
+package core.Building;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -35,6 +35,8 @@ public class BuildingA extends Game {
 
         //Building_A
 
+        //PARAMETERS
+
         float scale = 1.0f;
         float moveX = -20f;
         float moveY = -10f;
@@ -45,7 +47,9 @@ public class BuildingA extends Game {
         float doorMargin = 1f;
         float roomMargin = -0.8f;
 
-        //równoległe
+        //WALL SECTION
+
+        //parallel (równoległe)
         Wall wallAR1 = new Wall();
         Wall wallAR2 = new Wall();
         Wall wallAR3 = new Wall();
@@ -107,6 +111,22 @@ public class BuildingA extends Game {
 
         wallC1.createWall(16f, 14f, 18f, 16f, world, scale, moveX, moveY); //przek w kwadracie
         wallC2.createWall(19f, 17f, 22f, 20f, world, scale, moveX, moveY);
+
+        //ROOM SECTION
+        Vector2 vecBL = new Vector2(0,0).scl(scale);
+        Vector2 vecBR = new Vector2(3,0).scl(scale);
+        Vector2 vecTR = new Vector2(5,5).scl(scale);
+        Vector2 vecTL = new Vector2(0,5).scl(scale);
+
+        Vector2[] polyVer = {
+                vecBL,
+                vecBR,
+                vecTR,
+                vecTL
+        };
+
+        Room roomP = new Room(0,0,polyVer, world,"polyRoom", 4);
+        roomStorage.add(roomP);
     }
 
     @Override

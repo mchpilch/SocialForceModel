@@ -1,4 +1,4 @@
-package core.Room;
+package core.Building;
 
 import com.badlogic.gdx.physics.box2d.*;
 
