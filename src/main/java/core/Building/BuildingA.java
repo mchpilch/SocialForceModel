@@ -37,12 +37,12 @@ public class BuildingA extends Game {
 
         //PARAMETERS
 
-        float scale = 1.0f;
+        float scale = 1.3f;
         float moveX = -20f;
         float moveY = -10f;
 
-        float moveRoomX =  moveX+20;
-        float moveRoomY =  moveY+10;
+        float moveRoomX =  moveX;
+        float moveRoomY =  moveY;
 
         float doorWidth = 2f;
         float halfDoorWidth = doorWidth/2;
@@ -116,38 +116,81 @@ public class BuildingA extends Game {
         wallC2.createWall(19f, 17f, 22f, 20f, world, scale, moveX, moveY);
 
         //ROOM SECTION //roomMargin < 0
-        Vector2 vec1 = new Vector2(0,0).add(-roomMargin,-roomMargin);
-        Vector2 vec2 = new Vector2(11,0).add(roomMargin,-roomMargin);
-        Vector2 vec3 = new Vector2(11,5).add(roomMargin,roomMargin);
-        Vector2 vec4 = new Vector2(3,5).add(0.2f,roomMargin);
-        Vector2 vec5 = new Vector2(0,2).add(-roomMargin,-0.2f);
+        Vector2 vecR9_1 = new Vector2(0,0).add(-roomMargin,-roomMargin);
+        Vector2 vecR9_2 = new Vector2(11,0).add(roomMargin,-roomMargin);
+        Vector2 vecR9_3 = new Vector2(11,5).add(roomMargin,roomMargin);
+        Vector2 vecR9_4 = new Vector2(3,5).add(0.2f,roomMargin);
+        Vector2 vecR9_5 = new Vector2(0,2).add(-roomMargin,-0.2f);
 
 
-        Vector2[] polyVer = {
-                vec1,
-                vec2,
-                vec3,
-                vec4,
-                vec5
+        Vector2[] polyVerR9 = {
+                vecR9_1,
+                vecR9_2,
+                vecR9_3,
+                vecR9_4,
+                vecR9_5
         };
-        Room roomP = new Room(16,12,polyVer, world,"polyRoom", scale, moveX, moveY);
+
+        Room room9 = new Room(16,12, polyVerR9, world,"polyRoom", scale, moveX, moveY);
+        roomStorage.add(room9);
+
+        Vector2 vecR11_1 = new Vector2(0,0).add(-roomMargin-0.3f,-roomMargin+0.3f);
+        Vector2 vecR11_2= new Vector2(0,6).add(-roomMargin-0.3f,roomMargin+0.3f);
+        Vector2 vecR11_3 = new Vector2(6,6).add(roomMargin-0.3f,roomMargin+0.3f);
+
+        Vector2[] polyVerR11 = {
+                 vecR11_1,
+                 vecR11_2,
+                 vecR11_3,
+        };
+
+        Room room11 = new Room(16,14, polyVerR11, world,"polyRoom", scale, moveX, moveY);
+        roomStorage.add(room11);
+
+        Vector2 vecR12_1 = new Vector2(0,0).add(-2*roomMargin,-roomMargin);
+        Vector2 vecR12_2 = new Vector2(8,0).add(roomMargin,-roomMargin);
+        Vector2 vecR12_3 = new Vector2(8,3).add(roomMargin,roomMargin);
+        Vector2 vecR12_4 = new Vector2(3,3).add(0,roomMargin);
+
+        Vector2[] polyVerR12 = {
+                vecR12_1,
+                vecR12_2,
+                vecR12_3,
+                vecR12_4,
+        };
+
+        Room room12 = new Room(19,17, polyVerR12, world,"polyRoom", scale, moveX, moveY);
+        roomStorage.add(room12);
+
+        //pozycja lewy dolny róg, + połowa hx lub hy
+        Room room1 = new Room( 0f + 12 / 2f, 0f + 4 / 2f, 12 / 2f + roomMargin,4 / 2f  + roomMargin, world,  "Room-1",  scale, moveRoomX, moveRoomY);
+        Room room2 = new Room( 0f + 12 / 2f, 4f + 3 / 2f, 12 / 2f + roomMargin,3 / 2f  + roomMargin, world,  "Room-2",  scale, moveRoomX, moveRoomY);
+        Room room3 = new Room(12f + 5  / 2f, 0f + 7 / 2f, 5  / 2f + roomMargin,7 / 2f  + roomMargin, world,  "Room-3",  scale, moveRoomX, moveRoomY);
+        Room room4 = new Room(17f + 4  / 2f, 0f + 7 / 2f, 4  / 2f + roomMargin,7 / 2f  + roomMargin, world,  "Room-4",  scale, moveRoomX, moveRoomY);
+        Room room5 = new Room(21f + 6  / 2f, 0f + 7 / 2f, 6  / 2f + roomMargin,7 / 2f  + roomMargin, world,  "Room-5",  scale, moveRoomX, moveRoomY);
+        Room room6 = new Room(27f + 13 / 2f, 0f + 7 / 2f, 13 / 2f + roomMargin,7 / 2f  + roomMargin, world,  "Room-6",  scale, moveRoomX, moveRoomY);
+        Room room7 = new Room( 0f + 40 / 2f, 7f + 5 / 2f, 40 / 2f + roomMargin,5 / 2f  + roomMargin, world,  "Room-7",  scale, moveRoomX, moveRoomY);
+        Room room8 = new Room( 0f + 16 / 2f,12f + 8 / 2f, 16 / 2f + roomMargin,8 / 2f  + roomMargin, world,  "Room-8",  scale, moveRoomX, moveRoomY);
+        //already def
+        Room room10 = new Room(27f + 13 / 2f,12f + 8  /  2f,13 / 2f + roomMargin,8  /  2f + roomMargin, world,"Room-5-MainHall", scale, moveRoomX, moveRoomY);
+        //already def
+        //already def
 
 
-//        Vector2 vecBL = new Vector2(0,0);
-//        Vector2 vecBR = new Vector2(3,0);
-//        Vector2 vecTR = new Vector2(5,5);
-//        Vector2 vecTL = new Vector2(0,5);
-//
-//        Vector2[] polyVer = {
-//                vecBL,
-//                vecBR,
-//                vecTR,
-//                vecTL
-//        };
-//        Room roomP = new Room(0,0,polyVer, world,"polyRoom", 1);
+        roomStorage.add(room1);
+        roomStorage.add(room2);
+        roomStorage.add(room3);
+        roomStorage.add(room4);
+        roomStorage.add(room5);
+        roomStorage.add(room6);
+        roomStorage.add(room7);
+        roomStorage.add(room8);
+        //already def
+        roomStorage.add(room10);
+        //already def
+        //already def
 
 
-        roomStorage.add(roomP);
     }
 
     @Override
