@@ -1,4 +1,4 @@
-package core.Lab;
+package core.Model;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

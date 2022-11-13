@@ -1,4 +1,4 @@
-package core.Lab;
+package core.Model;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -18,7 +18,7 @@ import core.Building.RoomListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GoToExit extends Game {
+public class ExitForce extends Game {
     World world;
     OrthographicCamera camera;
     Box2DDebugRenderer debugRenderer;

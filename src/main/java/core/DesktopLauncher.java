@@ -3,8 +3,6 @@ package core;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
-import core.Building.*;
-import core.Experiment.*;
 import core.Model.*;
 
 public class DesktopLauncher {

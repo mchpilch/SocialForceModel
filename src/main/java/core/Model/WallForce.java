@@ -1,4 +1,4 @@
-package core.Lab;
+package core.Model;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -15,7 +15,7 @@ import core.Element.Human;
 import core.Element.Wall;
 import core.MathTool.LinearEquations;
 
-public class WallRepulsion extends Game {
+public class WallForce extends Game {
 
     World world;
     OrthographicCamera camera;
