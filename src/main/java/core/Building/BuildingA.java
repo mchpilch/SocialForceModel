@@ -101,7 +101,7 @@ public class BuildingA extends Game {
         wallDP.createWall(17f, 0f, 17f, 7f, world, scale, moveX, moveY);
         wallEP.createWall(21f, 0f, 21f, 7f, world, scale, moveX, moveY);
         wallFP.createWall(27f, 0f, 27f, 7f, world, scale, moveX, moveY);
-        wallGP_T.createWall(27f, 15f, 27f, 17f, world, scale, moveX, moveY);
+        wallGP_T.createWall(27f, 15f, 27f, 18f, world, scale, moveX, moveY);
         wallGP_B.createWall(27f, 12f, 27f, 13f, world, scale, moveX, moveY);
         wallHP.createWall(40f, 0f, 40f, 20f, world, scale, moveX, moveY);
 
@@ -113,19 +113,37 @@ public class BuildingA extends Game {
         wallC2.createWall(19f, 17f, 22f, 20f, world, scale, moveX, moveY);
 
         //ROOM SECTION
-        Vector2 vecBL = new Vector2(0,0).scl(scale);
-        Vector2 vecBR = new Vector2(3,0).scl(scale);
-        Vector2 vecTR = new Vector2(5,5).scl(scale);
-        Vector2 vecTL = new Vector2(0,5).scl(scale);
+        Vector2 vec1 = new Vector2(0,0);
+        Vector2 vec2 = new Vector2(11,0);
+        Vector2 vec3 = new Vector2(11,5);
+        Vector2 vec4 = new Vector2(3,5);
+        Vector2 vec5 = new Vector2(0,2);
+
 
         Vector2[] polyVer = {
-                vecBL,
-                vecBR,
-                vecTR,
-                vecTL
+                vec1,
+                vec2,
+                vec3,
+                vec4,
+                vec5
         };
+        Room roomP = new Room(16,12,polyVer, world,"polyRoom", scale, moveX, moveY);
 
-        Room roomP = new Room(0,0,polyVer, world,"polyRoom", 4);
+
+//        Vector2 vecBL = new Vector2(0,0);
+//        Vector2 vecBR = new Vector2(3,0);
+//        Vector2 vecTR = new Vector2(5,5);
+//        Vector2 vecTL = new Vector2(0,5);
+//
+//        Vector2[] polyVer = {
+//                vecBL,
+//                vecBR,
+//                vecTR,
+//                vecTL
+//        };
+//        Room roomP = new Room(0,0,polyVer, world,"polyRoom", 1);
+
+
         roomStorage.add(roomP);
     }
 

@@ -32,10 +32,10 @@ public class Room {
         createBoxRoom(world, posX, posY, width, height);
     }
 
-    public Room(float posX, float posY, Vector2[] vecArr, World world, String name, float scale) {
+    public Room(float posX, float posY, Vector2[] vecArr, World world, String name, float scale, float moveX, float moveY) {
         this.name = name;
-        posX = (posX);
-        posY = (posY);
+        posX = (posX + moveX);
+        posY = (posY + moveY);
         createPolyRoom(world, posX, posY, vecArr, scale);
     }
 
