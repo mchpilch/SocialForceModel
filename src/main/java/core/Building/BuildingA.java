@@ -41,6 +41,9 @@ public class BuildingA extends Game {
         float moveX = -20f;
         float moveY = -10f;
 
+        float moveRoomX =  moveX+20;
+        float moveRoomY =  moveY+10;
+
         float doorWidth = 2f;
         float halfDoorWidth = doorWidth/2;
 
@@ -112,12 +115,12 @@ public class BuildingA extends Game {
         wallC1.createWall(16f, 14f, 18f, 16f, world, scale, moveX, moveY); //przek w kwadracie
         wallC2.createWall(19f, 17f, 22f, 20f, world, scale, moveX, moveY);
 
-        //ROOM SECTION
-        Vector2 vec1 = new Vector2(0,0);
-        Vector2 vec2 = new Vector2(11,0);
-        Vector2 vec3 = new Vector2(11,5);
-        Vector2 vec4 = new Vector2(3,5);
-        Vector2 vec5 = new Vector2(0,2);
+        //ROOM SECTION //roomMargin < 0
+        Vector2 vec1 = new Vector2(0,0).add(-roomMargin,-roomMargin);
+        Vector2 vec2 = new Vector2(11,0).add(roomMargin,-roomMargin);
+        Vector2 vec3 = new Vector2(11,5).add(roomMargin,roomMargin);
+        Vector2 vec4 = new Vector2(3,5).add(0.2f,roomMargin);
+        Vector2 vec5 = new Vector2(0,2).add(-roomMargin,-0.2f);
 
 
         Vector2[] polyVer = {

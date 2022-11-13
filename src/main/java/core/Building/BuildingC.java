@@ -36,8 +36,12 @@ public class BuildingC extends Game {
         //Building_C
 
         float scale = 1.0f;
+
         float moveX = -16f;
         float moveY = -16f;
+
+        float moveRoomX =  moveX+16;
+        float moveRoomY =  moveY+16;
 
         float doorWidth = 2f;
         float halfDoorWidth = doorWidth/2;
@@ -93,11 +97,11 @@ public class BuildingC extends Game {
         wallStorage.add(wallDP_T);
         wallStorage.add(wallDP_B);
 
-        Room room1 = new Room(8f,10f, 16/2+roomMargin,12/2f+roomMargin, world, "Room-1-TopRight", scale);
-        Room room2 = new Room(-8f,10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-2-TopLeft", scale);
-        Room room3 = new Room(-8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-3-BottomLeft", scale);
-        Room room4 = new Room(8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-4-BottomRight", scale);
-        Room room5 = new Room(0f,0f, 32/2f+roomMargin,8/2f+roomMargin, world,"Room-5-MainHall", scale);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
+        Room room1 = new Room(8f,10f, 16/2+roomMargin,12/2f+roomMargin, world, "Room-1-TopRight", scale, moveRoomX, moveRoomY);
+        Room room2 = new Room(-8f,10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-2-TopLeft", scale, moveRoomX, moveRoomY);
+        Room room3 = new Room(-8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-3-BottomLeft", scale, moveRoomX, moveRoomY);
+        Room room4 = new Room(8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-4-BottomRight", scale, moveRoomX, moveRoomY);
+        Room room5 = new Room(0f,0f, 32/2f+roomMargin,8/2f+roomMargin, world,"Room-5-MainHall", scale, moveRoomX, moveRoomY);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
 
 
         roomStorage.add(room1);
