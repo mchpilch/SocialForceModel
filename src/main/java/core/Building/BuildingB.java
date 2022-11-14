@@ -46,7 +46,7 @@ public class BuildingB extends Game {
         float halfDoorWidth = doorWidth/2;
 
         float doorMargin = 1f;
-        float roomMargin = -0.8f;
+        float roomMargin = -0.6f;
 
         //WALLs parallel
         //Wall wallAR = new Wall();
@@ -130,10 +130,11 @@ public class BuildingB extends Game {
         wallCrooked7.createWall(5f, 5f, 30f, 0f, world, scale, moveX, moveY);
 
         //ROOM SECTION //roomMargin < 0
-        Vector2 vecR1_1 = new Vector2(5,5);
-        Vector2 vecR1_2 = new Vector2(15,3);
-        Vector2 vecR1_3 = new Vector2(15,10);
-        Vector2 vecR1_4 = new Vector2(5,10);
+
+        Vector2 vecR1_1 = new Vector2( 5, 5).add(-roomMargin,-roomMargin);
+        Vector2 vecR1_2 = new Vector2(15, 3).add(roomMargin,-roomMargin);
+        Vector2 vecR1_3 = new Vector2(15,10).add(roomMargin,roomMargin);
+        Vector2 vecR1_4 = new Vector2( 5,10).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR1 = {
                 vecR1_1,
@@ -142,13 +143,11 @@ public class BuildingB extends Game {
                 vecR1_4
         };
 
-        Room room1 = new Room(0,0, polyVerR1, world,"Room-1-X", scale, moveX, moveY);
-        roomStorage.add(room1);
 
-        Vector2 vecR2_1 = new Vector2(20,7);
-        Vector2 vecR2_2 = new Vector2(15,10);
-        Vector2 vecR2_3 = new Vector2(15,3);
-        Vector2 vecR2_4 = new Vector2(20,2);
+        Vector2 vecR2_1 = new Vector2(15, 3).add(-roomMargin,-roomMargin);
+        Vector2 vecR2_2 = new Vector2(20, 2).add(roomMargin,-roomMargin);
+        Vector2 vecR2_3 = new Vector2(20, 7).add(roomMargin,roomMargin);
+        Vector2 vecR2_4 = new Vector2(15,10).add(-roomMargin,roomMargin+roomMargin);//
 
         Vector2[] polyVerR2 = {
                 vecR2_1,
@@ -157,13 +156,11 @@ public class BuildingB extends Game {
                 vecR2_4
         };
 
-        Room room2 = new Room(0,0, polyVerR2, world,"Room-2-X", scale, moveX, moveY);
-        roomStorage.add(room2);
 
-        Vector2 vecR3_1 = new Vector2(25,1);
-        Vector2 vecR3_2 = new Vector2(30,0);
-        Vector2 vecR3_3 = new Vector2(30,7);
-        Vector2 vecR3_4 = new Vector2(25,7);
+        Vector2 vecR3_1 = new Vector2(25,1).add(-roomMargin,-roomMargin);
+        Vector2 vecR3_2 = new Vector2(30,0).add(roomMargin,-roomMargin);
+        Vector2 vecR3_3 = new Vector2(30,7).add(roomMargin,roomMargin);
+        Vector2 vecR3_4 = new Vector2(25,7).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR3 = {
                 vecR3_1,
@@ -172,13 +169,11 @@ public class BuildingB extends Game {
                 vecR3_4
         };
 
-        Room room3 = new Room(0,0, polyVerR3, world,"Room-3-X", scale, moveX, moveY);
-        roomStorage.add(room3);
 
-        Vector2 vecR4_1 = new Vector2(25,7);
-        Vector2 vecR4_2 = new Vector2(30,7);
-        Vector2 vecR4_3 = new Vector2(30,13);
-        Vector2 vecR4_4 = new Vector2(25,12);
+        Vector2 vecR4_1 = new Vector2(25, 7).add(-roomMargin,-roomMargin);
+        Vector2 vecR4_2 = new Vector2(30, 7).add(roomMargin,-roomMargin);
+        Vector2 vecR4_3 = new Vector2(30,13).add(roomMargin,roomMargin);
+        Vector2 vecR4_4 = new Vector2(25,12).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR4 = {
                 vecR4_1,
@@ -187,13 +182,11 @@ public class BuildingB extends Game {
                 vecR4_4
         };
 
-        Room room4 = new Room(0,0, polyVerR4, world,"Room-4-X", scale, moveX, moveY);
-        roomStorage.add(room4);
 
-        Vector2 vecR5_1 = new Vector2(0,12);
-        Vector2 vecR5_2 = new Vector2(5,13);
-        Vector2 vecR5_3 = new Vector2(5,19);
-        Vector2 vecR5_4 = new Vector2(0,18);
+        Vector2 vecR5_1 = new Vector2(0,12).add(-roomMargin,-roomMargin);
+        Vector2 vecR5_2 = new Vector2(5,13).add(roomMargin,-roomMargin);
+        Vector2 vecR5_3 = new Vector2(5,19).add(roomMargin,roomMargin);
+        Vector2 vecR5_4 = new Vector2(0,18).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR5 = {
                 vecR5_1,
@@ -202,13 +195,11 @@ public class BuildingB extends Game {
                 vecR5_4
         };
 
-        Room room5 = new Room(0,0, polyVerR5, world,"Room-5-X", scale, moveX, moveY);
-        roomStorage.add(room5);
 
-        Vector2 vecR6_1 = new Vector2(5,19);
-        Vector2 vecR6_2 = new Vector2(5,13);
-        Vector2 vecR6_3 = new Vector2(15,15);
-        Vector2 vecR6_4 = new Vector2(15,21);
+        Vector2 vecR6_1 = new Vector2( 5,13).add(-roomMargin,-roomMargin);
+        Vector2 vecR6_2 = new Vector2(15,15).add(roomMargin,-roomMargin);
+        Vector2 vecR6_3 = new Vector2(15,21).add(roomMargin,roomMargin);
+        Vector2 vecR6_4 = new Vector2( 5,19).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR6 = {
                 vecR6_1,
@@ -217,13 +208,11 @@ public class BuildingB extends Game {
                 vecR6_4
         };
 
-        Room room6 = new Room(0,0, polyVerR6, world,"Room-6-X", scale, moveX, moveY);
-        roomStorage.add(room6);
 
-        Vector2 vecR7_1 = new Vector2(25,23);
-        Vector2 vecR7_2 = new Vector2(15,21);
-        Vector2 vecR7_3 = new Vector2(15,15);
-        Vector2 vecR7_4 = new Vector2(25,17);
+        Vector2 vecR7_1 = new Vector2(15,15).add(-roomMargin,-roomMargin);
+        Vector2 vecR7_2 = new Vector2(25,17).add(roomMargin,-roomMargin);
+        Vector2 vecR7_3 = new Vector2(25,23).add(roomMargin,roomMargin);
+        Vector2 vecR7_4 = new Vector2(15,21).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR7 = {
                 vecR7_1,
@@ -232,14 +221,11 @@ public class BuildingB extends Game {
                 vecR7_4
         };
 
-        Room room7 = new Room(0,0, polyVerR7, world,"Room-7-X", scale, moveX, moveY);
-        roomStorage.add(room7);
 
-
-        Vector2 vecR8_1_1 = new Vector2(5,13);
-        Vector2 vecR8_1_2 = new Vector2(0,12);
-        Vector2 vecR8_1_3 = new Vector2(0,8);
-        Vector2 vecR8_1_4 = new Vector2(5,8);
+        Vector2 vecR8_1_1 = new Vector2(0, 8).add(-roomMargin,-roomMargin);
+        Vector2 vecR8_1_2 = new Vector2(5, 8).add(roomMargin,-roomMargin);
+        Vector2 vecR8_1_3 = new Vector2(5,13).add(roomMargin,roomMargin);
+        Vector2 vecR8_1_4 = new Vector2(0,12).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR8_1 = {
                 vecR8_1_1,
@@ -248,13 +234,11 @@ public class BuildingB extends Game {
                 vecR8_1_4
         };
 
-        Room room8_1 = new Room(0,0, polyVerR8_1, world,"Room-8-1", scale, moveX, moveY);
-        roomStorage.add(room8_1);
 
-        Vector2 vecR8_2_1 = new Vector2(5,13);
-        Vector2 vecR8_2_2 = new Vector2(5,10);
-        Vector2 vecR8_2_3 = new Vector2(15,10);
-        Vector2 vecR8_2_4 = new Vector2(15,15);
+        Vector2 vecR8_2_1 = new Vector2( 5,10).add(-roomMargin,-roomMargin);
+        Vector2 vecR8_2_2 = new Vector2(15,10).add(roomMargin,-roomMargin);
+        Vector2 vecR8_2_3 = new Vector2(15,15).add(roomMargin,roomMargin);
+        Vector2 vecR8_2_4 = new Vector2( 5,13).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR8_2 = {
                 vecR8_2_1,
@@ -263,14 +247,12 @@ public class BuildingB extends Game {
                 vecR8_2_4
         };
 
-        Room room8_2 = new Room(0,0, polyVerR8_2, world,"Room-8-2", scale, moveX, moveY);
-        roomStorage.add(room8_2);
 
-        Vector2 vecR8_3_1 = new Vector2(15,10);
-        Vector2 vecR8_3_2 = new Vector2(20,7);
-        Vector2 vecR8_3_3 = new Vector2(25,7);
-        Vector2 vecR8_3_4 = new Vector2(25,17);
-        Vector2 vecR8_3_5 = new Vector2(15,15);
+        Vector2 vecR8_3_1 = new Vector2(15,10).add(-roomMargin,-roomMargin);
+        Vector2 vecR8_3_2 = new Vector2(20, 7).add(-roomMargin,-roomMargin);
+        Vector2 vecR8_3_3 = new Vector2(25, 7).add(roomMargin,-roomMargin);
+        Vector2 vecR8_3_4 = new Vector2(25,17).add(roomMargin,roomMargin);
+        Vector2 vecR8_3_5 = new Vector2(15,15).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR8_3 = {
                 vecR8_3_1,
@@ -280,13 +262,11 @@ public class BuildingB extends Game {
                 vecR8_3_5,
         };
 
-        Room room8_3 = new Room(0,0, polyVerR8_3, world,"Room-8-3", scale, moveX, moveY);
-        roomStorage.add(room8_3);
 
-        Vector2 vecR8_4_1 = new Vector2(25,12);
-        Vector2 vecR8_4_2 = new Vector2(30,13);
-        Vector2 vecR8_4_3 = new Vector2(30,24);
-        Vector2 vecR8_4_4 = new Vector2(25,23);
+        Vector2 vecR8_4_1 = new Vector2(25,12).add(-roomMargin,-roomMargin);
+        Vector2 vecR8_4_2 = new Vector2(30,13).add(roomMargin,-roomMargin);
+        Vector2 vecR8_4_3 = new Vector2(30,24).add(roomMargin,roomMargin);
+        Vector2 vecR8_4_4 = new Vector2(25,23).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR8_4 = {
                 vecR8_4_1,
@@ -295,13 +275,11 @@ public class BuildingB extends Game {
                 vecR8_4_4
         };
 
-        Room room8_4 = new Room(0,0, polyVerR8_4, world,"Room-8-4", scale, moveX, moveY);
-        roomStorage.add(room8_4);
 
-        Vector2 vecR8_5_1 = new Vector2(20,7);
-        Vector2 vecR8_5_2 = new Vector2(25,7);
-        Vector2 vecR8_5_3 = new Vector2(25,1);
-        Vector2 vecR8_5_4 = new Vector2(20,2);
+        Vector2 vecR8_5_1 = new Vector2(20,2).add(-roomMargin,-roomMargin);
+        Vector2 vecR8_5_2 = new Vector2(25,1).add(roomMargin,-roomMargin);
+        Vector2 vecR8_5_3 = new Vector2(25,7).add(roomMargin,roomMargin);
+        Vector2 vecR8_5_4 = new Vector2(20,7).add(-roomMargin,roomMargin);
 
         Vector2[] polyVerR8_5 = {
                 vecR8_5_1,
@@ -310,8 +288,42 @@ public class BuildingB extends Game {
                 vecR8_5_4
         };
 
+        Room room1 = new Room(0,0, polyVerR1, world,"Room-1-X", scale, moveX, moveY);
+        roomStorage.add(room1);
+
+        Room room2 = new Room(0,0, polyVerR2, world,"Room-2-X", scale, moveX, moveY);
+        roomStorage.add(room2);
+
+        Room room3 = new Room(0,0, polyVerR3, world,"Room-3-X", scale, moveX, moveY);
+        roomStorage.add(room3);
+
+        Room room4 = new Room(0,0, polyVerR4, world,"Room-4-X", scale, moveX, moveY);
+        roomStorage.add(room4);
+
+        Room room5 = new Room(0,0, polyVerR5, world,"Room-5-X", scale, moveX, moveY);
+        roomStorage.add(room5);
+
+        Room room6 = new Room(0,0, polyVerR6, world,"Room-6-X", scale, moveX, moveY);
+        roomStorage.add(room6);
+
+        Room room7 = new Room(0,0, polyVerR7, world,"Room-7-X", scale, moveX, moveY);
+        roomStorage.add(room7);
+
+        Room room8_1 = new Room(0,0, polyVerR8_1, world,"Room-8-1", scale, moveX, moveY);
+        roomStorage.add(room8_1);
+
+        Room room8_2 = new Room(0,0, polyVerR8_2, world,"Room-8-2", scale, moveX, moveY);
+        roomStorage.add(room8_2);
+
+        Room room8_3 = new Room(0,0, polyVerR8_3, world,"Room-8-3", scale, moveX, moveY);
+        roomStorage.add(room8_3);
+
+        Room room8_4 = new Room(0,0, polyVerR8_4, world,"Room-8-4", scale, moveX, moveY);
+        roomStorage.add(room8_4);
+
         Room room8_5 = new Room(0,0, polyVerR8_5, world,"Room-8-5", scale, moveX, moveY);
         roomStorage.add(room8_5);
+
     }
 
     @Override

@@ -56,8 +56,12 @@ public class SocialForceModel extends Game {
         //Building_C
 
         float scale = 1.0f;
+
         float moveX = -16f;
         float moveY = -16f;
+
+        float moveRoomX =  moveX+16;
+        float moveRoomY =  moveY+16;
 
         float doorWidth = 2f;
         float halfDoorWidth = doorWidth/2;
@@ -113,11 +117,11 @@ public class SocialForceModel extends Game {
         wallStorage.add(wallDP_T);
         wallStorage.add(wallDP_B);
 
-        Room room1 = new Room(8f,10f, 16/2+roomMargin,12/2f+roomMargin, world, "Room-1-TopRight", scale);
-        Room room2 = new Room(-8f,10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-2-TopLeft", scale);
-        Room room3 = new Room(-8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-3-BottomLeft", scale);
-        Room room4 = new Room(8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-4-BottomRight", scale);
-        Room room5 = new Room(0f,0f, 32/2f+roomMargin,8/2f+roomMargin, world,"Room-5-MainHall", scale);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
+        Room room1 = new Room(8f,10f, 16/2+roomMargin,12/2f+roomMargin, world, "Room-1-TopRight", scale, moveRoomX, moveRoomY);
+        Room room2 = new Room(-8f,10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-2-TopLeft", scale, moveRoomX, moveRoomY);
+        Room room3 = new Room(-8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-3-BottomLeft", scale, moveRoomX, moveRoomY);
+        Room room4 = new Room(8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-4-BottomRight", scale, moveRoomX, moveRoomY);
+        Room room5 = new Room(0f,0f, 32/2f+roomMargin,8/2f+roomMargin, world,"Room-5-MainHall", scale, moveRoomX, moveRoomY);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
 
         roomStorage.add(room1);
         roomStorage.add(room2);
@@ -229,11 +233,11 @@ public class SocialForceModel extends Game {
         float coeffGMinus = -1f; //-1f
         float personalborder = 5f; //5f
 
-        float wallRepNomCoeff = 8f; //8f
+        float wallRepNomCoeff = 16f; //8f
         float wallRepNomCoeff2 = 0.1f; //0.1f
         int powerR = 2; //2f
 
-        float exitCoefficient = 2f; //3f
+        float exitCoefficient = 0.5f; //3f
 
 
 
@@ -292,6 +296,15 @@ public class SocialForceModel extends Game {
         }
 
 
+//
+        Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer(
+                true,
+                true,
+                false,
+                false,//
+                true,
+                false
+        );
         debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
         world.step(1 / 60f, 6, 2);
 
