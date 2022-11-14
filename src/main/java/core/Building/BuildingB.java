@@ -39,6 +39,9 @@ public class BuildingB extends Game {
         float moveX = -20f;
         float moveY = -10f;
 
+        float moveRoomX =  moveX+20;
+        float moveRoomY =  moveY+10;
+
         float doorWidth = 2f;
         float halfDoorWidth = doorWidth/2;
 
@@ -125,6 +128,85 @@ public class BuildingB extends Game {
         wallCrooked5.createWall(25f, 12f, 30f, 13f, world, scale, moveX, moveY);
         wallCrooked6.createWall(15f, 10f, 20f, 7f, world, scale, moveX, moveY);
         wallCrooked7.createWall(5f, 5f, 30f, 0f, world, scale, moveX, moveY);
+
+        //ROOM SECTION //roomMargin < 0
+
+        Vector2 vecR8_1_1 = new Vector2(5,13);
+        Vector2 vecR8_1_2 = new Vector2(0,12);
+        Vector2 vecR8_1_3 = new Vector2(0,8);
+        Vector2 vecR8_1_4 = new Vector2(5,8);
+
+        Vector2[] polyVerR8_1 = {
+                vecR8_1_1,
+                vecR8_1_2,
+                vecR8_1_3,
+                vecR8_1_4
+        };
+
+        Room room8_1 = new Room(0,0, polyVerR8_1, world,"Room-8-1", scale, moveX, moveY);
+        roomStorage.add(room8_1);
+
+        Vector2 vecR8_2_1 = new Vector2(5,13);
+        Vector2 vecR8_2_2 = new Vector2(5,10);
+        Vector2 vecR8_2_3 = new Vector2(15,10);
+        Vector2 vecR8_2_4 = new Vector2(15,15);
+
+        Vector2[] polyVerR8_2 = {
+                vecR8_2_1,
+                vecR8_2_2,
+                vecR8_2_3,
+                vecR8_2_4
+        };
+
+        Room room8_2 = new Room(0,0, polyVerR8_2, world,"Room-8-2", scale, moveX, moveY);
+        roomStorage.add(room8_2);
+
+        Vector2 vecR8_3_1 = new Vector2(15,10);
+        Vector2 vecR8_3_2 = new Vector2(20,7);
+        Vector2 vecR8_3_3 = new Vector2(25,7);
+        Vector2 vecR8_3_4 = new Vector2(25,17);
+        Vector2 vecR8_3_5 = new Vector2(15,15);
+
+        Vector2[] polyVerR8_3 = {
+                vecR8_3_1,
+                vecR8_3_2,
+                vecR8_3_3,
+                vecR8_3_4,
+                vecR8_3_5,
+        };
+
+        Room room8_3 = new Room(0,0, polyVerR8_3, world,"Room-8-3", scale, moveX, moveY);
+        roomStorage.add(room8_3);
+
+        Vector2 vecR8_4_1 = new Vector2(25,12);
+        Vector2 vecR8_4_2 = new Vector2(30,13);
+        Vector2 vecR8_4_3 = new Vector2(30,24);
+        Vector2 vecR8_4_4 = new Vector2(25,23);
+
+        Vector2[] polyVerR8_4 = {
+                vecR8_4_1,
+                vecR8_4_2,
+                vecR8_4_3,
+                vecR8_4_4
+        };
+
+        Room room8_4 = new Room(0,0, polyVerR8_4, world,"Room-8-1", scale, moveX, moveY);
+        roomStorage.add(room8_4);
+
+        Vector2 vecR8_5_1 = new Vector2(20,7);
+        Vector2 vecR8_5_2 = new Vector2(25,7);
+        Vector2 vecR8_5_3 = new Vector2(25,1);
+        Vector2 vecR8_5_4 = new Vector2(20,2);
+
+        Vector2[] polyVerR8_5 = {
+                vecR8_5_1,
+                vecR8_5_2,
+                vecR8_5_3,
+                vecR8_5_4
+        };
+
+        Room room8_5 = new Room(0,0, polyVerR8_5, world,"Room-8-1", scale, moveX, moveY);
+        roomStorage.add(room8_5);
     }
 
     @Override
