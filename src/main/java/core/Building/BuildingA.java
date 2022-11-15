@@ -46,11 +46,11 @@ public class BuildingA extends Game {
 
         int numberOfDoors = 1; //0-1-2-3-4
 
-        float doorWidth = 1f;
+        float doorWidth = 2f;
         float door_1_width = doorWidth;
         float door_2_width = doorWidth;
-        float door_3_width = doorWidth;
-        float door_4_width = doorWidth;
+        float door_3_width = 0;
+        float door_4_width = 0;
 
         float halfDoor_1_Width = door_1_width/2;
         float halfDoor_2_Width = door_2_width/2;
@@ -145,8 +145,8 @@ public class BuildingA extends Game {
                 vecR9_5
         };
 
-        Room room9 = new Room(16,12, polyVerR9, world,"Room-9-X", scale, moveX, moveY);
-        roomStorage.add(room9);
+
+
 
         Vector2 vecR11_1 = new Vector2(0,0).add(-roomMargin-0.3f,-roomMargin+0.3f);
         Vector2 vecR11_2= new Vector2(0,6).add(-roomMargin-0.3f,roomMargin+0.3f);
@@ -158,8 +158,7 @@ public class BuildingA extends Game {
                  vecR11_3,
         };
 
-        Room room11 = new Room(16,14, polyVerR11, world,"Room-11-X", scale, moveX, moveY);
-        roomStorage.add(room11);
+
 
         Vector2 vecR12_1 = new Vector2(0,0).add(-2*roomMargin,-roomMargin);
         Vector2 vecR12_2 = new Vector2(8,0).add(roomMargin,-roomMargin);
@@ -173,8 +172,8 @@ public class BuildingA extends Game {
                 vecR12_4,
         };
 
-        Room room12 = new Room(19,17, polyVerR12, world,"Room-12-X", scale, moveX, moveY);
-        roomStorage.add(room12);
+
+
 
         //pozycja lewy dolny róg, + połowa hx lub hy
         Room room1 = new Room( 0f + 12 / 2f, 0f + 4 / 2f, 12 / 2f + roomMargin,4 / 2f  + roomMargin, world,  "Room-1-X",  scale, moveRoomX, moveRoomY);
@@ -185,10 +184,11 @@ public class BuildingA extends Game {
         Room room6 = new Room(27f + 13 / 2f, 0f + 7 / 2f, 13 / 2f + roomMargin,7 / 2f  + roomMargin, world,  "Room-6-X",  scale, moveRoomX, moveRoomY);
         Room room7 = new Room( 0f + 40 / 2f, 7f + 5 / 2f, 40 / 2f + roomMargin,5 / 2f  + roomMargin, world,  "Room-7-X",  scale, moveRoomX, moveRoomY);
         Room room8 = new Room( 0f + 16 / 2f,12f + 8 / 2f, 16 / 2f + roomMargin,8 / 2f  + roomMargin, world,  "Room-8-X",  scale, moveRoomX, moveRoomY);
-        //already def
         Room room10 = new Room(27f + 13 / 2f,12f + 8  /  2f,13 / 2f + roomMargin,8  /  2f + roomMargin, world,"Room-10-X", scale, moveRoomX, moveRoomY);
-        //already def
-        //already def
+
+        Room room9 = new Room(16,12, polyVerR9, world,"Room-9-X", scale, moveX, moveY);
+        Room room11 = new Room(16,14, polyVerR11, world,"Room-11-X", scale, moveX, moveY);
+        Room room12 = new Room(19,17, polyVerR12, world,"Room-12-X", scale, moveX, moveY);
 
 
         roomStorage.add(room1);
@@ -199,12 +199,53 @@ public class BuildingA extends Game {
         roomStorage.add(room6);
         roomStorage.add(room7);
         roomStorage.add(room8);
-        //already def
+        roomStorage.add(room9); //poly
         roomStorage.add(room10);
-        //already def
-        //already def
+        roomStorage.add(room11); //poly
+        roomStorage.add(room12); //poly
 
+        Door door1 = new Door( 13f,    0f - doorMargin,   "door1", scale, moveX, moveY);
+        Door door2 = new Door( 19f,    0f - doorMargin,   "door2", scale, moveX, moveY);
+        Door door3 = new Door( 13f,    4f - doorMargin,   "door3", scale, moveX, moveY);
+        Door door4 = new Door( 13f,    7f - doorMargin,   "door4", scale, moveX, moveY);
+        Door door5 = new Door( 12f - doorMargin,    6f,   "door5", scale, moveX, moveY);
+        Door door6 = new Door( 19f,    7f- doorMargin,    "door6", scale, moveX, moveY);
+        Door door7 = new Door( 23.5f,  7f + doorMargin,   "door7", scale, moveX, moveY);
+        Door door8 = new Door( 29f,    7f + doorMargin,   "door8", scale, moveX, moveY);
+        Door door9 = new Door(  4f,    12f - doorMargin,  "door9", scale, moveX, moveY);
+        Door door10 = new Door(23f,    12f - doorMargin,  "door10", scale, moveX, moveY);
+        Door door11 = new Door(27f - doorMargin,   14f,   "door11", scale, moveX, moveY);
+        Door door12 = new Door(19f + doorMargin,   16f- doorMargin,   "door12", scale, moveX, moveY);
+        Door door13 = new Door( 27 + doorMargin,   19,    "door13", scale, moveX, moveY);
 
+        doorStorage.add(door1);
+        doorStorage.add(door2);
+        doorStorage.add(door3);
+        doorStorage.add(door4);
+        doorStorage.add(door5);
+        doorStorage.add(door6);
+        doorStorage.add(door7);
+        doorStorage.add(door8);
+        doorStorage.add(door9);
+        doorStorage.add(door10);
+        doorStorage.add(door11);
+        doorStorage.add(door12);
+        doorStorage.add(door13);
+
+        //wariant drzwi 1,2
+        roomAndDoors.put(room1,door1);
+        roomAndDoors.put(room2,door3);
+        roomAndDoors.put(room3,door5);
+        roomAndDoors.put(room4,door2);
+        roomAndDoors.put(room5,door7);
+        roomAndDoors.put(room6,door8);
+        roomAndDoors.put(room7,door4);
+        roomAndDoors.put(room7,door6);
+        roomAndDoors.put(room8,door9);
+        roomAndDoors.put(room9,door10);
+        roomAndDoors.put(room10,door11);
+        roomAndDoors.put(room11,door12);
+        roomAndDoors.put(room12,door13);
     }
 
     @Override
