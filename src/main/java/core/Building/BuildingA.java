@@ -44,8 +44,6 @@ public class BuildingA extends Game {
         float moveRoomX =  moveX;
         float moveRoomY =  moveY;
 
-
-
         int numberOfDoors = 1; //0-1-2-3-4
 
         float doorWidth = 1f;
@@ -54,7 +52,6 @@ public class BuildingA extends Game {
         float door_3_width = doorWidth;
         float door_4_width = doorWidth;
 
-        float halfDoorWidth = doorWidth/2;
         float halfDoor_1_Width = door_1_width/2;
         float halfDoor_2_Width = door_2_width/2;
         float halfDoor_3_Width = door_3_width/2;

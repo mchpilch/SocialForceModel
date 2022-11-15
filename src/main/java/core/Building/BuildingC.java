@@ -40,11 +40,23 @@ public class BuildingC extends Game {
         float moveX = -16f;
         float moveY = -16f;
 
-        float moveRoomX =  moveX+16;
-        float moveRoomY =  moveY+16;
+        float moveRoomX = moveX+16;
+        float moveRoomY = moveY+16;
 
-        float doorWidth = 2f;
-        float halfDoorWidth = doorWidth/2;
+        float doorWidth = 1.5f;
+        float door_1_width = doorWidth;
+        float door_2_width = doorWidth;
+        float door_3_width = doorWidth;
+        float door_4_width = doorWidth;
+        float door_5_width = doorWidth;
+        float door_6_width = doorWidth;
+
+        float halfDoor_1_Width = door_1_width/2;
+        float halfDoor_2_Width = door_2_width/2;
+        float halfDoor_3_Width = door_3_width/2;
+        float halfDoor_4_Width = door_4_width/2;
+        float halfDoor_5_Width = door_5_width/2;
+        float halfDoor_6_Width = door_6_width/2;
 
         float doorMargin = 1f;
         float roomMargin = -0.8f;
@@ -64,10 +76,10 @@ public class BuildingC extends Game {
         wallStorage.add(wallDH);
 
         wallAH.createWall(0f, 0f, 32f, 0f, world, scale, moveX, moveY);
-        wallBH_L.createWall(0f, 12f, 24f-halfDoorWidth, 12f, world, scale, moveX, moveY);
-        wallBH_P.createWall(24f+halfDoorWidth, 12f, 32f, 12f, world, scale, moveX, moveY);
-        wallCH_L.createWall(0f, 20f, 8f-halfDoorWidth, 20f, world, scale, moveX, moveY);
-        wallCH_P.createWall(8f+halfDoorWidth, 20f, 32f, 20f, world, scale, moveX, moveY);
+        wallBH_L.createWall(0f, 12f, 24f-halfDoor_4_Width, 12f, world, scale, moveX, moveY);
+        wallBH_P.createWall(24f+halfDoor_4_Width, 12f, 32f, 12f, world, scale, moveX, moveY);
+        wallCH_L.createWall(0f, 20f, 8f-halfDoor_3_Width, 20f, world, scale, moveX, moveY);
+        wallCH_P.createWall(8f+halfDoor_3_Width, 20f, 32f, 20f, world, scale, moveX, moveY);
         wallDH.createWall(0f, 32f, 32f, 32f, world, scale, moveX, moveY);
 
         Wall wallAV_T = new Wall();
@@ -79,14 +91,14 @@ public class BuildingC extends Game {
         Wall wallDV_T = new Wall();
         Wall wallDV_B = new Wall();
 
-        wallAV_T.createWall(0f, 16f+halfDoorWidth, 0f, 32f, world, scale, moveX, moveY);
-        wallAV_B.createWall(0f, 0f, 0f, 16f-halfDoorWidth, world, scale, moveX, moveY);
-        wallBV_T.createWall(32f, 16f+halfDoorWidth, 32f, 32f, world, scale, moveX, moveY);
-        wallBV_B.createWall(32f, 0f, 32f, 16f-halfDoorWidth, world, scale, moveX, moveY);
-        wallCV_T.createWall(16f, 26f+halfDoorWidth, 16f, 32f, world, scale, moveX, moveY);
-        wallCV_B.createWall(16f, 20f, 16f, 26f-halfDoorWidth, world, scale, moveX, moveY);
-        wallDV_T.createWall(16f, 6f+halfDoorWidth, 16f, 12f, world, scale, moveX, moveY);
-        wallDV_B.createWall(16f, 0f, 16f, 6f-halfDoorWidth, world, scale, moveX, moveY);
+        wallAV_T.createWall(0f, 16f+halfDoor_1_Width, 0f, 32f, world, scale, moveX, moveY);
+        wallAV_B.createWall(0f, 0f, 0f, 16f-halfDoor_1_Width, world, scale, moveX, moveY);
+        wallBV_T.createWall(32f, 16f+halfDoor_2_Width, 32f, 32f, world, scale, moveX, moveY);
+        wallBV_B.createWall(32f, 0f, 32f, 16f-halfDoor_2_Width, world, scale, moveX, moveY);
+        wallCV_T.createWall(16f, 26f+halfDoor_5_Width, 16f, 32f, world, scale, moveX, moveY);
+        wallCV_B.createWall(16f, 20f, 16f, 26f-halfDoor_5_Width, world, scale, moveX, moveY);
+        wallDV_T.createWall(16f, 6f+halfDoor_6_Width, 16f, 12f, world, scale, moveX, moveY);
+        wallDV_B.createWall(16f, 0f, 16f, 6f-halfDoor_6_Width, world, scale, moveX, moveY);
 
         wallStorage.add(wallAV_T);
         wallStorage.add(wallAV_B);

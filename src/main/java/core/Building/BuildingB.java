@@ -39,41 +39,40 @@ public class BuildingB extends Game {
         float moveX = -20f;
         float moveY = -10f;
 
-        float moveRoomX =  moveX+20;
-        float moveRoomY =  moveY+10;
+        float moveRoomX =  moveX; //noBoxRoomsHere
+        float moveRoomY =  moveY; //noBoxRoomsHere
 
-        float doorWidth = 2f;
-        float halfDoorWidth = doorWidth/2;
+        float doorWidth = 1f;
+        float door_1_width = doorWidth;
+        float door_2_width = doorWidth;
+        float door_3_width = doorWidth;
+
+        float halfDoor_1_Width = door_1_width/2;
+        float halfDoor_2_Width = door_2_width/2;
+        float halfDoor_3_Width = door_3_width/2;
 
         float doorMargin = 1f;
         float roomMargin = -0.6f;
 
         //horizontal (poziome)
-        //Wall wallAH = new Wall();
         Wall wallAH_L = new Wall();
         Wall wallAH_R = new Wall();
-        //Wall wallBH = new Wall();
         Wall wallBH_L = new Wall();
         Wall wallBH_R = new Wall();
         Wall wallCH = new Wall();
 
-        //wallAH.createWall(0f, 8f, 5f, 8f, world, scale, moveX, moveY);
-        wallAH_L.createWall(0f, 8f, 2f, 8f, world, scale, moveX, moveY);
-        wallAH_R.createWall(3f, 8f, 5f, 8f, world, scale, moveX, moveY);
-        //wallBH.createWall(5f, 10f, 15f, 10f, world, scale, moveX, moveY);
+        wallAH_L.createWall(0f, 8f, 2.5f-halfDoor_1_Width, 8f, world, scale, moveX, moveY);
+        wallAH_R.createWall(2.5f+halfDoor_1_Width, 8f, 5f, 8f, world, scale, moveX, moveY);
         wallBH_L.createWall(5f, 10f, 13f, 10f, world, scale, moveX, moveY);
         wallBH_R.createWall(14f, 10f, 15f, 10f, world, scale, moveX, moveY);
         wallCH.createWall(25f, 7f, 30f, 7f, world, scale, moveX, moveY);
 
         //vertical (pionowe)
-        //Wall wallAV = new Wall();
         Wall wallAV = new Wall();
         Wall wallBV = new Wall();
         Wall wallCV = new Wall();
-        //Wall wallDV = new Wall();
         Wall wallDV_T = new Wall();
         Wall wallDV_B = new Wall();
-        //Wall wallEV = new Wall();
         Wall wallEV_T = new Wall();
         Wall wallEV_M = new Wall();
         Wall wallEV_B = new Wall();
@@ -87,10 +86,8 @@ public class BuildingB extends Game {
         wallAV.createWall(0f, 8f, 0f, 18f, world, scale, moveX, moveY);
         wallBV.createWall(5f, 5f, 5f, 10f, world, scale, moveX, moveY);
         wallCV.createWall(15f, 3f, 15f, 10f, world, scale, moveX, moveY);
-        //wallDV.createWall(20f, 2f, 20f, 7f, world, scale, moveX, moveY);
         wallDV_B.createWall(20f, 2f, 20f, 5f, world, scale, moveX, moveY);
         wallDV_T.createWall(20f, 6f, 20f, 7f, world, scale, moveX, moveY);
-        //wallEV.createWall(25f, 1f, 25f, 12f, world, scale, moveX, moveY);
         wallEV_B.createWall(25f, 1f, 25f, 5f, world, scale, moveX, moveY);
         wallEV_M.createWall(25f, 6f, 25f, 8f, world, scale, moveX, moveY);
         wallEV_T.createWall(25f, 9f, 25f, 12f, world, scale, moveX, moveY);
@@ -102,10 +99,8 @@ public class BuildingB extends Game {
         wallKV.createWall(25f, 17f, 25f, 23f, world, scale, moveX, moveY);
 
         //WALLs other
-        //Wall wallCrooked1 = new Wall();
         Wall wallCrooked1_1 = new Wall();
         Wall wallCrooked1_2 = new Wall();
-        //Wall wallCrooked2 = new Wall();
         Wall wallCrooked2_1 = new Wall();
         Wall wallCrooked2_2 = new Wall();
         Wall wallCrooked2_3 = new Wall();
@@ -114,12 +109,11 @@ public class BuildingB extends Game {
         Wall wallCrooked4 = new Wall();
         Wall wallCrooked5 = new Wall();
         Wall wallCrooked6 = new Wall();
-        Wall wallCrooked7 = new Wall();
+        Wall wallCrooked7_1 = new Wall();
+        Wall wallCrooked7_2 = new Wall();
 
-        //wallCrooked1.createWall(0f, 18f, 30f, 24f, world, scale, moveX, moveY);
-        wallCrooked1_1.createWall(0f, 18f, 27f, 23.4f, world, scale, moveX, moveY);
-        wallCrooked1_2.createWall(28f, 23.6f, 30f, 24f, world, scale, moveX, moveY);
-        //wallCrooked2.createWall(0f, 12f, 25f, 17f, world, scale, moveX, moveY);
+        wallCrooked1_1.createWall(0f, 18f, 27.5f-halfDoor_3_Width, 23.5f-(0.2f*halfDoor_3_Width), world, scale, moveX, moveY);//createWall(0f, 18f, 27f, 23.4f, world, scale, moveX, moveY);
+        wallCrooked1_2.createWall(27.5f+halfDoor_3_Width, 23.5f+(0.2f*halfDoor_3_Width), 30f, 24f, world, scale, moveX, moveY);//(28f, 23.6f, 30f, 24f, world, scale, moveX, moveY);
         wallCrooked2_1.createWall(0f, 12f, 2f, 12.4f, world, scale, moveX, moveY);
         wallCrooked2_2.createWall(3f, 12.6f, 13f, 14.6f, world, scale, moveX, moveY);
         wallCrooked2_3.createWall(14f, 14.8f, 23f, 16.6f, world, scale, moveX, moveY);
@@ -128,7 +122,8 @@ public class BuildingB extends Game {
         wallCrooked4.createWall(17f, 12f, 22f, 9f, world, scale, moveX, moveY);
         wallCrooked5.createWall(25f, 12f, 30f, 13f, world, scale, moveX, moveY);
         wallCrooked6.createWall(15f, 10f, 20f, 7f, world, scale, moveX, moveY);
-        wallCrooked7.createWall(5f, 5f, 30f, 0f, world, scale, moveX, moveY);
+        wallCrooked7_1.createWall(5f, 5f, 22.5f-halfDoor_2_Width, 1.5f+(0.2f*halfDoor_2_Width), world, scale, moveX, moveY);
+        wallCrooked7_2.createWall(22.5f+halfDoor_2_Width, 1.5f-(0.2f*halfDoor_2_Width), 30f, 0f, world, scale, moveX, moveY);
 
         //ROOM SECTION //roomMargin < 0
 
