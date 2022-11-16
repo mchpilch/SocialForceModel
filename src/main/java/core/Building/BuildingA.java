@@ -57,8 +57,8 @@ public class BuildingA extends Game {
         float halfDoor_3_Width = door_3_width/2;
         float halfDoor_4_Width = door_4_width/2;
 
-        float doorMargin = 1f;
-        float roomMargin = -0.8f;
+        float doorMargin = 0f;
+        float roomMargin = -0.4f;
 
         //WALL SECTION
 
@@ -204,19 +204,19 @@ public class BuildingA extends Game {
         roomStorage.add(room11); //poly
         roomStorage.add(room12); //poly
 
-        Door door1 = new Door( 13f,    0f - doorMargin,   "door1", scale, moveX, moveY);
+        Door door1 = new Door( 10f,    0f - doorMargin,   "door1", scale, moveX, moveY);
         Door door2 = new Door( 19f,    0f - doorMargin,   "door2", scale, moveX, moveY);
-        Door door3 = new Door( 13f,    4f - doorMargin,   "door3", scale, moveX, moveY);
-        Door door4 = new Door( 13f,    7f - doorMargin,   "door4", scale, moveX, moveY);
+        Door door3 = new Door( 10f,    4f - doorMargin,   "door3", scale, moveX, moveY);
+        Door door4 = new Door( 10f,    7f - doorMargin,   "door4", scale, moveX, moveY);
         Door door5 = new Door( 12f - doorMargin,    6f,   "door5", scale, moveX, moveY);
-        Door door6 = new Door( 19f,    7f- doorMargin,    "door6", scale, moveX, moveY);
-        Door door7 = new Door( 23.5f,  7f + doorMargin,   "door7", scale, moveX, moveY);
-        Door door8 = new Door( 29f,    7f + doorMargin,   "door8", scale, moveX, moveY);
+        Door door6 = new Door( 19f,    7f - doorMargin,    "door6", scale, moveX, moveY);
+        Door door7 = new Door( 23.5f,  7f + 2,   "door7", scale, moveX, moveY);//
+        Door door8 = new Door( 29f,    7f + 2,   "door8", scale, moveX, moveY);//
         Door door9 = new Door(  4f,    12f - doorMargin,  "door9", scale, moveX, moveY);
         Door door10 = new Door(23f,    12f - doorMargin,  "door10", scale, moveX, moveY);
         Door door11 = new Door(27f - doorMargin,   14f,   "door11", scale, moveX, moveY);
         Door door12 = new Door(19f + doorMargin,   16f- doorMargin,   "door12", scale, moveX, moveY);
-        Door door13 = new Door( 27 + doorMargin,   19,    "door13", scale, moveX, moveY);
+        Door door13 = new Door( 27,   19,    "door13", scale, moveX, moveY);//
 
         doorStorage.add(door1);
         doorStorage.add(door2);
