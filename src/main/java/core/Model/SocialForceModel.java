@@ -45,14 +45,14 @@ public class SocialForceModel extends Game {
     //PARAMETERS
 
     float coeffGPlus = 0f; //10f
-    float coeffGMinus = -0f; //-3.6f
+    float coeffGMinus = 0f; //-3.6f
     float personalborder = 1f; //2f
 
-    float wallRepNomCoeff = 8f; //6f
-    float wallRepNomCoeff2 = 0.03f; //0.05f
+    float wallRepNomCoeff = 0f; //6f
+    float wallRepNomCoeff2 = 0.00f; //0.05f
     int powerR = 2; //2f
 
-    float exitCoefficient = 8f; //3f
+    float exitCoefficient = 4f; //3f
 
     @Override
     public void create() {
@@ -191,27 +191,6 @@ public class SocialForceModel extends Game {
 
         roomAndDoors.put(room100,door100);
         roomAndDoors.put(room101,door101);
-
-//        Human man1 = new Human();
-//        Human man2 = new Human();
-//        Human man3 = new Human();
-//        Human man4 = new Human();
-//
-//
-//        man1.createMan(5+1, 6, 0.5f, 25, door1, world);
-//        man2.createMan(5+2, 6, 0.5f, 25, door1, world);
-//        man3.createMan(5+3, 6, 0.5f, 25, door1, world);
-//        man4.createMan(5+4, 6, 0.5f, 25, door1, world);
-//
-//        man1.setRoom(room1);
-//        man2.setRoom(room1);
-//        man3.setRoom(room1);
-//        man4.setRoom(room1);
-//
-//        peopleStorage.add(man1);
-//        peopleStorage.add(man2);
-//        peopleStorage.add(man3);
-//        peopleStorage.add(man4);
 
 
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -360,8 +339,8 @@ public class SocialForceModel extends Game {
                 true,
                 true,
                 false,
-                false,//
-                true,
+                false,
+                true,//
                 false
         );
         debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
@@ -741,7 +720,7 @@ public class SocialForceModel extends Game {
 
     public void pedestrianRoomAwareness(Human pedestrian){
         //zorientuj się w jakim pokoju jesteś
-        String roomService[] = whichRoom(pedestrian);
+        String[] roomService = whichRoom(pedestrian);
         if(roomService.length > 0){
             String humanID = roomService[0];
             String curRoom = roomService[1];

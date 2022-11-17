@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 import core.Building.*;
+import core.Experiment.Experiment;
 import core.Model.*;
 
 public class DesktopLauncher {
@@ -15,6 +16,7 @@ public class DesktopLauncher {
 
         config.setWindowedMode(1600,900);
         //config.setWindowedMode(1920,1080);
-        new Lwjgl3Application(new BuildingB(), config);
+
+        new Lwjgl3Application(new Experiment(), config);
     }
 }
