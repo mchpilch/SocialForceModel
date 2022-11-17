@@ -52,7 +52,7 @@ public class BuildingB extends Game {
         float halfDoor_3_Width = door_3_width/2;
 
         float doorMargin = 0f;
-        float roomMargin = -0.1f;
+        float roomMargin = -0.5f;
 
         //horizontal (poziome)
         Wall wallAH_L = new Wall();
@@ -332,7 +332,7 @@ public class BuildingB extends Game {
         Room room8_5 = new Room(0,0, polyVerR8_5, world,"Room-8-e", scale, moveX, moveY);
         roomStorage.add(room8_5);
 
-        Room room101 = new Room(5f/2f,8f-10f/2f, 5.6f/2f-0.3f,10/2f+roomMargin, world, "Room-101-RightExit", scale, moveRoomX, moveRoomY);
+        Room room101 = new Room(5f/2f,8f-10f/2f, 5.6f/2f-0.5f,10/2f-0.1f, world, "Room-101-RightExit", scale, moveRoomX, moveRoomY);
         Room room102 = new Room(0f,-0.3f, polyVerR102, world, "Room-101-RightExit", scale, moveRoomX, moveRoomY);
         Room room103 = new Room(-14f,4.5f, polyVerR8_4, world, "Room-100-LeftExit", scale, moveRoomX, moveRoomY);
 
