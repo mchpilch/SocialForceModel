@@ -15,6 +15,7 @@ import com.google.common.collect.Multimap;
 import core.Element.*;
 import core.MathTool.LinearEquations;
 
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,25 +29,19 @@ public class SocialForceModel extends Game {
     private float evacuationPeriod = 0.25f;
     private float evacuationTimer = 0f;
 
-    private float timeSeconds = 0f;
-    private float period = 1f;
-    private float timer = 0f;
-
-    private float timeSecondsInfo = 0f;
-    private float periodInfo = 1f;
-    private float timerInfo = 0f;
-
     private float timeSecondsAngleAdjustment = 0f;
     private float periodAngleAdjustment = 0.1f;
     private float timerAngleAdjustment = 0f;
 
 
     Array<Human> peopleStorage = new Array<Human>();
+    //Array<Human> toDestroyStorage = new Array<Human>();
     Array<Wall> wallStorage = new Array<Wall>();
     Array<Door> doorStorage = new Array<Door>();
     Array<Room> roomStorage = new Array<Room>();
     Multimap<Room,Door> roomAndDoors = ArrayListMultimap.create();  //https://www.baeldung.com/guava-multimap //allows dupicated keys so one key can have many values
 
+    Array<Float> evacuationTimes = new Array<Float>();
     //PARAMETERS
 
     float coeffGPlus = 0f; //10f
@@ -302,7 +297,7 @@ public class SocialForceModel extends Game {
             String roomName = pedestrian.getRoom().getName();
             if(roomName.substring(roomName.length()-4).equals("Exit") && pedestrian.isSave() == false){
                 pedestrian.setSave(true);
-                //world.destroyBody(pedestrian.body);
+                pedestrian.setTimeOfEvacuation(evacuationTimer);
             }
 
 
@@ -341,35 +336,26 @@ public class SocialForceModel extends Game {
                 float angle = calculatePedestrianAngle(netTotalForce);
                 pedestrian.body.setTransform(pedX, pedY, angle);
             }
-
-            timeSecondsInfo += Gdx.graphics.getDeltaTime();
-            if(timeSecondsInfo > periodInfo){
-                timeSecondsInfo -= periodInfo;
-                timerInfo += periodInfo;
-//                System.out.println(timerInfo);
-                  //showInfo(pedestrian,netTotalForce,netWallForce,netGravForce,netExitForce);
-
-                System.out.println(pedestrian.toString());
-            }
         });
-
-        timeSeconds += Gdx.graphics.getDeltaTime();
-        if(timeSeconds > period){
-            timeSeconds -= period;
-            timer += period;
-//            System.out.println(timer);
-        }
 
         evacuationTimeSeconds += Gdx.graphics.getDeltaTime();
         if(evacuationTimeSeconds > evacuationPeriod){
             evacuationTimeSeconds -= evacuationPeriod;
             evacuationTimer += evacuationPeriod;
             System.out.println("Time pass " + (float) (Math.round(evacuationTimer * 100.0) / 100.0));
+
+
+            Iterator<Human> iterator = peopleStorage.iterator(); //to safely remove elements while looping it is recommended to use iterator
+            while (iterator.hasNext()) {
+                Human pedestrian = iterator.next(); // must be called before you can call i.remove()
+                if(pedestrian.isSave()){
+                    evacuationTimes.add(pedestrian.getTimeOfEvacuation());
+                    iterator.remove();
+                }
+            }
+            System.out.println(evacuationTimes);
         }
 
-
-
-//
         Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer(
                 true,
                 true,
@@ -380,6 +366,11 @@ public class SocialForceModel extends Game {
         );
         debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
         world.step(1 / 60f, 6, 2);
+
+//        for(int k = 0; k < toDestroyStorage.size; k++){
+//            world.destroyBody(toDestroyStorage.get(k).body);
+//            toDestroyStorage.removeIndex(k);
+//        }
 
     }
 
@@ -636,6 +627,7 @@ public class SocialForceModel extends Game {
 
         return bareInfoRoom;
     }
+
 
     public void chooseDoor(Human pedestrian){ //wybierz odpowiednie drzwi w pomieszczeniu przechowywanym w human
         String doorName = "";
