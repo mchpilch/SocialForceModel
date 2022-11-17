@@ -115,6 +115,11 @@ public class BuildingC extends Game {
         Room room4 = new Room(8f,-10f, 16/2f+roomMargin,12/2f+roomMargin, world, "Room-4-BottomRight", scale, moveRoomX, moveRoomY);
         Room room5 = new Room(0f,0f, 32/2f+roomMargin,8/2f+roomMargin, world,"Room-5-MainHall", scale, moveRoomX, moveRoomY);//środek ciała jest ustawiany dlatego do pos dodaje polowe wartosci width i height
 
+        Room room100 = new Room(-28f,0f, 24/2+roomMargin,24/2f+roomMargin, world, "Room-100-LeftExit", scale, moveRoomX, moveRoomY);
+        Room room101 = new Room(28f,0f, 24/2+roomMargin,24/2f+roomMargin, world, "Room-101-RightExit", scale, moveRoomX, moveRoomY);
+
+
+        Room room1000 = new Room(1000,1000,1,1,world,"Room-1000-FirstRoom",scale,moveRoomX,moveRoomY);
 
         roomStorage.add(room1);
         roomStorage.add(room2);
@@ -122,13 +127,21 @@ public class BuildingC extends Game {
         roomStorage.add(room4);
         roomStorage.add(room5);
 
+        roomStorage.add(room100);
+        roomStorage.add(room101);
 
-        Door door1 = new Door(0-doorMargin,16, "door1", scale, moveX, moveY);
-        Door door2 = new Door(32+doorMargin,16, "door2", scale, moveX, moveY);
+
+
+        Door door1 = new Door(0-2,16, "door1", scale, moveX, moveY);//-doorMargin
+        Door door2 = new Door(32+2,16, "door2", scale, moveX, moveY);//+doorMargin
         Door door3 = new Door(8,20-doorMargin, "door3", scale, moveX, moveY);
         Door door4 = new Door(24,12+doorMargin, "door4", scale, moveX, moveY);
         Door door5 = new Door(16-doorMargin,26, "door5", scale, moveX, moveY);
         Door door6 = new Door(16+doorMargin,6, "door6", scale, moveX, moveY);
+
+        Door door100 = new Door(-20,16, "door100", scale, moveX, moveY);
+        Door door101 = new Door(32+20, 16, "door101", scale, moveX, moveY);
+
 
         doorStorage.add(door1);
         doorStorage.add(door2);
@@ -137,12 +150,19 @@ public class BuildingC extends Game {
         doorStorage.add(door5);
         doorStorage.add(door6);
 
+        doorStorage.add(door100);
+        doorStorage.add(door101);
+
+
         roomAndDoors.put(room5,door1);
         roomAndDoors.put(room5,door2);
         roomAndDoors.put(room2,door3);
         roomAndDoors.put(room4,door4);
         roomAndDoors.put(room1,door5);
         roomAndDoors.put(room3,door6);
+
+        roomAndDoors.put(room100,door100);
+        roomAndDoors.put(room101,door101);
     }
 
     @Override

@@ -87,7 +87,7 @@ public class Room {
         //poly.dispose();
 
         this.body = world.createBody(bodyDef);
-        this.body.createFixture(fixtureDef).setUserData(this); //fixture considers itself as RoomObject, OK?
+        this.body.createFixture(fixtureDef).setUserData(this); //fixture considers itself as
     }
 
 

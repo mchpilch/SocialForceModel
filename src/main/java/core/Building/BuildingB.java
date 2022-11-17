@@ -35,14 +35,14 @@ public class BuildingB extends Game {
 
         //Building_B
 
-        float scale = 1.0f;
+        float scale = 1.5f;
         float moveX = -20f;
         float moveY = -10f;
 
         float moveRoomX =  moveX; //noBoxRoomsHere
         float moveRoomY =  moveY; //noBoxRoomsHere
 
-        float doorWidth = 1f;
+        float doorWidth = 2.5f;
         float door_1_width = doorWidth;
         float door_2_width = doorWidth;
         float door_3_width = doorWidth;
@@ -51,8 +51,8 @@ public class BuildingB extends Game {
         float halfDoor_2_Width = door_2_width/2;
         float halfDoor_3_Width = door_3_width/2;
 
-        float doorMargin = 1f;
-        float roomMargin = -0.6f;
+        float doorMargin = 0f;
+        float roomMargin = -0.1f;
 
         //horizontal (poziome)
         Wall wallAH_L = new Wall();
@@ -284,6 +284,18 @@ public class BuildingB extends Game {
                 vecR8_5_4
         };
 
+        Vector2 vecR102_1 = new Vector2(20,2-6);
+        Vector2 vecR102_2 = new Vector2(25,1-6);
+        Vector2 vecR102_3 = new Vector2(25,7-6);
+        Vector2 vecR102_4 = new Vector2(20,8-6);
+
+        Vector2[] polyVerR102 = {
+                vecR102_1,
+                vecR102_2,
+                vecR102_3,
+                vecR102_4
+        };
+
         Room room1 = new Room(0,0, polyVerR1, world,"Room-1-X", scale, moveX, moveY);
         roomStorage.add(room1);
 
@@ -305,20 +317,87 @@ public class BuildingB extends Game {
         Room room7 = new Room(0,0, polyVerR7, world,"Room-7-X", scale, moveX, moveY);
         roomStorage.add(room7);
 
-        Room room8_1 = new Room(0,0, polyVerR8_1, world,"Room-8-1", scale, moveX, moveY);
+        Room room8_1 = new Room(0,0, polyVerR8_1, world,"Room-8-a", scale, moveX, moveY);
         roomStorage.add(room8_1);
 
-        Room room8_2 = new Room(0,0, polyVerR8_2, world,"Room-8-2", scale, moveX, moveY);
+        Room room8_2 = new Room(0,0, polyVerR8_2, world,"Room-8-b", scale, moveX, moveY);
         roomStorage.add(room8_2);
 
-        Room room8_3 = new Room(0,0, polyVerR8_3, world,"Room-8-3", scale, moveX, moveY);
+        Room room8_3 = new Room(0,0, polyVerR8_3, world,"Room-8-c", scale, moveX, moveY);
         roomStorage.add(room8_3);
 
-        Room room8_4 = new Room(0,0, polyVerR8_4, world,"Room-8-4", scale, moveX, moveY);
+        Room room8_4 = new Room(0,0, polyVerR8_4, world,"Room-8-d", scale, moveX, moveY);
         roomStorage.add(room8_4);
 
-        Room room8_5 = new Room(0,0, polyVerR8_5, world,"Room-8-5", scale, moveX, moveY);
+        Room room8_5 = new Room(0,0, polyVerR8_5, world,"Room-8-e", scale, moveX, moveY);
         roomStorage.add(room8_5);
+
+        Room room101 = new Room(5f/2f,8f-10f/2f, 5.6f/2f-0.3f,10/2f+roomMargin, world, "Room-101-RightExit", scale, moveRoomX, moveRoomY);
+        Room room102 = new Room(0f,-0.3f, polyVerR102, world, "Room-101-RightExit", scale, moveRoomX, moveRoomY);
+        Room room103 = new Room(-14f,4.5f, polyVerR8_4, world, "Room-100-LeftExit", scale, moveRoomX, moveRoomY);
+
+        Room room1000 = new Room(1000,1000,1,1,world,"Room-1000-FirstRoom",scale,moveRoomX,moveRoomY);
+
+        roomStorage.add(room101);
+        roomStorage.add(room102);
+        roomStorage.add(room103);
+        roomStorage.add(room1000);
+
+        Door door1 = new Door(2.5f, 8 + doorMargin, "door1", scale, moveX, moveY);//-doorMargin
+        Door door2 = new Door(22.5f, 1.5f + doorMargin, "door2", scale, moveX, moveY);//+doorMargin
+        Door door3 = new Door(8, 20 - doorMargin, "door3", scale, moveX, moveY);
+        Door door4 = new Door(2.5f, 12.5f + doorMargin, "door4", scale, moveX, moveY);
+        Door door5 = new Door(13.5f, 14f + doorMargin, "door5", scale, moveX, moveY);
+        Door door6 = new Door(23.5f, 16f + doorMargin, "door6", scale, moveX, moveY);
+        Door door7 = new Door(25f + doorMargin, 8.5f, "door7", scale, moveX, moveY);
+        Door door8 = new Door(25f + doorMargin, 5.5f, "door8", scale, moveX, moveY);
+        Door door9 = new Door(20f - doorMargin, 5.5f, "door9", scale, moveX, moveY);
+        Door door10 = new Door(13.5f, 10f - doorMargin, "door10", scale, moveX, moveY);
+
+        Door door11 = new Door(5f + doorMargin,  11f , "door11", scale, moveX, moveY);
+        Door door12 = new Door(15f + doorMargin, 12f , "door12", scale, moveX, moveY);
+        Door door13 = new Door(25f - doorMargin, 15f , "door13", scale, moveX, moveY);
+        Door door14 = new Door(22.5f, 8f  + doorMargin, "door14", scale, moveX, moveY);
+
+        Door door101 = new Door(  0f , 2.5f ,"door100", scale, moveX, moveY);
+        Door door102 = new Door(  22.5f , -3f ,"door101", scale, moveX, moveY);
+        Door door103 = new Door(  27.5f , 26f ,"door101", scale, moveX, moveY);
+
+        doorStorage.add(door1);
+        doorStorage.add(door2);
+        doorStorage.add(door3);
+        doorStorage.add(door4);
+        doorStorage.add(door5);
+        doorStorage.add(door6);
+        doorStorage.add(door7);
+        doorStorage.add(door8);
+        doorStorage.add(door9);
+        doorStorage.add(door10);
+
+        doorStorage.add(door101);
+        doorStorage.add(door102);
+        doorStorage.add(door103);
+
+        roomAndDoors.put(room1,door10);
+        roomAndDoors.put(room2,door9);
+        roomAndDoors.put(room3,door8);
+        roomAndDoors.put(room4,door7);
+        roomAndDoors.put(room5,door4);
+        roomAndDoors.put(room6,door5);
+        roomAndDoors.put(room7,door6);
+        roomAndDoors.put(room8_1,door1);
+        roomAndDoors.put(room8_2,door11);
+        roomAndDoors.put(room8_3,door12);
+        roomAndDoors.put(room8_3,door13);
+        roomAndDoors.put(room8_3,door14);
+        roomAndDoors.put(room8_4,door3);
+        roomAndDoors.put(room8_5,door2);
+
+        roomAndDoors.put(room101,door101);
+        roomAndDoors.put(room102,door102);
+        roomAndDoors.put(room103,door103);
+
+        roomAndDoors.put(room1000,door1);
 
     }
 
