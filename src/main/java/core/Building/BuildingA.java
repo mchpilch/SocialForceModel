@@ -26,6 +26,17 @@ public class BuildingA extends Game {
     Array<Room> roomStorage = new Array<Room>();
     Multimap<Room,Door> roomAndDoors = ArrayListMultimap.create();  //https://www.baeldung.com/guava-multimap //allows dupicated keys so one key can have many values
 
+    //suggested PARAMETERS
+
+    float coeffGPlus = 2f; //10f
+    float coeffGMinus = -3f; //-3.6f
+    float personalborder = 1f; //2f
+
+    float wallRepNomCoeff = 8f; //6f
+    float wallRepNomCoeff2 = 0.03f; //0.05f
+    int powerR = 2; //2f
+
+    float exitCoefficient = 4f; //3f
 
     @Override
     public void create() {
@@ -153,9 +164,9 @@ public class BuildingA extends Game {
         Vector2 vecR11_3 = new Vector2(6,6).add(roomMargin-0.3f,roomMargin+0.3f);
 
         Vector2[] polyVerR11 = {
-                 vecR11_1,
-                 vecR11_2,
-                 vecR11_3,
+                vecR11_1,
+                vecR11_2,
+                vecR11_3,
         };
 
 
@@ -191,6 +202,12 @@ public class BuildingA extends Game {
         Room room12 = new Room(19,17, polyVerR12, world,"Room-12-X", scale, moveX, moveY);
 
 
+        Room room112 = new Room(12f,-5f, 24/2+ roomMargin,10/2f+ roomMargin, world, "Room-112-BottomExit", scale, moveRoomX, moveRoomY);
+        Room room103 = new Room(50f,20/2f, 20/2+ roomMargin,20/2f+ roomMargin, world, "Room-101-LeftExit", scale, moveRoomX, moveRoomY);
+        Room room104 = new Room(-10f,20/2f, 20/2+ roomMargin,20/2f+ roomMargin, world, "Room-101-RightExit", scale, moveRoomX, moveRoomY);
+
+        Room room1000 = new Room(-500,-500,1,1,world,"Room-1000-FirstRoom",scale,moveRoomX,moveRoomY);
+
         roomStorage.add(room1);
         roomStorage.add(room2);
         roomStorage.add(room3);
@@ -203,6 +220,11 @@ public class BuildingA extends Game {
         roomStorage.add(room10);
         roomStorage.add(room11); //poly
         roomStorage.add(room12); //poly
+
+        roomStorage.add(room112);
+        roomStorage.add(room103);
+        roomStorage.add(room104);
+
 
         Door door1 = new Door( 10f,    0f - doorMargin,   "door1", scale, moveX, moveY);
         Door door2 = new Door( 19f,    0f - doorMargin,   "door2", scale, moveX, moveY);
@@ -218,6 +240,10 @@ public class BuildingA extends Game {
         Door door12 = new Door(19f + doorMargin,   16f- doorMargin,   "door12", scale, moveX, moveY);
         Door door13 = new Door( 27,   19,    "door13", scale, moveX, moveY);//
 
+        Door door112 = new Door(19,-5, "door112", scale, moveX, moveY);
+        Door door103 = new Door(50, 10, "door103", scale, moveX, moveY);
+        Door door104 = new Door(-10, 10, "door104", scale, moveX, moveY);
+
         doorStorage.add(door1);
         doorStorage.add(door2);
         doorStorage.add(door3);
@@ -231,6 +257,10 @@ public class BuildingA extends Game {
         doorStorage.add(door11);
         doorStorage.add(door12);
         doorStorage.add(door13);
+
+        doorStorage.add(door112);
+        doorStorage.add(door103);
+        doorStorage.add(door104);
 
         //wariant drzwi 1,2
         roomAndDoors.put(room1,door1);
@@ -246,6 +276,35 @@ public class BuildingA extends Game {
         roomAndDoors.put(room10,door11);
         roomAndDoors.put(room11,door12);
         roomAndDoors.put(room12,door13);
+
+        roomAndDoors.put(room112,door112);
+        roomAndDoors.put(room103,door103);
+        roomAndDoors.put(room104,door104);
+
+
+//        roomAndDoors.put(room100,door100);
+//        roomAndDoors.put(room101,door101);
+
+        Human man1 = new Human();
+        Human man2 = new Human();
+        Human man3 = new Human();
+
+
+
+
+        man1.createMan(5+2, 6, 0.5f, 25, door1, world);
+        man2.createMan(5+3, 6, 0.5f, 25, door1, world);
+        man3.createMan(5+4, 6, 0.5f, 25, door1, world);
+
+
+        man1.setRoom(room1000);
+        man2.setRoom(room1000);
+        man3.setRoom(room1000);
+
+
+        peopleStorage.add(man1);
+        peopleStorage.add(man2);
+        peopleStorage.add(man3);
     }
 
     @Override
