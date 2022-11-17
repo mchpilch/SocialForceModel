@@ -60,7 +60,6 @@ public class SocialForceModel extends Game {
         camera = new OrthographicCamera(100, 50);
         debugRenderer = new Box2DDebugRenderer();
 
-
         //Building_C
 
         float scale = 1.0f;
@@ -191,8 +190,6 @@ public class SocialForceModel extends Game {
 
         roomAndDoors.put(room100,door100);
         roomAndDoors.put(room101,door101);
-
-
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
