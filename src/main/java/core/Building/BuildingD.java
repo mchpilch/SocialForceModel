@@ -41,7 +41,7 @@ public class BuildingD extends Game {
         float moveRoomX = moveX+12;
         float moveRoomY = moveY+7.5f;
 
-        int nrOfDoors = 2; //1,2,3
+        int nrOfDoors = 3; //1,2,3
 
         float doorWidth = 1.5f;
         float door_1_width = doorWidth;
@@ -119,6 +119,9 @@ public class BuildingD extends Game {
         Room room1 = new Room( 0f,0f, 24/2f+roomMargin,15/2f+roomMargin, world, "Room-1-TopRight", scale, moveRoomX, moveRoomY);
         Room room2 = new Room(0f,15f, 24/2f+roomMargin,15/2f+roomMargin, world, "Room-2-Exit", scale, moveRoomX, moveRoomY);
 
+        roomStorage.add(room1);
+        roomStorage.add(room2);
+
         float door1X = 0;
         float door2X = 0;
         float door3X = 0;
@@ -134,7 +137,7 @@ public class BuildingD extends Game {
         if(nrOfDoors == 3){
             door1X = 6;
             door2X = 12;
-            door3X = 6;
+            door3X = 18;
         }
 
         Door door1 = new Door(door1X,15 + 1, "door1", scale, moveX, moveY);
