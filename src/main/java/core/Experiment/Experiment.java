@@ -75,7 +75,7 @@ public class Experiment extends Game {
         float moveRoomX = moveX+16;
         float moveRoomY = moveY+16;
 
-        float doorWidth = 1.5f;
+        float doorWidth = 4f;
         float door_1_width = doorWidth;
         float door_2_width = doorWidth;
         float door_3_width = doorWidth;

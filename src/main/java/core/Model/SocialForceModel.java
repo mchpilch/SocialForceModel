@@ -26,7 +26,7 @@ public class SocialForceModel extends Game {
     Box2DDebugRenderer debugRenderer;
 
     private float evacuationTimeSeconds = 0f;
-    private float evacuationPeriod = 0.25f;
+    private float evacuationPeriod = 0.05f;
     private float evacuationTimer = 0f;
 
     private float timeSecondsAngleAdjustment = 0f;
@@ -44,15 +44,15 @@ public class SocialForceModel extends Game {
     Array<Float> evacuationTimes = new Array<Float>();
     //PARAMETERS
 
-    float coeffGPlus = 0f; //10f
-    float coeffGMinus = 0f; //-3.6f
-    float personalborder = 1f; //2f
+    float coeffGPlus = 1f; //10f
+    float coeffGMinus = -2f; //-3.6f
+    float personalborder = 5f; //2f
 
-    float wallRepNomCoeff = 0f; //6f
-    float wallRepNomCoeff2 = 0.50f; //0.05f
+    float wallRepNomCoeff = 2f; //6f
+    float wallRepNomCoeff2 = 0.1f; //0.05f
     int powerR = 2; //2f
 
-    float exitCoefficient = 4f; //3f
+    float exitCoefficient = 2f; //3f
 
     @Override
     public void create() {
@@ -69,9 +69,9 @@ public class SocialForceModel extends Game {
         float moveRoomX = moveX+12;
         float moveRoomY = moveY+7.5f;
 
-        int nrOfDoors = 3; //1,2,3
+        int nrOfDoors = 1; //1,2,3
 
-        float doorWidth = 1.5f;
+        float doorWidth = 3.5f;
         float door_1_width = doorWidth;
         float door_2_width = doorWidth;
         float door_3_width = doorWidth;
@@ -179,6 +179,34 @@ public class SocialForceModel extends Game {
         roomAndDoors.put(room1,door1);
         roomAndDoors.put(room1,door2);
         roomAndDoors.put(room1,door3);
+
+//        Human man1 = new Human();
+//        man1.createMan(2, -13, 0.45f, 25, door1, world);
+//        man1.setRoom(room1);
+//        peopleStorage.add(man1);
+
+        int nrOfPeds = 50 ;
+        for(int i = 0; i < nrOfPeds ; i++){
+            Human man = new Human();
+            float rand = (float) Math.random();
+            if(i<10){
+                man.createMan(-3+i%10+rand, -10+rand, 0.45f, 25, door1, world);
+            }
+            if(i>=10 && i < 20){
+                man.createMan(-6+i%10+rand, -11+rand, 0.45f, 25, door1, world);
+            }
+            if(i>=20 && i < 30){
+                man.createMan(-4+i%10+rand, -12+rand, 0.45f, 25, door1, world);
+            }
+            if(i>=30 && i < 40){
+                man.createMan(-4+i%10+rand, -13+rand, 0.45f, 25, door1, world);
+            }
+            if(i>=40){
+                man.createMan(-4+i%10, -14+rand, 0.45f, 25, door1, world);
+            }
+            man.setRoom(room1);
+            peopleStorage.add(man);
+        }
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -320,6 +348,7 @@ public class SocialForceModel extends Game {
                 }
             }
             System.out.println(evacuationTimes);
+            System.out.println("Ilość jaka doszła: " + evacuationTimes.size);
         }
 
         Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer(

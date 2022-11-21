@@ -24,7 +24,7 @@ public class PedestrianForce extends Game {
     private float timeSeconds = 0f;
     private float period = 1f;
     private float timer = 0f;
-//    int pedIdCounter = 0;
+
     Array<Human> peopleStorage = new Array<Human>();
     Array<Wall> wallStorage = new Array<Wall>();
     Array<Body> allStorage = new Array<Body>();
@@ -102,9 +102,6 @@ public class PedestrianForce extends Game {
                 timeSeconds -= period;
                 timer += period;
                 System.out.println("pedestrian: ID  " +  pedestrian.getId() + " ped.pos:  " + pedestrian.body.getPosition());
-//                if(pedestrian.humanForces != null){
-                   // System.out.println(pedestrian.humanForces);
-//                }
             }
         });
 
@@ -150,8 +147,6 @@ public class PedestrianForce extends Game {
                     }else{
                         gravityForce = new Vector2(valueVecX,valueVecY).nor().scl(coeffGMinus/(gravityR*gravityR));
                     }
-
-                    //pedestrian.humanForces.put(peopleStorage.get(i).getId(), gravityForce);
                     netGravForce.add(gravityForce);
                 }
             }

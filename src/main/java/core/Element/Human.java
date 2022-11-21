@@ -82,7 +82,7 @@ public class Human {//extends Body
     }
 
     public void setTimeOfEvacuation(float timeOfEvacuation) {
-        this.timeOfEvacuation = timeOfEvacuation;
+        this.timeOfEvacuation = (float) (Math.round(timeOfEvacuation * 100.0) / 100.0);
     }
 
     public Door getExit() {

@@ -22,7 +22,7 @@ public class WallForce extends Game {
     Box2DDebugRenderer debugRenderer;
 
     private float timeSeconds = 0f;
-    private float period = 1f;
+    private float period = 0.05f;
     private float timer = 0f;
 
 
@@ -58,7 +58,10 @@ public class WallForce extends Game {
 //        wall3.createWall(-20, -10, -20, 10, world, scale, moveX,moveY); // left wall
 //        wall4.createWall(20, -10, 20, 10, world, scale, moveX,moveY); // right wall
 //
-        wall5.createWall(-10, -3, 10, -3, world, scale, moveX,moveY);
+        wall5.createWall(-10, -3, 0, -3, world, scale, moveX,moveY);
+        wall6.createWall(1, -3, 2, -3, world, scale, moveX,moveY);
+        wall7.createWall(5, -3, 10, -3, world, scale, moveX,moveY);
+
 //        wall6.createWall(-20, -6, 20, 8, world, scale, moveX,moveY);
 
 //        wall7.createWall(0, -100, 0, 100, world, scale, moveX,moveY); //x= 0
@@ -70,9 +73,9 @@ public class WallForce extends Game {
 //        wallStorage.add(wall4);
 
         wallStorage.add(wall5);
-//        wallStorage.add(wall6);
+        wallStorage.add(wall6);
+        wallStorage.add(wall7);
 
-//        wallStorage.add(wall7);
 //        wallStorage.add(wall8);
 
         Door door1 = new Door(0,0, "door1", scale, moveX, moveY);
@@ -132,8 +135,16 @@ public class WallForce extends Game {
             }
         });
 
+        Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer(
+                true,
+                true,
+                false,
+                false,
+                true,//
+                false
+        );
         debugRenderer.render(world, camera.combined); // render all your graphics before you do your physics step, so it won't be out of sync
-        world.step(1 / 60f, 6, 2);
+        world.step(1 / 60f, 6, 2);;
     }
 
 
